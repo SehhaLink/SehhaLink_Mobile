@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sehhalink/core/dependency_Injection/get_it.dart';
+import 'package:sehhalink/core/dependency_Injection/login_screen_di.dart';
 import 'package:sehhalink/core/dependency_Injection/register_screen_di.dart';
 import 'package:sehhalink/core/routing/routes.dart';
+import 'package:sehhalink/features/auth/login/presentation/logic/login_cubit.dart';
+import 'package:sehhalink/features/auth/login/presentation/login_screen.dart';
 import 'package:sehhalink/features/auth/register/presentation/logic/register_cubit.dart';
 import 'package:sehhalink/features/auth/register/presentation/register_screen.dart';
 import 'package:sehhalink/features/onboarding/onboarding_screen.dart';
@@ -22,7 +25,13 @@ class AppRoute {
           child: const RegisterScreen(),
         );
         break;
-
+      case Routes.loginScreen:
+        loginScreenDi();
+        page = BlocProvider(
+          create: (_) => getIt<LoginCubit>(),
+          child: const LoginScreen(),
+        );
+        break;
       default:
         page = const Scaffold(body: Center(child: Text('Route not found')));
     }

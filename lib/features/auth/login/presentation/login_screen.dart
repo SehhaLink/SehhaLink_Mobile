@@ -1,0 +1,323 @@
+// login_screen.dart
+// ignore_for_file: deprecated_member_use
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sehhalink/core/helpers/extensions.dart';
+import 'package:sehhalink/core/helpers/spacing.dart';
+import 'package:sehhalink/core/routing/routes.dart';
+import 'package:sehhalink/core/theme/app_colors.dart';
+import 'package:sehhalink/core/theme/font_weight_helper.dart';
+import 'package:sehhalink/core/widgets/app_button.dart';
+import 'package:sehhalink/core/widgets/app_text_form_field.dart';
+import 'package:sehhalink/features/auth/login/data/models/login_request_body.dart';
+import 'package:sehhalink/features/auth/login/presentation/logic/login_cubit.dart';
+import 'package:sehhalink/features/auth/login/presentation/logic/login_state.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.backgroundDark,
+      appBar: AppBar(
+        backgroundColor: AppColors.backgroundDark,
+        elevation: 0,
+        centerTitle: true,
+        title: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "Sehha",
+                style: TextStyle(
+                  color: AppColors.primaryCyan,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeightHelper.bold,
+                ),
+              ),
+              TextSpan(
+                text: "Link",
+                style: TextStyle(
+                  color: AppColors.textWhite,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeightHelper.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        leading: Container(
+          margin: EdgeInsets.only(left: 16.w),
+          width: 36.w,
+          height: 36.w,
+          decoration: BoxDecoration(
+            color: AppColors.backgroundCard,
+            borderRadius: BorderRadius.circular(36.r),
+          ),
+          child: IconButton(
+            onPressed: () => context.pop(),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: AppColors.primaryCyan,
+              size: 18,
+            ),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              verticalSpace(16),
+
+              // ── Icon ──
+              Container(
+                width: 60.w,
+                height: 60.w,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryCyan.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(
+                    color: AppColors.primaryCyan.withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(
+                  Icons.health_and_safety_outlined,
+                  color: AppColors.primaryCyan,
+                  size: 30.sp,
+                ),
+              ),
+              verticalSpace(20),
+
+              // ── Title ──
+              Text(
+                "Welcome Back",
+                style: TextStyle(
+                  color: AppColors.textWhite,
+                  fontSize: 24.sp,
+                  fontWeight: FontWeightHelper.bold,
+                ),
+              ),
+              verticalSpace(8),
+              Text(
+                "Manage your family's health with\nAI-powered insights.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColors.textGrayLight,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeightHelper.regular,
+                  height: 1.5,
+                ),
+              ),
+              verticalSpace(36),
+
+              // ── Email ──
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Email Address",
+                  style: TextStyle(
+                    color: AppColors.textWhite,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeightHelper.semiBold,
+                  ),
+                ),
+              ),
+              verticalSpace(8),
+              AppTextFormField(
+                controller: _emailController,
+                hintText: "name@example.com",
+                borderRadius: 14.r,
+                backgroundColor: AppColors.backgroundCard,
+                enabledBorderColor: Colors.white.withOpacity(0.08),
+                focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+                textStyle: TextStyle(
+                  color: AppColors.textWhite,
+                  fontSize: 14.sp,
+                ),
+                keyboardType: TextInputType.emailAddress,
+                label: Icon(
+                  Icons.email_outlined,
+                  color: AppColors.textGrayLight,
+                  size: 20,
+                ),
+                validator: (val) => val == null || !val.contains('@')
+                    ? "Enter a valid email"
+                    : null,
+              ),
+              verticalSpace(16),
+
+              // ── Password ──
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Password",
+                  style: TextStyle(
+                    color: AppColors.textWhite,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeightHelper.semiBold,
+                  ),
+                ),
+              ),
+              verticalSpace(8),
+              AppTextFormField(
+                controller: _passwordController,
+                hintText: "••••••••",
+                borderRadius: 14.r,
+                backgroundColor: AppColors.backgroundCard,
+                enabledBorderColor: Colors.white.withOpacity(0.08),
+                focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+                textStyle: TextStyle(
+                  color: AppColors.textWhite,
+                  fontSize: 14.sp,
+                ),
+                obscureText: _obscurePassword,
+                label: Icon(
+                  Icons.lock_outline_rounded,
+                  color: AppColors.textGrayLight,
+                  size: 20,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: AppColors.textGrayLight,
+                    size: 20,
+                  ),
+                  onPressed: () =>
+                      setState(() => _obscurePassword = !_obscurePassword),
+                ),
+                validator: (val) => val == null || val.length < 6
+                    ? "Password must be at least 6 characters"
+                    : null,
+              ),
+              verticalSpace(8),
+
+              // ── Forgot Password ──
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                      color: AppColors.primaryCyan,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeightHelper.semiBold,
+                    ),
+                  ),
+                ),
+              ),
+              verticalSpace(28),
+
+              // ── Login Button ──
+              BlocConsumer<LoginCubit, LoginState>(
+                listener: (context, state) {
+                  if (state is LoginLoaded) {
+                    // TODO: navigate to home
+                  }
+                  if (state is LoginFailuer) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.errMessage),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  return AppButton(
+                    buttonHeight: 56.h,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<LoginCubit>().login(
+                          LoginRequestBody(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ),
+                        );
+                      }
+                    },
+                    backgroundColor: AppColors.primaryCyan,
+                    radius: 16.r,
+                    child: state is LoginLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Text(
+                            "Log In",
+                            style: TextStyle(
+                              color: AppColors.textWhite,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeightHelper.semiBold,
+                            ),
+                          ),
+                  );
+                },
+              ),
+              verticalSpace(24),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account?",
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeightHelper.regular,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => context.pushNamed(Routes.registerScreen),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 6.w),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(
+                      "Create an Account",
+                      style: TextStyle(
+                        color: AppColors.primaryCyan,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeightHelper.semiBold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              verticalSpace(16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
