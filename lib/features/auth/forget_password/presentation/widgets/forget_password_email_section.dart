@@ -1,0 +1,104 @@
+// forget_password_email_section.dart
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sehhalink/core/helpers/spacing.dart';
+import 'package:sehhalink/core/theme/app_colors.dart';
+import 'package:sehhalink/core/theme/font_weight_helper.dart';
+import 'package:sehhalink/core/widgets/app_button.dart';
+import 'package:sehhalink/core/widgets/app_text_form_field.dart';
+
+class ForgetPasswordEmailSection extends StatelessWidget {
+  final bool isLoading;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final VoidCallback onSubmit;
+
+  const ForgetPasswordEmailSection({
+    super.key,
+    required this.isLoading,
+    required this.formKey,
+    required this.emailController,
+    required this.onSubmit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Forgot Password?",
+          style: TextStyle(
+            color: AppColors.textWhite,
+            fontSize: 26.sp,
+            fontWeight: FontWeightHelper.bold,
+          ),
+        ),
+        verticalSpace(10),
+        Text(
+          "Don't worry! Enter the email address\nlinked to your account.",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: AppColors.textGrayLight,
+            fontSize: 14.sp,
+          ),
+        ),
+        verticalSpace(32),
+        Form(
+          key: formKey,
+          child: AppTextFormField(
+            controller: emailController,
+            borderRadius: 14.r,
+            backgroundColor: AppColors.backgroundCard,
+            focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+            enabledBorderColor: Colors.white.withOpacity(0.08),
+            textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
+            hintText: "example@email.com",
+            suffixIcon: Icon(
+              Icons.alternate_email_rounded,
+              color: AppColors.textGrayLight,
+              size: 20.sp,
+            ),
+            validator: (val) =>
+                val == null || !val.contains('@') ? "Enter a valid email" : null,
+          ),
+        ),
+        verticalSpace(24),
+        AppButton(
+          onPressed: isLoading
+              ? null
+              : () {
+                  if (formKey.currentState!.validate()) onSubmit();
+                },
+          backgroundColor: AppColors.primaryCyan,
+          radius: 16.r,
+          buttonHeight: 56.h,
+          child: isLoading
+              ? SizedBox(
+                  height: 20.h,
+                  width: 20.w,
+                  child: const CircularProgressIndicator(
+                      color: Colors.white, strokeWidth: 2),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Send OTP",
+                      style: TextStyle(
+                        color: AppColors.textWhite,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeightHelper.semiBold,
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Icon(Icons.arrow_forward_rounded,
+                        color: Colors.white, size: 20.sp),
+                  ],
+                ),
+        ),
+      ],
+    );
+  }
+}

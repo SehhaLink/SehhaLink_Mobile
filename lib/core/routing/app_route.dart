@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sehhalink/core/dependency_Injection/forget_password_screen_di.dart';
 import 'package:sehhalink/core/dependency_Injection/get_it.dart';
 import 'package:sehhalink/core/dependency_Injection/login_screen_di.dart';
 import 'package:sehhalink/core/dependency_Injection/register_screen_di.dart';
 import 'package:sehhalink/core/routing/routes.dart';
+import 'package:sehhalink/features/auth/forget_password/presentation/forget_password_screen.dart';
+import 'package:sehhalink/features/auth/forget_password/presentation/logic/forget_password_cubit.dart';
 import 'package:sehhalink/features/auth/login/presentation/logic/login_cubit.dart';
 import 'package:sehhalink/features/auth/login/presentation/login_screen.dart';
 import 'package:sehhalink/features/auth/register/presentation/logic/register_cubit.dart';
@@ -30,6 +33,13 @@ class AppRoute {
         page = BlocProvider(
           create: (_) => getIt<LoginCubit>(),
           child: const LoginScreen(),
+        );
+        break;
+      case Routes.forgetPasswordScreen:
+        forgetPasswordScreenDi();
+        page = BlocProvider(
+          create: (_) => getIt<ForgetPasswordCubit>(),
+          child: const ForgetPasswordScreen(),
         );
         break;
       default:
