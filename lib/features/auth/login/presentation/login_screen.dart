@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
               BlocConsumer<LoginCubit, LoginState>(
                 listener: (context, state) {
                   if (state is LoginLoaded) {
-                    // TODO: navigate to home
+                    context.pushReplacmentNamed(Routes.homeScreen);
                   }
                   if (state is LoginFailuer) {
                     ScaffoldMessenger.of(context).showSnackBar(
