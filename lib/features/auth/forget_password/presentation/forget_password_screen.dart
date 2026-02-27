@@ -53,9 +53,9 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: AppColors.backgroundMain,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundDark,
+        backgroundColor: AppColors.backgroundMain,
         elevation: 0,
         leading: Container(
           margin: EdgeInsets.only(left: 16.w),
@@ -69,7 +69,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
             onPressed: () => context.pop(),
             icon: Icon(
               Icons.arrow_back_ios_new,
-              color: AppColors.primaryCyan,
+              color: AppColors.primaryBlue,
               size: 18,
             ),
           ),
@@ -81,7 +81,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
               TextSpan(
                 text: "Sehha",
                 style: TextStyle(
-                  color: AppColors.primaryCyan,
+                  color: AppColors.primaryBlue,
                   fontSize: 18.sp,
                   fontWeight: FontWeightHelper.bold,
                 ),
@@ -189,7 +189,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
                     Text(
                       "Remember Password? ",
                       style: TextStyle(
-                        color: AppColors.textGrayLight,
+                        color: AppColors.textLight,
                         fontSize: 14.sp,
                         fontWeight: FontWeightHelper.regular,
                       ),
@@ -199,7 +199,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
                       child: Text(
                         "Login",
                         style: TextStyle(
-                          color: AppColors.primaryCyan,
+                          color: AppColors.primaryBlue,
                           fontSize: 14.sp,
                           fontWeight: FontWeightHelper.semiBold,
                         ),

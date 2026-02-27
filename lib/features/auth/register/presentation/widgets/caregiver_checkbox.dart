@@ -1,4 +1,3 @@
-// caregiver_checkbox.dart
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,16 +29,16 @@ class CaregiverCheckbox extends StatelessWidget {
               borderRadius: BorderRadius.circular(6.r),
               border: Border.all(
                 color: isCaregiver
-                    ? AppColors.primaryCyan
-                    : AppColors.textGrayLight.withOpacity(0.5),
+                    ? AppColors.primaryBlue
+                    : AppColors.textLight.withOpacity(0.5),
                 width: 1.5,
               ),
               color: isCaregiver
-                  ? AppColors.primaryCyan.withOpacity(0.15)
+                  ? AppColors.primaryBlue.withOpacity(0.15)
                   : Colors.transparent,
             ),
             child: isCaregiver
-                ? Icon(Icons.check, color: AppColors.primaryCyan, size: 14)
+                ? Icon(Icons.check, color: AppColors.primaryBlue, size: 14)
                 : null,
           ),
           SizedBox(width: 12.w),
@@ -59,7 +58,7 @@ class CaregiverCheckbox extends StatelessWidget {
                 Text(
                   "Check this to enable family profile management and health tracking for others.",
                   style: TextStyle(
-                    color: AppColors.textGrayLight,
+                    color: AppColors.textLight,
                     fontSize: 12.sp,
                     fontWeight: FontWeightHelper.regular,
                   ),

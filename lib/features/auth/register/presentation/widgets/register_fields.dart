@@ -38,9 +38,9 @@ class RegisterFields extends StatelessWidget {
           borderRadius: 14.r,
           backgroundColor: AppColors.backgroundCard,
           enabledBorderColor: Colors.white.withOpacity(0.08),
-          focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+          focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
           textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
-          label: Icon(Icons.person_outline_rounded, color: AppColors.textGrayLight, size: 20),
+          label: Icon(Icons.person_outline_rounded, color: AppColors.textLight, size: 20),
           validator: (val) =>
               val == null || val.isEmpty ? "Enter your full name" : null,
         ),
@@ -54,10 +54,10 @@ class RegisterFields extends StatelessWidget {
           borderRadius: 14.r,
           backgroundColor: AppColors.backgroundCard,
           enabledBorderColor: Colors.white.withOpacity(0.08),
-          focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+          focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
           textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
           keyboardType: TextInputType.emailAddress,
-          label: Icon(Icons.email_outlined, color: AppColors.textGrayLight, size: 20),
+          label: Icon(Icons.email_outlined, color: AppColors.textLight, size: 20),
           validator: (val) =>
               val == null || !val.contains('@') ? "Enter a valid email" : null,
         ),
@@ -71,10 +71,10 @@ class RegisterFields extends StatelessWidget {
           borderRadius: 14.r,
           backgroundColor: AppColors.backgroundCard,
           enabledBorderColor: Colors.white.withOpacity(0.08),
-          focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+          focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
           textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
           keyboardType: TextInputType.phone,
-          label: Icon(Icons.phone_outlined, color: AppColors.textGrayLight, size: 20),
+          label: Icon(Icons.phone_outlined, color: AppColors.textLight, size: 20),
           validator: (val) =>
               val == null || val.isEmpty ? "Enter your phone number" : null,
         ),
@@ -88,16 +88,16 @@ class RegisterFields extends StatelessWidget {
           borderRadius: 14.r,
           backgroundColor: AppColors.backgroundCard,
           enabledBorderColor: Colors.white.withOpacity(0.08),
-          focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+          focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
           textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
           obscureText: obscurePassword,
-          label: Icon(Icons.lock_outline_rounded, color: AppColors.textGrayLight, size: 20),
+          label: Icon(Icons.lock_outline_rounded, color: AppColors.textLight, size: 20),
           suffixIcon: IconButton(
             icon: Icon(
               obscurePassword
                   ? Icons.visibility_off_outlined
                   : Icons.visibility_outlined,
-              color: AppColors.textGrayLight,
+              color: AppColors.textLight,
               size: 20,
             ),
             onPressed: onTogglePassword,

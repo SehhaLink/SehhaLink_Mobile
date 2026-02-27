@@ -94,7 +94,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         );
                   }
                 },
-                backgroundColor: AppColors.primaryCyan,
+                backgroundColor: AppColors.primaryBlue,
                 radius: 16.r,
                 child: state is RegisterLoading
                     ? const CircularProgressIndicator(color: Colors.white)

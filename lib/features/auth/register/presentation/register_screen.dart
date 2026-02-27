@@ -20,9 +20,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: AppColors.backgroundMain,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundDark,
+        backgroundColor: AppColors.backgroundMain,
         elevation: 0,
         centerTitle: true,
         title: RichText(
@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextSpan(
                 text: "Sehha",
                 style: TextStyle(
-                  color: AppColors.primaryCyan,
+                  color: AppColors.primaryBlue,
                   fontSize: 18.sp,
                   fontWeight: FontWeightHelper.bold,
                 ),
@@ -59,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onPressed: () => context.pop(),
             icon: Icon(
               Icons.arrow_back_ios_new,
-              color: AppColors.primaryCyan,
+              color: AppColors.primaryBlue,
               size: 18,
             ),
           ),
@@ -82,7 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Text(
               "Join Family Health AI to manage your health and your loved ones with smart insights.",
               style: TextStyle(
-                color: AppColors.textGrayLight,
+                color: AppColors.textLight,
                 fontSize: 14.sp,
                 fontWeight: FontWeightHelper.regular,
               ),

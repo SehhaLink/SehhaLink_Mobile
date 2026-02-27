@@ -17,7 +17,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: AppColors.backgroundMain,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
@@ -36,7 +36,7 @@ class OnboardingScreen extends StatelessWidget {
               // ── Content Section ──
               _buildFeatureRow(
                 icon: Icons.calendar_month_rounded,
-                color: AppColors.primaryCyan,
+                color: AppColors.iconBlue,
                 text: "Track appointments & medications",
               ),
               verticalSpace(16),
@@ -72,7 +72,7 @@ class OnboardingScreen extends StatelessWidget {
                 onPressed: () {
                   context.pushNamed(Routes.registerScreen);
                 },
-                backgroundColor: AppColors.primaryCyan,
+                backgroundColor: AppColors.primaryBlue,
                 radius: 16.r,
                 child: Text(
                   "Get Started",

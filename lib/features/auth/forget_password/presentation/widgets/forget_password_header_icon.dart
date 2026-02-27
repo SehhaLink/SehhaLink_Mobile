@@ -16,17 +16,17 @@ class ForgetPasswordHeaderIcon extends StatelessWidget {
           width: 100.w,
           height: 100.h,
           decoration: BoxDecoration(
-            color: AppColors.primaryCyan.withOpacity(0.1),
+            color: AppColors.primaryBlue.withOpacity(0.1),
             shape: BoxShape.circle,
             border: Border.all(
-              color: AppColors.primaryCyan.withOpacity(0.2),
+              color: AppColors.primaryBlue.withOpacity(0.2),
               width: 1.5,
             ),
           ),
           child: Icon(
             Icons.lock_reset_rounded,
             size: 50.sp,
-            color: AppColors.primaryCyan,
+            color: AppColors.primaryBlue,
           ),
         ),
         Positioned(
@@ -36,7 +36,7 @@ class ForgetPasswordHeaderIcon extends StatelessWidget {
             width: 28.w,
             height: 28.h,
             decoration: const BoxDecoration(
-              color: AppColors.primaryCyan,
+              color: AppColors.primaryBlue,
               shape: BoxShape.circle,
             ),
             child: Icon(Icons.email_rounded, size: 14.sp, color: Colors.white),

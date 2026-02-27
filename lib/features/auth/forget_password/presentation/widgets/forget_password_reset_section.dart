@@ -53,7 +53,7 @@ class _ForgetPasswordResetSectionState
         Text(
           "Enter the OTP sent to your email\nand set your new password.",
           textAlign: TextAlign.center,
-          style: TextStyle(color: AppColors.textGrayLight, fontSize: 14.sp),
+          style: TextStyle(color: AppColors.textLight, fontSize: 14.sp),
         ),
         verticalSpace(32),
         Form(
@@ -65,13 +65,13 @@ class _ForgetPasswordResetSectionState
                 controller: widget.otpController,
                 borderRadius: 14.r,
                 backgroundColor: AppColors.backgroundCard,
-                focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+                focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
                 enabledBorderColor: Colors.white.withOpacity(0.08),
                 textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
                 hintText: "123456",
                 keyboardType: TextInputType.number,
                 suffixIcon: Icon(Icons.pin_rounded,
-                    color: AppColors.textGrayLight, size: 20.sp),
+                    color: AppColors.textLight, size: 20.sp),
                 validator: (val) =>
                     val == null || val.isEmpty ? "Enter OTP" : null,
               ),
@@ -82,7 +82,7 @@ class _ForgetPasswordResetSectionState
                 controller: widget.newPasswordController,
                 borderRadius: 14.r,
                 backgroundColor: AppColors.backgroundCard,
-                focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+                focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
                 enabledBorderColor: Colors.white.withOpacity(0.08),
                 textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
                 hintText: "New Password",
@@ -92,7 +92,7 @@ class _ForgetPasswordResetSectionState
                     _isNewPasswordVisible
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
-                    color: AppColors.textGrayLight,
+                    color: AppColors.textLight,
                     size: 20,
                   ),
                   onPressed: () => setState(
@@ -109,7 +109,7 @@ class _ForgetPasswordResetSectionState
                 controller: widget.confirmPasswordController,
                 borderRadius: 14.r,
                 backgroundColor: AppColors.backgroundCard,
-                focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+                focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
                 enabledBorderColor: Colors.white.withOpacity(0.08),
                 textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
                 hintText: "Confirm Password",
@@ -119,7 +119,7 @@ class _ForgetPasswordResetSectionState
                     _isConfirmPasswordVisible
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
-                    color: AppColors.textGrayLight,
+                    color: AppColors.textLight,
                     size: 20,
                   ),
                   onPressed: () => setState(() =>
@@ -139,7 +139,7 @@ class _ForgetPasswordResetSectionState
               : () {
                   if (widget.formKey.currentState!.validate()) widget.onSubmit();
                 },
-          backgroundColor: AppColors.primaryCyan,
+          backgroundColor: AppColors.primaryBlue,
           radius: 16.r,
           buttonHeight: 56.h,
           child: widget.isLoading

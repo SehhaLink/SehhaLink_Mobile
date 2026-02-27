@@ -1,4 +1,3 @@
-// login_screen.dart
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
@@ -38,9 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: AppColors.backgroundMain,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundDark,
+        backgroundColor: AppColors.backgroundMain,
         elevation: 0,
         centerTitle: true,
         title: RichText(
@@ -49,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextSpan(
                 text: "Sehha",
                 style: TextStyle(
-                  color: AppColors.primaryCyan,
+                  color: AppColors.primaryBlue,
                   fontSize: 18.sp,
                   fontWeight: FontWeightHelper.bold,
                 ),
@@ -77,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () => context.pop(),
             icon: Icon(
               Icons.arrow_back_ios_new,
-              color: AppColors.primaryCyan,
+              color: AppColors.primaryBlue,
               size: 18,
             ),
           ),
@@ -97,16 +96,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 60.w,
                 height: 60.w,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryCyan.withOpacity(0.15),
+                  color: AppColors.primaryBlue.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(16.r),
                   border: Border.all(
-                    color: AppColors.primaryCyan.withOpacity(0.3),
+                    color: AppColors.primaryBlue.withOpacity(0.3),
                     width: 1,
                   ),
                 ),
                 child: Icon(
                   Icons.health_and_safety_outlined,
-                  color: AppColors.primaryCyan,
+                  color: AppColors.primaryBlue,
                   size: 30.sp,
                 ),
               ),
@@ -126,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Manage your family's health with\nAI-powered insights.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColors.textGrayLight,
+                  color: AppColors.textLight,
                   fontSize: 14.sp,
                   fontWeight: FontWeightHelper.regular,
                   height: 1.5,
@@ -153,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: 14.r,
                 backgroundColor: AppColors.backgroundCard,
                 enabledBorderColor: Colors.white.withOpacity(0.08),
-                focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+                focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
                 textStyle: TextStyle(
                   color: AppColors.textWhite,
                   fontSize: 14.sp,
@@ -161,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 keyboardType: TextInputType.emailAddress,
                 label: Icon(
                   Icons.email_outlined,
-                  color: AppColors.textGrayLight,
+                  color: AppColors.textLight,
                   size: 20,
                 ),
                 validator: (val) => val == null || !val.contains('@')
@@ -189,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: 14.r,
                 backgroundColor: AppColors.backgroundCard,
                 enabledBorderColor: Colors.white.withOpacity(0.08),
-                focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+                focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
                 textStyle: TextStyle(
                   color: AppColors.textWhite,
                   fontSize: 14.sp,
@@ -197,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: _obscurePassword,
                 label: Icon(
                   Icons.lock_outline_rounded,
-                  color: AppColors.textGrayLight,
+                  color: AppColors.textLight,
                   size: 20,
                 ),
                 suffixIcon: IconButton(
@@ -205,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _obscurePassword
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    color: AppColors.textGrayLight,
+                    color: AppColors.textLight,
                     size: 20,
                   ),
                   onPressed: () =>
@@ -232,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     "Forgot Password?",
                     style: TextStyle(
-                      color: AppColors.primaryCyan,
+                      color: AppColors.primaryBlue,
                       fontSize: 13.sp,
                       fontWeight: FontWeightHelper.semiBold,
                     ),
@@ -269,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       }
                     },
-                    backgroundColor: AppColors.primaryCyan,
+                    backgroundColor: AppColors.primaryBlue,
                     radius: 16.r,
                     child: state is LoginLoading
                         ? const CircularProgressIndicator(color: Colors.white)
@@ -307,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       "Create an Account",
                       style: TextStyle(
-                        color: AppColors.primaryCyan,
+                        color: AppColors.primaryBlue,
                         fontSize: 14.sp,
                         fontWeight: FontWeightHelper.semiBold,
                       ),
