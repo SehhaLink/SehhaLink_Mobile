@@ -1,5 +1,4 @@
 import 'package:sehhalink/core/networking/api_const.dart';
-import 'package:sehhalink/core/networking/api_error_handler.dart';
 import 'package:sehhalink/core/networking/network_service.dart';
 import 'package:sehhalink/features/auth/forget_password/data/models/reset_password_model.dart';
 import 'package:sehhalink/features/auth/login/data/models/login_request_body.dart';
@@ -34,6 +33,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       ApiConst.login,
       loginRequest.toJson(),
     );
+
+    if (response.statusCode != 200) {
+      throw Exception(response.data['message']);
+    }
+
     return LoginResponseBody.fromJson(response.data);
   }
 
