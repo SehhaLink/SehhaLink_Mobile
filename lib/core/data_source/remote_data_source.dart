@@ -8,7 +8,7 @@ import 'package:sehhalink/features/auth/register/data/models/register_request_bo
 
 abstract class RemoteDataSource {
   Future<bool> register(RegisterRequestBody registerRequestBody);
-   Future<LoginResponseBody> login(LoginRequestBody loginRequest);
+  Future<LoginResponseBody> login(LoginRequestBody loginRequest);
   Future<bool> forgetPassword(String email);
   Future<bool> resetPassword(ResetPasswordModel resetModel);
 }
@@ -20,26 +20,22 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<bool> register(RegisterRequestBody registerRequestBody) async {
-    try {
-      final response = await networkService.post(
-        ApiConst.register,
-        registerRequestBody.toJson(),
-      );
+    final response = await networkService.post(
+      ApiConst.register,
+      registerRequestBody.toJson(),
+    );
 
-      return response.data['isSuccess'] ?? false;
-    } catch (e) {
-      throw ApiErrorHandler.handle(e);
-    }
+    return response.data['isSuccess'];
   }
 
-   @override
-   Future<LoginResponseBody> login(LoginRequestBody loginRequest) async {
-     final response = await networkService.post(
-       ApiConst.login,
-       loginRequest.toJson(),
-     );
-     return LoginResponseBody.fromJson(response.data);
-   }
+  @override
+  Future<LoginResponseBody> login(LoginRequestBody loginRequest) async {
+    final response = await networkService.post(
+      ApiConst.login,
+      loginRequest.toJson(),
+    );
+    return LoginResponseBody.fromJson(response.data);
+  }
 
   @override
   Future<bool> forgetPassword(String email) async {
@@ -50,8 +46,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<bool> resetPassword(ResetPasswordModel resetModel) async{
-   final response = await networkService.post(ApiConst.forgetPassword,resetModel.toJson());
+  Future<bool> resetPassword(ResetPasswordModel resetModel) async {
+    final response = await networkService.post(
+      ApiConst.forgetPassword,
+      resetModel.toJson(),
+    );
     return response.data["success"] ?? false;
   }
 }
