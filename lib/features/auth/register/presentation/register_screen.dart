@@ -1,4 +1,3 @@
-// register_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/extensions.dart';
@@ -39,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextSpan(
                 text: "Link",
                 style: TextStyle(
-                  color: AppColors.textWhite,
+                  color: AppColors.textPrimary, 
                   fontSize: 18.sp,
                   fontWeight: FontWeightHelper.bold,
                 ),
@@ -52,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           width: 36.w,
           height: 36.w,
           decoration: BoxDecoration(
-            color: AppColors.backgroundCard,
+            color: AppColors.backgroundSoft, // ✅ soft gra card
             borderRadius: BorderRadius.circular(36.r),
           ),
           child: IconButton(
@@ -73,16 +72,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Text(
               "Create Account",
               style: TextStyle(
-                color: AppColors.textWhite,
+                color: AppColors.textPrimary, // ✅
                 fontWeight: FontWeightHelper.bold,
                 fontSize: 24.sp,
               ),
             ),
             verticalSpace(8),
             Text(
-              "Join Family Health AI to manage your health and your loved ones with smart insights.",
+              "Join SehhaLink to manage your health and your loved ones with smart insights.",
               style: TextStyle(
-                color: AppColors.textLight,
+                color: AppColors.textSecondary, // ✅
                 fontSize: 14.sp,
                 fontWeight: FontWeightHelper.regular,
               ),

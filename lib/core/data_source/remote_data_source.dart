@@ -24,7 +24,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       registerRequestBody.toJson(),
     );
 
-    return response.data['isSuccess'];
+    return response.data['success'];
   }
 
   @override

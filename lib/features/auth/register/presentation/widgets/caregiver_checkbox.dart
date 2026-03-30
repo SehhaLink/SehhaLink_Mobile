@@ -30,11 +30,11 @@ class CaregiverCheckbox extends StatelessWidget {
               border: Border.all(
                 color: isCaregiver
                     ? AppColors.primaryBlue
-                    : AppColors.textLight.withOpacity(0.5),
+                    : AppColors.borderLight, // ✅
                 width: 1.5,
               ),
               color: isCaregiver
-                  ? AppColors.primaryBlue.withOpacity(0.15)
+                  ? AppColors.primaryBlue.withOpacity(0.1)
                   : Colors.transparent,
             ),
             child: isCaregiver
@@ -49,7 +49,7 @@ class CaregiverCheckbox extends StatelessWidget {
                 Text(
                   "I am a caregiver/parent",
                   style: TextStyle(
-                    color: AppColors.textWhite,
+                    color: AppColors.textPrimary, // ✅
                     fontSize: 14.sp,
                     fontWeight: FontWeightHelper.semiBold,
                   ),
@@ -58,7 +58,7 @@ class CaregiverCheckbox extends StatelessWidget {
                 Text(
                   "Check this to enable family profile management and health tracking for others.",
                   style: TextStyle(
-                    color: AppColors.textLight,
+                    color: AppColors.textSecondary, // ✅
                     fontSize: 12.sp,
                     fontWeight: FontWeightHelper.regular,
                   ),
