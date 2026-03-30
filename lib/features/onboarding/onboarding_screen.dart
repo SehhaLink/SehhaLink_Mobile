@@ -9,6 +9,7 @@ import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';
 import 'package:sehhalink/core/utils/app_assets.dart';
 import 'package:sehhalink/core/widgets/app_button.dart';
+import 'package:sehhalink/features/onboarding/widgets/feature_card.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -34,7 +35,7 @@ class OnboardingScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         'SehhaLink',
@@ -44,28 +45,9 @@ class OnboardingScreen extends StatelessWidget {
                           color: Colors.white.withOpacity(0.7),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 4.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        child: Text(
-                          'v2.0',
-                          style: TextStyle(
-                            fontSize: 11.sp,
-                            color: Colors.white.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
-
                   verticalSpace(10),
-
                   Container(
                     width: 80.w,
                     height: 80.w,
@@ -86,9 +68,7 @@ class OnboardingScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   verticalSpace(20),
-
                   Text(
                     'Your health,\nall in one place',
                     textAlign: TextAlign.center,
@@ -99,9 +79,7 @@ class OnboardingScreen extends StatelessWidget {
                       height: 1.4,
                     ),
                   ),
-
                   verticalSpace(8),
-
                   Text(
                     'Manage your family\'s healthcare\nsmarter and simpler',
                     textAlign: TextAlign.center,
@@ -115,37 +93,41 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
 
+            verticalSpace(20),
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Column(
                 children: [
                   verticalSpace(24),
 
-                  _FeatureCard(
-                    icon: Icons.calendar_month_rounded,
-                    iconColor: AppColors.primaryBlue,
-                    iconBg: const Color(0xFFE8F4F8),
-                    title: 'Appointments',
-                    subtitle: 'Track & manage medications',
-                  ),
-                  verticalSpace(12),
-                  _FeatureCard(
-                    icon: Icons.family_restroom_rounded,
-                    iconColor: AppColors.accentOrange,
-                    iconBg: const Color(0xFFFEF3E8),
-                    title: 'Family profiles',
-                    subtitle: 'Everyone\'s health in one view',
-                  ),
-                  verticalSpace(12),
-                  _FeatureCard(
-                    icon: Icons.smart_toy_rounded,
-                    iconColor: AppColors.successGreen,
-                    iconBg: const Color(0xFFEAFAF0),
-                    title: 'AI assistant',
-                    subtitle: 'Smart guidance for your health',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: FeatureCard(
+                          icon: Icons.folder_copy_rounded,
+                          iconColor: AppColors.primaryBlue,
+                          iconBg: const Color(0xFFE8F4F8),
+                          title: 'All in one place',
+                          subtitle:
+                              'All your medical reports & scans in one spot',
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: FeatureCard(
+                          icon: Icons.insights_rounded,
+                          iconColor: AppColors.accentOrange,
+                          iconBg: const Color(0xFFFEF3E8),
+                          title: 'Easy summary',
+                          subtitle:
+                              'Understand your health with simple insights',
+                        ),
+                      ),
+                    ],
                   ),
 
-                  verticalSpace(28),
+                  verticalSpace(35),
 
                   AppButton(
                     buttonHeight: 54.h,
@@ -200,71 +182,6 @@ class OnboardingScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// ─── Feature Card ─────────────────────────────────────────────────────────────
-
-class _FeatureCard extends StatelessWidget {
-  const _FeatureCard({
-    required this.icon,
-    required this.iconColor,
-    required this.iconBg,
-    required this.title,
-    required this.subtitle,
-  });
-
-  final IconData icon;
-  final Color iconColor;
-  final Color iconBg;
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundSoft,
-        borderRadius: BorderRadius.circular(14.r),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40.w,
-            height: 40.w,
-            decoration: BoxDecoration(
-              color: iconBg,
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Icon(icon, color: iconColor, size: 20.sp),
-          ),
-          SizedBox(width: 14.w),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeightHelper.semiBold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              verticalSpace(2),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeightHelper.regular,
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

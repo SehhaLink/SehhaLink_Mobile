@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextSpan(
                 text: "Link",
                 style: TextStyle(
-                  color: AppColors.textWhite,
+                  color: AppColors.textPrimary,
                   fontSize: 18.sp,
                   fontWeight: FontWeightHelper.bold,
                 ),
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
           width: 36.w,
           height: 36.w,
           decoration: BoxDecoration(
-            color: AppColors.backgroundCard,
+            color: AppColors.backgroundSoft,
             borderRadius: BorderRadius.circular(36.r),
           ),
           child: IconButton(
@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(
                 "Welcome Back",
                 style: TextStyle(
-                  color: AppColors.textWhite,
+                  color: AppColors.textPrimary,
                   fontSize: 24.sp,
                   fontWeight: FontWeightHelper.bold,
                 ),
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Manage your family's health with\nAI-powered insights.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColors.textLight,
+                  color: AppColors.textSecondary,
                   fontSize: 14.sp,
                   fontWeight: FontWeightHelper.regular,
                   height: 1.5,
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(
                   "Email Address",
                   style: TextStyle(
-                    color: AppColors.textWhite,
+                    color: AppColors.textPrimary,
                     fontSize: 14.sp,
                     fontWeight: FontWeightHelper.semiBold,
                   ),
@@ -150,11 +150,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 hintText: "name@example.com",
                 borderRadius: 14.r,
-                backgroundColor: AppColors.backgroundCard,
-                enabledBorderColor: Colors.white.withOpacity(0.08),
-                focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
+                backgroundColor: AppColors.backgroundSoft,
+                enabledBorderColor: AppColors.borderLight,
+                focusedBorderColor: AppColors.primaryBlue,
                 textStyle: TextStyle(
-                  color: AppColors.textWhite,
+                  color: AppColors.textPrimary,
                   fontSize: 14.sp,
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -175,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(
                   "Password",
                   style: TextStyle(
-                    color: AppColors.textWhite,
+                    color: AppColors.textPrimary,
                     fontSize: 14.sp,
                     fontWeight: FontWeightHelper.semiBold,
                   ),
@@ -186,11 +186,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 hintText: "••••••••",
                 borderRadius: 14.r,
-                backgroundColor: AppColors.backgroundCard,
-                enabledBorderColor: Colors.white.withOpacity(0.08),
-                focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
+                backgroundColor: AppColors.backgroundSoft,
+                enabledBorderColor: AppColors.borderLight,
+                focusedBorderColor: AppColors.primaryBlue,
                 textStyle: TextStyle(
-                  color: AppColors.textWhite,
+                  color: AppColors.textPrimary,
                   fontSize: 14.sp,
                 ),
                 obscureText: _obscurePassword,
@@ -291,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     "Don't have an account?",
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
+                      color: AppColors.textSecondary,
                       fontSize: 14.sp,
                       fontWeight: FontWeightHelper.regular,
                     ),
