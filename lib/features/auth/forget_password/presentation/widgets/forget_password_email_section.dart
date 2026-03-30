@@ -40,7 +40,7 @@ class ForgetPasswordEmailSection extends StatelessWidget {
           "Don't worry! Enter the email address\nlinked to your account.",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: AppColors.textGrayLight,
+            color: AppColors.textLight,
             fontSize: 14.sp,
           ),
         ),
@@ -51,13 +51,13 @@ class ForgetPasswordEmailSection extends StatelessWidget {
             controller: emailController,
             borderRadius: 14.r,
             backgroundColor: AppColors.backgroundCard,
-            focusedBorderColor: AppColors.primaryCyan.withOpacity(0.6),
+            focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
             enabledBorderColor: Colors.white.withOpacity(0.08),
             textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
             hintText: "example@email.com",
             suffixIcon: Icon(
               Icons.alternate_email_rounded,
-              color: AppColors.textGrayLight,
+              color: AppColors.textLight,
               size: 20.sp,
             ),
             validator: (val) =>
@@ -71,7 +71,7 @@ class ForgetPasswordEmailSection extends StatelessWidget {
               : () {
                   if (formKey.currentState!.validate()) onSubmit();
                 },
-          backgroundColor: AppColors.primaryCyan,
+          backgroundColor: AppColors.primaryBlue,
           radius: 16.r,
           buttonHeight: 56.h,
           child: isLoading

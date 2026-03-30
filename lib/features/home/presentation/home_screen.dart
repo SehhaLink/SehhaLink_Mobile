@@ -1,0 +1,134 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sehhalink/core/helpers/spacing.dart';
+import 'package:sehhalink/core/theme/app_colors.dart';
+import 'package:sehhalink/core/theme/font_weight_helper.dart';
+import 'package:sehhalink/features/home/presentation/logic/home_cubit.dart';
+import 'package:sehhalink/features/home/presentation/logic/home_state.dart';
+import 'package:sehhalink/features/home/presentation/widgets/custom_app_bar.dart';
+import 'package:sehhalink/features/home/presentation/widgets/drop_zoon.dart';
+import 'package:sehhalink/features/home/presentation/widgets/upload_progress.dart';
+import 'package:sehhalink/features/home/presentation/widgets/upload_summery_card.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.backgroundMain,
+      appBar: CustomAppBar(name: "Adool"),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final cubit = context.read<HomeCubit>();
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                UploadSummaryCard(
+                  totalReports: state.doneCount,
+                  lastUpload: state.lastUploadLabel ?? 'No uploads yet',
+                  onViewDetails: () {
+                    // TODO: navigate to details screen
+                  },
+                ),
+
+                verticalSpace(24),
+
+                _SectionTitle(title: 'Upload Report'),
+                verticalSpace(12),
+                DropZone(
+                  isDragging: state.isDragging,
+                  onDragEnter: cubit.onDragEnter,
+                  onDragExit: cubit.onDragExit,
+                  onTap: cubit.pickAndUpload,
+                ),
+
+                verticalSpace(24),
+
+                if (state.hasFiles) ...[
+                  _SectionTitle(title: 'Upload Progress'),
+                  verticalSpace(12),
+                  ...state.files.asMap().entries.map(
+                    (entry) => Padding(
+                      padding: EdgeInsets.only(bottom: 12.h),
+                      child: FileProgressCard(
+                        file: entry.value,
+                        onCancel: () => cubit.cancelUpload(entry.key),
+                        onRetry: () => cubit.retryUpload(entry.key),
+                      ),
+                    ),
+                  ),
+                ],
+
+                if (state.errorMessage != null)
+                  _ErrorBanner(message: state.errorMessage!),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle({required this.title});
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 16.sp,
+        fontWeight: FontWeightHelper.semiBold,
+        color: AppColors.textPrimary,
+      ),
+    );
+  }
+}
+
+class _ErrorBanner extends StatelessWidget {
+  const _ErrorBanner({required this.message});
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFEE2E2),
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: const Color(0xFFEF4444).withOpacity(0.4)),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.error_outline_rounded,
+            color: Color(0xFFEF4444),
+            size: 18,
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: const Color(0xFFEF4444),
+                fontWeight: FontWeightHelper.medium,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

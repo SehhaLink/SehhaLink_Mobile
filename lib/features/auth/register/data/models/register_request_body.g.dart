@@ -12,6 +12,7 @@ RegisterRequestBody _$RegisterRequestBodyFromJson(Map<String, dynamic> json) =>
       phoneNumber: json['phoneNumber'] as String,
       password: json['password'] as String,
       fullName: json['fullName'] as String,
+      confirmPassword: json['confirmPassword'] as String,
     );
 
 Map<String, dynamic> _$RegisterRequestBodyToJson(
@@ -20,5 +21,6 @@ Map<String, dynamic> _$RegisterRequestBodyToJson(
   'email': instance.email,
   'phoneNumber': instance.phoneNumber,
   'password': instance.password,
+  'confirmPassword': instance.confirmPassword,
   'fullName': instance.fullName,
 };

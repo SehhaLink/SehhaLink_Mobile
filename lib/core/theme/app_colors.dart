@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Backgrounds
-  static const Color backgroundDark = Color(0xFF102022); // Dark main background
-  static const Color backgroundCard = Color(0xFF16232C); // Card / widget background
+  static const Color backgroundMain = Color(0xFFFFFFFF); // #FFFFFF
+  static const Color backgroundCard = Color(0xFFE2E8F0); // #E2E8F0
+  static const Color backgroundSoft = Color(0xFFF1F5F9); // #F1F5F9
 
-  // Accent / Primary
-  static const Color primaryCyan = Color(0xFF0FD4E6); // Buttons, highlights
+  // Primary / Accent
+  static const Color primaryBlue = Color(0xFF1A5F7A);   // #1A5F7A
+  static const Color primaryDark = Color(0xFF0F172A);   // #0F172A
+  static const Color accentOrange = Color(0xFFF4A261);  // #F4A261
+  static const Color successGreen = Color(0xFF22C55E);  // #22C55E
 
-  // Text / Fonts
-  static const Color textWhite = Color(0xFFFFFFFF);
-  static const Color textGrayLight = Color(0xFF94A3B8); // Secondary text
-  static const Color textGrayFaded5 = Color(0x0DFFFFFF); // 5% opacity
-  static const Color textGrayFaded10 = Color(0x1AFFFFFF); // 10% opacity
-  static const Color textDarkBlue = Color(0xFF1E293B); // Darker text
-  static const Color textDarkGray = Color(0xFF64748B); // Grayish text
+  // Text Colors
+  static const Color textPrimary = Color(0xFF0F172A);   // #0F172A
+  static const Color textSecondary = Color(0xFF64748B); // #64748B
+  static const Color textLight = Color(0xFF94A3B8);     // #94A3B8
+  static const Color textWhite = Color(0xFFFFFFFF);     // #FFFFFF
 
   // Borders / Lines
-  static const Color borderDark = Color(0xFF1B2627); // Example line/border
-  static const Color transparent = Color(0x00000000); // Fully transparent
+  static const Color borderLight = Color(0xFFE2E8F0);    // #E2E8F0
+  static const Color borderSoft = Color(0xFFF1F5F9);     // #F1F5F9
 
-  // Additional cyan variations
-  static const Color primaryCyan20 = Color(0x330FD4E6); // 20% opacity for overlays
-
-  // Any other specific color from design
-  static const Color iconBackground = Color(0xFF1E293B); // Example for icons background
+  // Icons / UI Elements
+  static const Color iconBlue = Color(0xFF1A5F7A);       // #1A5F7A
+  static const Color iconGray = Color(0xFF64748B);       // #64748B
 }

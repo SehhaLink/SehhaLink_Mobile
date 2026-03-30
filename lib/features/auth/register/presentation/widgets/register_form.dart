@@ -1,4 +1,3 @@
-// register_form.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +26,10 @@ class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
   bool _isCaregiver = false;
 
   @override
@@ -36,6 +38,7 @@ class _RegisterFormState extends State<RegisterForm> {
     emailController.dispose();
     phoneNumberController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -46,8 +49,12 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Fields ──
           RegisterFields(
+            obscureConfirmPassword: _obscureConfirmPassword,
+            onToggleConfirmPassword: () => setState(
+              () => _obscureConfirmPassword = !_obscureConfirmPassword,
+            ),
+            confirmPasswordController: confirmPasswordController,
             fullNameController: fullNameController,
             emailController: emailController,
             phoneNumberController: phoneNumberController,
@@ -64,7 +71,6 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
           verticalSpace(28),
 
-          // ── Sign Up Button ──
           BlocConsumer<RegisterCubit, RegisterState>(
             listener: (context, state) {
               if (state is RegisterSuccess) {
@@ -74,7 +80,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message),
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: const Color(0xFFEF4444),
                   ),
                 );
               }
@@ -85,16 +91,17 @@ class _RegisterFormState extends State<RegisterForm> {
                 onPressed: () {
                   if (widget.formKey.currentState!.validate()) {
                     context.read<RegisterCubit>().register(
-                          RegisterRequestBody(
-                            email: emailController.text,
-                            phoneNumber: phoneNumberController.text,
-                            password: passwordController.text,
-                            fullName: fullNameController.text,
-                          ),
-                        );
+                      RegisterRequestBody(
+                        email: emailController.text,
+                        phoneNumber: phoneNumberController.text,
+                        password: passwordController.text,
+                        fullName: fullNameController.text,
+                        confirmPassword: confirmPasswordController.text,
+                      ),
+                    );
                   }
                 },
-                backgroundColor: AppColors.primaryCyan,
+                backgroundColor: AppColors.primaryBlue,
                 radius: 16.r,
                 child: state is RegisterLoading
                     ? const CircularProgressIndicator(color: Colors.white)
@@ -110,8 +117,11 @@ class _RegisterFormState extends State<RegisterForm> {
                             ),
                           ),
                           SizedBox(width: 8.w),
-                          Icon(Icons.arrow_forward,
-                              color: AppColors.textWhite, size: 20),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: AppColors.textWhite,
+                            size: 20,
+                          ),
                         ],
                       ),
               );
