@@ -12,7 +12,7 @@ void main() async {
 }
 
 Future<String> _determineInitialRoute() async {
-  return Routes.homeScreen;
+  return Routes.onboardingScreen;
 }
 
 Future<void> _initializeApp() async {
