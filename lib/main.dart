@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sehhalink/core/dependency_Injection/get_it.dart';
 import 'package:sehhalink/core/routing/app_route.dart';
 import 'package:sehhalink/core/routing/routes.dart';
+import 'package:sehhalink/core/service/isar_service.dart';
 import 'package:sehhalink/sehha_link.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await IsarService.instance;
   final initialRoute = await _determineInitialRoute();
   await _initializeApp();
 

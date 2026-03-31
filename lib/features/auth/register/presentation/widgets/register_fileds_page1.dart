@@ -68,6 +68,7 @@ class RegisterFieldsPage1 extends StatelessWidget {
             final picked = await showDatePicker(
               context: context,
               initialDate: selectedDate ?? DateTime(2000),
+              barrierColor: AppColors.primaryBlue,
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
             );
