@@ -3,13 +3,14 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sehhalink/core/current_user/data/model/file_model.dart';
 import 'package:sehhalink/core/current_user/data/model/user_model.dart';
+import 'package:sehhalink/core/current_user/domain/entity/user.dart';
 import 'package:sehhalink/core/service/cache_exception.dart';
 import 'package:sehhalink/core/service/isar_service.dart';
 
 abstract class LocalDataSource {
   Future<UserModel> getCurrentUser();
   Future<void> saveUser(UserModel user);
-  Future<void> updateUser(UserModel user);
+  Future<void> updateUser(User user);
   Future<void> updateProfileImage(File imageFile);
   Future<void> logout();
   Future<bool> hasCurrentUser();
@@ -20,7 +21,6 @@ abstract class LocalDataSource {
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
-
   @override
   Future<UserModel> getCurrentUser() async {
     try {
@@ -47,13 +47,42 @@ class LocalDataSourceImpl extends LocalDataSource {
   }
 
   @override
-  Future<void> updateUser(UserModel user) async {
+  Future<void> updateUser(User user, {File? imageFile}) async {
     try {
       final isar = await IsarService.instance;
+
+      final existing = await isar.userModels
+          .filter()
+          .userIdEqualTo(user.id)
+          .findFirst();
+
+      if (existing == null) throw CacheException('User not found');
+
+      if (imageFile != null) {
+        final oldPath = existing.profileImage;
+
+        final appDir = await getApplicationDocumentsDirectory();
+        final localPath = '${appDir.path}/profile_images';
+        final directory = Directory(localPath);
+        if (!await directory.exists()) await directory.create(recursive: true);
+
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final saved = await imageFile.copy('$localPath/profile_$timestamp.png');
+        existing.profileImage = saved.path;
+
+        if (oldPath != null && oldPath.isNotEmpty) {
+          final old = File(oldPath);
+          if (await old.exists()) await old.delete();
+        }
+      }
+
+      existing.updateFromEntity(user);
+
       await isar.writeTxn(() async {
-        await isar.userModels.put(user);
+        await isar.userModels.put(existing);
       });
     } catch (e) {
+      if (e is CacheException) rethrow;
       throw CacheException('Failed to update user: $e');
     }
   }
@@ -70,10 +99,12 @@ class LocalDataSourceImpl extends LocalDataSource {
       if (!await directory.exists()) await directory.create(recursive: true);
 
       final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final savedImage = await imageFile.copy('$localPath/profile_$timestamp.png');
+      final savedImage = await imageFile.copy(
+        '$localPath/profile_$timestamp.png',
+      );
 
       user.profileImage = savedImage.path;
-      await updateUser(user);
+      await updateUser(user.toEntity());
 
       if (oldPath != null && oldPath.isNotEmpty) {
         final oldFile = File(oldPath);
@@ -119,7 +150,6 @@ class LocalDataSourceImpl extends LocalDataSource {
       return false;
     }
   }
-
 
   @override
   Future<void> addFile(FileModel file) async {
