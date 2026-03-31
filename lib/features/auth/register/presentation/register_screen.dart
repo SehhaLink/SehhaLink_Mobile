@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Text(
               "Join SehhaLink to manage your health and your loved ones with smart insights.",
               style: TextStyle(
-                color: AppColors.textSecondary, // ✅
+                color: AppColors.textSecondary, 
                 fontSize: 14.sp,
                 fontWeight: FontWeightHelper.regular,
               ),

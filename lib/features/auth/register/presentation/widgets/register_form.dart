@@ -5,13 +5,12 @@ import 'package:sehhalink/core/helpers/extensions.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
 import 'package:sehhalink/core/routing/routes.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
-import 'package:sehhalink/core/theme/font_weight_helper.dart';
 import 'package:sehhalink/core/widgets/app_button.dart';
 import 'package:sehhalink/features/auth/register/data/models/register_request_body.dart';
 import 'package:sehhalink/features/auth/register/presentation/logic/register_cubit.dart';
 import 'package:sehhalink/features/auth/register/presentation/logic/register_state.dart';
-import 'package:sehhalink/features/auth/register/presentation/widgets/caregiver_checkbox.dart';
-import 'package:sehhalink/features/auth/register/presentation/widgets/register_fields.dart';
+import 'package:sehhalink/features/auth/register/presentation/widgets/register_fileds_page1.dart';
+import 'package:sehhalink/features/auth/register/presentation/widgets/register_fileds_page2.dart';
 
 class RegisterForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -20,83 +19,179 @@ class RegisterForm extends StatefulWidget {
   @override
   State<RegisterForm> createState() => _RegisterFormState();
 }
-
 class _RegisterFormState extends State<RegisterForm> {
-  final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final PageController _pageController = PageController();
+  final _page1Key = GlobalKey<FormState>();
+  final _page2Key = GlobalKey<FormState>();
+  int _currentPage = 0;
+
+  // Controllers
+  final fullNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final ageController = TextEditingController();
+
+  DateTime? _selectedDate;
+  String? _selectedGender;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-  bool _isCaregiver = false;
+
+  void _nextPage() {
+    if (_page1Key.currentState!.validate()) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      setState(() => _currentPage = 1);
+    }
+  }
+
+  void _prevPage() {
+    _pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+    setState(() => _currentPage = 0);
+  }
 
   @override
   void dispose() {
+    _pageController.dispose();
     fullNameController.dispose();
     emailController.dispose();
     phoneNumberController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    ageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: widget.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RegisterFields(
-            obscureConfirmPassword: _obscureConfirmPassword,
-            onToggleConfirmPassword: () => setState(
-              () => _obscureConfirmPassword = !_obscureConfirmPassword,
+    return Column(
+      children: [
+        // Progress indicator
+        _buildProgressIndicator(),
+        verticalSpace(24),
+
+        SizedBox(
+          height: 420.h,
+          child: PageView(
+            controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              Form(
+                key: _page1Key,
+                child: RegisterFieldsPage1(
+                  fullNameController: fullNameController,
+                  emailController: emailController,
+                  selectedDate: _selectedDate,
+                  selectedGender: _selectedGender,
+                  onDateSelected: (date) => setState(() => _selectedDate = date),
+                  onGenderSelected: (gender) => setState(() => _selectedGender = gender),
+                ),
+              ),
+              Form(
+                key: _page2Key,
+                child: RegisterFieldsPage2(
+                  phoneNumberController: phoneNumberController,
+                  ageController: ageController,
+                  passwordController: passwordController,
+                  confirmPasswordController: confirmPasswordController,
+                  obscurePassword: _obscurePassword,
+                  obscureConfirmPassword: _obscureConfirmPassword,
+                  onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
+                  onToggleConfirmPassword: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        verticalSpace(24),
+        _buildButtons(context),
+      ],
+    );
+  }
+
+  Widget _buildProgressIndicator() {
+    return Row(
+      children: List.generate(2, (index) {
+        return Expanded(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 4.w),
+            height: 4.h,
+            decoration: BoxDecoration(
+              color: index <= _currentPage
+                  ? AppColors.primaryBlue
+                  : AppColors.borderLight,
+              borderRadius: BorderRadius.circular(2.r),
             ),
-            confirmPasswordController: confirmPasswordController,
-            fullNameController: fullNameController,
-            emailController: emailController,
-            phoneNumberController: phoneNumberController,
-            passwordController: passwordController,
-            obscurePassword: _obscurePassword,
-            onTogglePassword: () =>
-                setState(() => _obscurePassword = !_obscurePassword),
           ),
-          verticalSpace(20),
+        );
+      }),
+    );
+  }
 
-          CaregiverCheckbox(
-            isCaregiver: _isCaregiver,
-            onTap: () => setState(() => _isCaregiver = !_isCaregiver),
-          ),
-          verticalSpace(28),
+  Widget _buildButtons(BuildContext context) {
+    if (_currentPage == 0) {
+      return AppButton(
+        buttonHeight: 56.h,
+        onPressed: _nextPage,
+        backgroundColor: AppColors.primaryBlue,
+        radius: 16.r,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Next", style: TextStyle(color: AppColors.textWhite, fontSize: 16.sp)),
+            SizedBox(width: 8.w),
+            Icon(Icons.arrow_forward, color: AppColors.textWhite, size: 20),
+          ],
+        ),
+      );
+    }
 
-          BlocConsumer<RegisterCubit, RegisterState>(
-            listener: (context, state) {
-              if (state is RegisterSuccess) {
-                context.pushNamed(Routes.loginScreen);
-              }
-              if (state is RegisterError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: const Color(0xFFEF4444),
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              return AppButton(
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listener: (context, state) {
+        if (state is RegisterSuccess) context.pushNamed(Routes.loginScreen);
+        if (state is RegisterError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message), backgroundColor: const Color(0xFFEF4444)),
+          );
+        }
+      },
+      builder: (context, state) {
+        return Row(
+          children: [
+            // Back button
+            OutlinedButton(
+              onPressed: _prevPage,
+              style: OutlinedButton.styleFrom(
+                minimumSize: Size(56.w, 56.h),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+                side: BorderSide(color: AppColors.primaryBlue),
+              ),
+              child: Icon(Icons.arrow_back, color: AppColors.primaryBlue),
+            ),
+            SizedBox(width: 12.w),
+            // Submit button
+            Expanded(
+              child: AppButton(
                 buttonHeight: 56.h,
                 onPressed: () {
-                  if (widget.formKey.currentState!.validate()) {
+                  if (_page2Key.currentState!.validate()) {
                     context.read<RegisterCubit>().register(
                       RegisterRequestBody(
+                        fullName: fullNameController.text,
                         email: emailController.text,
                         phoneNumber: phoneNumberController.text,
                         password: passwordController.text,
-                        fullName: fullNameController.text,
                         confirmPassword: confirmPasswordController.text,
+                        age: int.tryParse(ageController.text),
+                        birthDate: _selectedDate,
+                        gender: _selectedGender,
                       ),
                     );
                   }
@@ -105,30 +200,12 @@ class _RegisterFormState extends State<RegisterForm> {
                 radius: 16.r,
                 child: state is RegisterLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Sign Up",
-                            style: TextStyle(
-                              color: AppColors.textWhite,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeightHelper.semiBold,
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          Icon(
-                            Icons.arrow_forward,
-                            color: AppColors.textWhite,
-                            size: 20,
-                          ),
-                        ],
-                      ),
-              );
-            },
-          ),
-        ],
-      ),
+                    : Text("Sign Up", style: TextStyle(color: AppColors.textWhite, fontSize: 16.sp)),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
