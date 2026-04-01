@@ -13,7 +13,7 @@ platform :android do
       firebase_cli_token:ENV["FIREBASE_CLI_TOKEN"],
       android_artifact_type:"APK",
       android_artifact_path:"../build/app/outputs/flutter-apk/app-arm64-v8a-release.apk",
-      groups:"sehha_link_testers ",
+      groups:"sehha_link_testers",
       release_notes:"First Fastlane Firebase Distribution for Attendo"
     )
   end
