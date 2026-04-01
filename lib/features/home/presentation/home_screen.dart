@@ -48,7 +48,14 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       UploadSummaryCard(
                         totalReports: state.doneCount,
-                        lastUpload: state.lastUploadLabel ?? 'home.no_uploads_yet'.tr(),
+                        lastUpload: () {
+                          final label = state.lastUploadLabel;
+                          if (label == null) return 'home.no_uploads_yet'.tr();
+                          if (label == 'home.today' || label == 'home.yesterday') {
+                            return label.tr();
+                          }
+                          return label;
+                        }(),
                         onViewDetails: () {
                           Navigator.push(
                             context,
@@ -122,6 +129,9 @@ class _ErrorBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayMessage = message == 'home.file_path_unavailable'
+        ? message.tr()
+        : message;
     return Container(
       margin: EdgeInsets.only(top: 8.h),
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
@@ -140,7 +150,7 @@ class _ErrorBanner extends StatelessWidget {
           SizedBox(width: 8.w),
           Expanded(
             child: Text(
-              message,
+              displayMessage,
               style: TextStyle(
                 fontSize: 12.sp,
                 color: const Color(0xFFEF4444),

@@ -34,8 +34,8 @@ class HomeState extends Equatable {
     final diff = DateTime(now.year, now.month, now.day)
         .difference(DateTime(last.year, last.month, last.day))
         .inDays;
-    if (diff == 0) return 'Today';
-    if (diff == 1) return 'Yesterday';
+    if (diff == 0) return 'home.today';
+    if (diff == 1) return 'home.yesterday';
     return '${last.day}/${last.month}/${last.year}';
   }
 

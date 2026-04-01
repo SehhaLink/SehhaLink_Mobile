@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_state.dart';
@@ -39,7 +40,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   const Icon(Icons.error_outline, size: 60, color: Colors.red),
                   verticalSpace(16),
                   Text(
-                    'Error Occurred',
+                    'navigation.error_occurred'.tr(),
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   verticalSpace(8),
@@ -48,7 +49,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   ElevatedButton(
                     onPressed: () =>
                         context.read<CurrentUserCubit>().loadUser(),
-                    child: const Text('Try Again'),
+                    child: Text('navigation.try_again'.tr()),
                   ),
                 ],
               ),
@@ -57,7 +58,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         }
 
         if (state.user == null) {
-          return const Scaffold(body: Center(child: Text("No user found")));
+          return Scaffold(
+            body: Center(child: Text('navigation.no_user_found'.tr())),
+          );
         }
 
         return const _MainNavigationContent();
@@ -119,7 +122,7 @@ class _MainNavigationContentState extends State<_MainNavigationContent> {
                 icon: Icon(Icons.home_outlined, size: 24.sp),
                 activeIcon: Icon(Icons.home_rounded, size: 24.sp),
                 title: Text(
-                  'Home',
+                  'navigation.home'.tr(),
                   style: TextStyle(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w600,
@@ -131,7 +134,7 @@ class _MainNavigationContentState extends State<_MainNavigationContent> {
                 icon: Icon(Icons.person_outline_rounded, size: 24.sp),
                 activeIcon: Icon(Icons.person_rounded, size: 24.sp),
                 title: Text(
-                  'Profile',
+                  'navigation.profile'.tr(),
                   style: TextStyle(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w600,

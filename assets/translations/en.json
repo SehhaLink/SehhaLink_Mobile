@@ -63,6 +63,9 @@
     "last_upload": "Last Upload",
     "view_details": "View Details",
     "no_uploads_yet": "No uploads yet",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "file_path_unavailable": "File path unavailable",
     "upload_report_section": "Upload Report",
     "upload_progress_section": "Upload Progress",
     "drop_zone_tap": "Tap to upload or drag & drop",
@@ -81,7 +84,10 @@
     "delete_confirm": "Are you sure you want to delete ",
     "delete_suffix": "?\n\nThis will also remove its summary and cannot be undone.",
     "cancel": "Cancel",
-    "delete": "Delete"
+    "delete": "Delete",
+    "file_not_found": "File not found on device",
+    "open": "Open",
+    "cannot_load_image": "Cannot load image"
   },
   "profile": {
     "title": "Profile",
@@ -96,7 +102,25 @@
     "no_user_data": "No user data found",
     "logout": "Logout",
     "logout_confirm": "Are you sure you want to logout?",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "change_photo": "Change Profile Photo",
+    "camera": "Camera",
+    "gallery": "Gallery"
+  },
+  "navigation": {
+    "home": "Home",
+    "profile": "Profile",
+    "error_occurred": "Error occurred",
+    "try_again": "Try Again",
+    "no_user_found": "No user found",
+    "route_not_found": "Route not found"
+  },
+  "settings": {
+    "title": "Settings",
+    "privacy_security": "Privacy & Security",
+    "language": "Language",
+    "language_english": "English",
+    "language_arabic": "Arabic"
   },
   "greeting": {
     "morning": "Good Morning 🌅",

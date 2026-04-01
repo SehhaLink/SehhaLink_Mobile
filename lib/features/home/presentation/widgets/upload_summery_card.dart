@@ -10,8 +10,8 @@ class UploadSummaryCard extends StatelessWidget {
   const UploadSummaryCard({
     super.key,
     this.totalReports = 12,
-    this.lastUpload = 'Today',
-    this.storageUsed = '48 MB',
+    this.lastUpload = '',
+    this.storageUsed = '',
     this.onViewDetails,
   });
 

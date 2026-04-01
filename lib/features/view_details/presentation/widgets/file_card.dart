@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,7 +39,7 @@ class _FileCardState extends State<FileCard> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('File not found on device'),
+            content: Text('view_details.file_not_found'.tr()),
             backgroundColor: AppColors.primaryBlue,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
@@ -134,7 +135,7 @@ class _FileCardState extends State<FileCard> {
                           size: 13.sp, color: AppColors.primaryBlue),
                       horizontalSpace(4),
                       Text(
-                        'Open',
+                        'view_details.open'.tr(),
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeightHelper.semiBold,
@@ -206,7 +207,7 @@ class _ImageViewerScreen extends StatelessWidget {
             fit: BoxFit.contain,
             errorBuilder: (_, _, _) => Center(
               child: Text(
-                'Cannot load image',
+                'view_details.cannot_load_image'.tr(),
                 style: TextStyle(
                     color: AppColors.textWhite, fontSize: 14.sp),
               ),

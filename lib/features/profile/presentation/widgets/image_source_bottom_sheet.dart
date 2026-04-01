@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +33,7 @@ class ImageSourceBottomSheet {
             SizedBox(height: 16.h),
 
             Text(
-              'Change Profile Photo',
+              'profile.change_photo'.tr(),
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
@@ -46,7 +47,7 @@ class ImageSourceBottomSheet {
               children: [
                 _SourceOption(
                   icon: Icons.camera_alt_rounded,
-                  label: 'Camera',
+                  label: 'profile.camera'.tr(),
                   onTap: () async {
                     Navigator.pop(ctx);
                     final img = await picker.pickImage(
@@ -62,7 +63,7 @@ class ImageSourceBottomSheet {
                 ),
                 _SourceOption(
                   icon: Icons.photo_library_rounded,
-                  label: 'Gallery',
+                  label: 'profile.gallery'.tr(),
                   onTap: () async {
                     Navigator.pop(ctx);
                     final img = await picker.pickImage(

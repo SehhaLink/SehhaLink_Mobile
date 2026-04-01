@@ -63,6 +63,9 @@
     "last_upload": "آخر رفع",
     "view_details": "عرض التفاصيل",
     "no_uploads_yet": "لا يوجد رفع بعد",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "file_path_unavailable": "مسار الملف غير متاح",
     "upload_report_section": "رفع تقرير",
     "upload_progress_section": "تقدم الرفع",
     "drop_zone_tap": "اضغط للرفع أو اسحب وأفلت",
@@ -81,7 +84,10 @@
     "delete_confirm": "هل أنت متأكد من حذف ",
     "delete_suffix": "؟\n\nسيؤدي هذا أيضاً إلى حذف ملخصه ولا يمكن التراجع عنه.",
     "cancel": "إلغاء",
-    "delete": "حذف"
+    "delete": "حذف",
+    "file_not_found": "الملف غير موجود على الجهاز",
+    "open": "فتح",
+    "cannot_load_image": "تعذر تحميل الصورة"
   },
   "profile": {
     "title": "الملف الشخصي",
@@ -96,7 +102,25 @@
     "no_user_data": "لا توجد بيانات مستخدم",
     "logout": "تسجيل الخروج",
     "logout_confirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "change_photo": "تغيير صورة الملف الشخصي",
+    "camera": "الكاميرا",
+    "gallery": "المعرض"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "profile": "الملف الشخصي",
+    "error_occurred": "حدث خطأ",
+    "try_again": "حاول مرة أخرى",
+    "no_user_found": "لم يتم العثور على مستخدم",
+    "route_not_found": "المسار غير موجود"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "privacy_security": "الخصوصية والأمان",
+    "language": "اللغة",
+    "language_english": "الإنجليزية",
+    "language_arabic": "العربية"
   },
   "greeting": {
     "morning": "صباح الخير 🌅",

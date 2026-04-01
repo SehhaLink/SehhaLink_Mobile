@@ -45,7 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
       final globalIndex = startIndex + i;
 
       if (picked.path == null) {
-        _markFailed(globalIndex, 'File path unavailable');
+        _markFailed(globalIndex, 'home.file_path_unavailable');
         continue;
       }
 

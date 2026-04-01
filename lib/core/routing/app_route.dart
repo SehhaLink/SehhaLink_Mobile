@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
@@ -63,7 +64,9 @@ class AppRoute {
         page = const ViewDetailsScreen();
         break;
       default:
-        page = const Scaffold(body: Center(child: Text('Route not found')));
+        page = Scaffold(
+          body: Center(child: Text('navigation.route_not_found'.tr())),
+        );
     }
 
     return PageRouteBuilder(

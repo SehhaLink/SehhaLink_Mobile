@@ -24,7 +24,7 @@ class ProfileDrawer extends StatelessWidget {
           children: [
             // Header
             Text(
-              'Settings',
+              'settings.title'.tr(),
               style: TextStyle(
                 color: AppColors.textWhite,
                 fontSize: 22.sp,
@@ -37,7 +37,7 @@ class ProfileDrawer extends StatelessWidget {
 
             _DrawerItem(
               icon: Icons.security_rounded,
-              label: 'Privacy & Security',
+              label: 'settings.privacy_security'.tr(),
               onTap: () {
                 drawerController.hideDrawer();
               },
@@ -48,7 +48,7 @@ class ProfileDrawer extends StatelessWidget {
             
             _DrawerItem(
               icon: Icons.language_rounded,
-              label: 'Language',
+              label: 'settings.language'.tr(),
               onTap: () => _showLanguageDialog(context),
             ),
 
@@ -82,7 +82,7 @@ class ProfileDrawer extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.r),
         ),
         title: Text(
-          'Language',
+          'settings.language'.tr(),
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeightHelper.bold,
@@ -94,13 +94,13 @@ class ProfileDrawer extends StatelessWidget {
           children: [
             _LanguageTile(
               flag: '🇺🇸',
-              label: 'English',
+              label: 'settings.language_english'.tr(),
               locale: const Locale('en'),
             ),
             verticalSpace(8),
             _LanguageTile(
               flag: '🇪🇬',
-              label: 'العربية',
+              label: 'settings.language_arabic'.tr(),
               locale: const Locale('ar'),
             ),
           ],
