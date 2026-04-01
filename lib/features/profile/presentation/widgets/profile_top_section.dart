@@ -48,7 +48,7 @@ class ProfileTopSection extends StatelessWidget {
                   IconButton(
                     icon: ValueListenableBuilder(
                       valueListenable: drawerController,
-                      builder: (_, value, __) {
+                      builder: (_, value, _) {
                         return AnimatedSwitcher(
                           duration: const Duration(milliseconds: 250),
                           child: Icon(

@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
+import 'package:sehhalink/core/routing/routes.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 
 class LogoutButton extends StatelessWidget {
@@ -44,7 +47,13 @@ class LogoutButton extends StatelessWidget {
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(ctx);
-              // TODO: call logout use-case then navigate to onboarding
+              await context.read<CurrentUserCubit>().logout();
+              Navigator.pushNamedAndRemoveUntil(
+                // ignore: use_build_context_synchronously
+                context,
+                Routes.onboardingScreen,
+                (_) => false,
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBlue,
