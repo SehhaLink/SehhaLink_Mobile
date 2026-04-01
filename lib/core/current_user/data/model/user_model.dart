@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:sehhalink/core/current_user/data/model/file_model.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user.dart';
 part 'user_model.g.dart';
+
 @Collection()
 class UserModel {
   Id id = Isar.autoIncrement;
@@ -15,11 +16,22 @@ class UserModel {
   late int age;
   late String role;
   late String phoneNumber;
-  late String token;
   String? profileImage;
   final files = IsarLinks<FileModel>();
 
-  User toEntity() {
+  UserModel();
+  UserModel.fromEntity(User user) {
+    userId = user.id;
+    fullName = user.fullName;
+    email = user.email;
+    birthDate = user.birthDate;
+    gender = user.gender;
+    age = user.age;
+    role = user.role;
+    phoneNumber = user.phoneNumber;
+    profileImage = user.profileImage;
+  }
+  User toEntity({String? token}) {
     return User(
       id: userId,
       fullName: fullName,
@@ -43,7 +55,6 @@ class UserModel {
     age = user.age;
     role = user.role;
     phoneNumber = user.phoneNumber;
-    token = user.token;
     profileImage = user.profileImage;
   }
 }

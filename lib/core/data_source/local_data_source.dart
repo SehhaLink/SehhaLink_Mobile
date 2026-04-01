@@ -6,6 +6,7 @@ import 'package:sehhalink/core/current_user/data/model/user_model.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user.dart';
 import 'package:sehhalink/core/service/cache_exception.dart';
 import 'package:sehhalink/core/service/isar_service.dart';
+import 'package:sehhalink/core/service/secure_storage_service.dart';
 
 abstract class LocalDataSource {
   Future<UserModel> getCurrentUser();
@@ -45,6 +46,10 @@ class LocalDataSourceImpl extends LocalDataSource {
       throw CacheException('Failed to save user: $e');
     }
   }
+
+  /*
+     this function 
+   */
 
   @override
   Future<void> updateUser(User user, {File? imageFile}) async {
@@ -87,44 +92,41 @@ class LocalDataSourceImpl extends LocalDataSource {
     }
   }
 
-  @override
-  Future<void> updateProfileImage(File imageFile) async {
-    try {
-      final user = await getCurrentUser();
-      final oldPath = user.profileImage;
+ @override
+Future<void> updateProfileImage(File imageFile) async {
+  try {
+    final user = await getCurrentUser();
+    final oldPath = user.profileImage;
 
-      final appDir = await getApplicationDocumentsDirectory();
-      final localPath = '${appDir.path}/profile_images';
-      final directory = Directory(localPath);
-      if (!await directory.exists()) await directory.create(recursive: true);
+    final appDir = await getApplicationDocumentsDirectory();
+    final localPath = '${appDir.path}/profile_images';
+    final directory = Directory(localPath);
+    if (!await directory.exists()) await directory.create(recursive: true);
 
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final savedImage = await imageFile.copy(
-        '$localPath/profile_$timestamp.png',
-      );
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final savedImage = await imageFile.copy('$localPath/profile_$timestamp.png');
 
-      user.profileImage = savedImage.path;
-      await updateUser(user.toEntity());
+    user.profileImage = savedImage.path;
+    await updateUser(user.toEntity()); 
 
-      if (oldPath != null && oldPath.isNotEmpty) {
-        final oldFile = File(oldPath);
-        if (await oldFile.exists()) await oldFile.delete();
-      }
-    } catch (e) {
-      if (e is CacheException) rethrow;
-      throw CacheException('Failed to update profile image: $e');
+    if (oldPath != null && oldPath.isNotEmpty) {
+      final oldFile = File(oldPath);
+      if (await oldFile.exists()) await oldFile.delete();
     }
+  } catch (e) {
+    if (e is CacheException) rethrow;
+    throw CacheException('Failed to update profile image: $e');
   }
+}
 
   @override
   Future<void> logout() async {
     try {
       final isar = await IsarService.instance;
-      final user = await getCurrentUser();
-      user.token = '';
       await isar.writeTxn(() async {
-        await isar.userModels.put(user);
+        await isar.userModels.clear(); 
       });
+      await SecureStorageService.deleteToken();
     } catch (e) {
       throw CacheException('Failed to logout: $e');
     }
@@ -143,12 +145,7 @@ class LocalDataSourceImpl extends LocalDataSource {
 
   @override
   Future<bool> hasValidToken() async {
-    try {
-      final user = await getCurrentUser();
-      return user.token.isNotEmpty;
-    } catch (e) {
-      return false;
-    }
+    return await SecureStorageService.hasValidToken(); 
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:sehhalink/core/current_user/domain/entity/user.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user_file.dart';
 import 'package:sehhalink/core/current_user/domain/repo/current_user_repository.dart';
 import 'package:sehhalink/core/data_source/local_data_source.dart';
+import 'package:sehhalink/core/service/secure_storage_service.dart';
 
 class CurrentUserRepositoryImpl extends CurrentUserRepository {
   final LocalDataSource localDataSource;
@@ -13,7 +14,8 @@ class CurrentUserRepositoryImpl extends CurrentUserRepository {
   @override
   Future<User> getCurrentUser() async {
     final userModel = await localDataSource.getCurrentUser();
-    return userModel.toEntity();
+    final token = await SecureStorageService.getToken();
+    return userModel.toEntity(token: token);
   }
 
   @override
@@ -21,21 +23,20 @@ class CurrentUserRepositoryImpl extends CurrentUserRepository {
     await localDataSource.updateUser(user);
   }
 
+  @override
+  Future<void> addFile(UserFile file) async {
+    final fileModel = FileModel.fromEntity(file);
+    await localDataSource.addFile(fileModel);
+  }
 
   @override
-Future<void> addFile(UserFile file) async {
-  final fileModel = FileModel.fromEntity(file);
-  await localDataSource.addFile(fileModel);
-}
+  Future<List<UserFile>> getUserFiles() async {
+    final files = await localDataSource.getUserFiles();
+    return files.map((f) => f.toEntity()).toList();
+  }
 
-@override
-Future<List<UserFile>> getUserFiles() async {
-  final files = await localDataSource.getUserFiles();
-  return files.map((f) => f.toEntity()).toList();
-}
-
-@override
-Future<void> deleteFile(String fileId) async {
-  await localDataSource.deleteFile(fileId);
-}
+  @override
+  Future<void> deleteFile(String fileId) async {
+    await localDataSource.deleteFile(fileId);
+  }
 }

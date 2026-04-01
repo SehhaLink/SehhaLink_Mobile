@@ -1,3 +1,4 @@
+import 'package:sehhalink/core/data_source/local_data_source.dart';
 import 'package:sehhalink/core/dependency_Injection/get_it.dart';
 import 'package:sehhalink/core/utils/register_lazy_if_not_registered.dart';
 import 'package:sehhalink/features/auth/login/data/repo_impl/login_repo_impl.dart';
@@ -9,7 +10,10 @@ void loginScreenDi() {
   if (getIt.isRegistered<LoginCubit>()) return;
 
   registerLazyIfNotRegistered<LoginRepo>(
-    () => LoginRepoImpl(remoteDataSource: getIt()),
+    () => LoginRepoImpl(
+      remoteDataSource: getIt(),
+      localDataSource: getIt<LocalDataSource>(),
+    ),
   );
   registerLazyIfNotRegistered<LoginUseCase>(
     () => LoginUseCase(loginRepo: getIt<LoginRepo>()),

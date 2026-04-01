@@ -7,8 +7,9 @@ class User {
   final int age;
   final String role;
   final String phoneNumber;
-  final String token;
+  final String? token; 
   final String? profileImage;
+
   User({
     required this.id,
     required this.fullName,
@@ -19,20 +20,20 @@ class User {
     required this.role,
     required this.phoneNumber,
     this.profileImage,
-    required this.token,
+    this.token, 
   });
 
   User copyWith({
-    final String? id,
-    final String? fullName,
-    final String? email,
-    final String? birthDate,
-    final String? gender,
-    final int? age,
-    final String? role,
-    final String? phoneNumber,
-    final String? token,
-    final String? profileImage,
+    String? id,
+    String? fullName,
+    String? email,
+    String? birthDate,
+    String? gender,
+    int? age,
+    String? role,
+    String? phoneNumber,
+    String? token,
+    String? profileImage,
   }) {
     return User(
       id: id ?? this.id,
@@ -44,9 +45,9 @@ class User {
       role: role ?? this.role,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       token: token ?? this.token,
+      profileImage: profileImage ?? this.profileImage,
     );
   }
 
-    bool get isLoggedIn => token.isNotEmpty;
-
+  bool get isLoggedIn => token != null && token!.isNotEmpty;
 }

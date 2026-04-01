@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sehhalink/core/dependency_Injection/current_user_di.dart';
 import 'package:sehhalink/core/dependency_Injection/forget_password_screen_di.dart';
 import 'package:sehhalink/core/dependency_Injection/get_it.dart';
 import 'package:sehhalink/core/dependency_Injection/home_screen_di.dart';
@@ -14,6 +15,7 @@ import 'package:sehhalink/features/auth/register/presentation/logic/register_cub
 import 'package:sehhalink/features/auth/register/presentation/register_screen.dart';
 import 'package:sehhalink/features/home/presentation/home_screen.dart';
 import 'package:sehhalink/features/home/presentation/logic/home_cubit.dart';
+import 'package:sehhalink/features/navigation_screen/presentation/main_navigation_screen.dart';
 import 'package:sehhalink/features/onboarding/onboarding_screen.dart';
 
 class AppRoute {
@@ -51,6 +53,11 @@ class AppRoute {
           create: (_) => getIt<ForgetPasswordCubit>(),
           child: const ForgetPasswordScreen(),
         );
+        break;
+
+      case Routes.navigationScreen:
+        currentUserDi();
+        page = const MainNavigationScreen();
         break;
       default:
         page = const Scaffold(body: Center(child: Text('Route not found')));

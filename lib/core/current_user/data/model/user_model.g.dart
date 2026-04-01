@@ -57,13 +57,8 @@ const UserModelSchema = CollectionSchema(
       name: r'role',
       type: IsarType.string,
     ),
-    r'token': PropertySchema(
-      id: 8,
-      name: r'token',
-      type: IsarType.string,
-    ),
     r'userId': PropertySchema(
-      id: 9,
+      id: 8,
       name: r'userId',
       type: IsarType.string,
     )
@@ -121,7 +116,6 @@ int _userModelEstimateSize(
     }
   }
   bytesCount += 3 + object.role.length * 3;
-  bytesCount += 3 + object.token.length * 3;
   bytesCount += 3 + object.userId.length * 3;
   return bytesCount;
 }
@@ -140,8 +134,7 @@ void _userModelSerialize(
   writer.writeString(offsets[5], object.phoneNumber);
   writer.writeString(offsets[6], object.profileImage);
   writer.writeString(offsets[7], object.role);
-  writer.writeString(offsets[8], object.token);
-  writer.writeString(offsets[9], object.userId);
+  writer.writeString(offsets[8], object.userId);
 }
 
 UserModel _userModelDeserialize(
@@ -160,8 +153,7 @@ UserModel _userModelDeserialize(
   object.phoneNumber = reader.readString(offsets[5]);
   object.profileImage = reader.readStringOrNull(offsets[6]);
   object.role = reader.readString(offsets[7]);
-  object.token = reader.readString(offsets[8]);
-  object.userId = reader.readString(offsets[9]);
+  object.userId = reader.readString(offsets[8]);
   return object;
 }
 
@@ -189,8 +181,6 @@ P _userModelDeserializeProp<P>(
     case 7:
       return (reader.readString(offset)) as P;
     case 8:
-      return (reader.readString(offset)) as P;
-    case 9:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1435,136 +1425,6 @@ extension UserModelQueryFilter
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'token',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'token',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'token',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'token',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'token',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'token',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'token',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'token',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'token',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> tokenIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'token',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userIdEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1856,18 +1716,6 @@ extension UserModelQuerySortBy on QueryBuilder<UserModel, UserModel, QSortBy> {
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByToken() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'token', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByTokenDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'token', Sort.desc);
-    });
-  }
-
   QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
@@ -1991,18 +1839,6 @@ extension UserModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByToken() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'token', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByTokenDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'token', Sort.desc);
-    });
-  }
-
   QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
@@ -2073,13 +1909,6 @@ extension UserModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QDistinct> distinctByToken(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'token', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<UserModel, UserModel, QDistinct> distinctByUserId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2141,12 +1970,6 @@ extension UserModelQueryProperty
   QueryBuilder<UserModel, String, QQueryOperations> roleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'role');
-    });
-  }
-
-  QueryBuilder<UserModel, String, QQueryOperations> tokenProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'token');
     });
   }
 
