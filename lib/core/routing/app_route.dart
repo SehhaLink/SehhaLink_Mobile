@@ -16,6 +16,7 @@ import 'package:sehhalink/features/auth/register/presentation/register_screen.da
 import 'package:sehhalink/features/home/presentation/home_screen.dart';
 import 'package:sehhalink/features/navigation_screen/presentation/main_navigation_screen.dart';
 import 'package:sehhalink/features/onboarding/onboarding_screen.dart';
+import 'package:sehhalink/features/view_details/presentation/view_details_screen.dart';
 
 class AppRoute {
   Route generateRoute(RouteSettings settings) {
@@ -56,6 +57,10 @@ class AppRoute {
           create: (_) => getIt<CurrentUserCubit>()..loadUser(),
           child: const MainNavigationScreen(),
         );
+        break;
+
+      case Routes.viewDetailsScreen:
+        page = const ViewDetailsScreen();
         break;
       default:
         page = const Scaffold(body: Center(child: Text('Route not found')));

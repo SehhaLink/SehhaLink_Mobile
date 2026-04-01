@@ -3,14 +3,16 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sehhalink/features/home/domain/entities/upload_file_item.dart';
+import 'package:sehhalink/features/home/domain/use_cases/save_file_use_case.dart';
 import 'package:sehhalink/features/home/domain/use_cases/upload_file_use_case.dart';
 import 'package:sehhalink/features/home/presentation/logic/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit({required this.uploadFileUseCase}) : super(const HomeState());
+  HomeCubit({required this.uploadFileUseCase, required this.saveFileUseCase})
+    : super(const HomeState());
 
   final UploadFileUseCase uploadFileUseCase;
-
+  final SaveFileUseCase saveFileUseCase;
 
   Future<void> pickAndUpload() async {
     emit(state.copyWith(isPickingFile: true, clearError: true));
@@ -53,63 +55,61 @@ class HomeCubit extends Cubit<HomeState> {
     await Future.wait(futures);
   }
 
+  Future<void> _uploadSingle(File file, int index) async {
+    try {
+      final fileModel = await uploadFileUseCase(
+        file,
+        onProgress: (progress) => _updateFile(
+          index,
+          progress: progress,
+          status: UploadStatus.uploading,
+        ),
+      );
 
-Future<void> _uploadSingle(File file, int index) async {
-  try {
-    final fileModel = await uploadFileUseCase(   // ✅ استقبل الـ FileModel
-      file,
-      onProgress: (progress) => _updateFile(
+      await saveFileUseCase(fileModel);
+
+      _updateFile(
         index,
-        progress: progress,
-        status: UploadStatus.uploading,
-      ),
-    );
-
-    _updateFile(
-      index,
-      progress: 1.0,
-      status: UploadStatus.done,
-      uploadedAt: DateTime.now(),
-      fileId: fileModel.fileId,       // ✅ احفظ الـ fileId في الـ state
-    );
-  } catch (e) {
-    _markFailed(index, e.toString());
+        progress: 1.0,
+        status: UploadStatus.done,
+        uploadedAt: DateTime.now(),
+        fileId: fileModel.fileId,
+      );
+    } catch (e) {
+      _markFailed(index, e.toString());
+    }
   }
-}
 
   void retryUpload(int index) {
     _updateFile(index, progress: 0.0, status: UploadStatus.uploading);
     emit(state.copyWith(clearError: true));
   }
 
-
   void cancelUpload(int index) {
     final updated = List<UploadedFileItem>.from(state.files)..removeAt(index);
     emit(state.copyWith(files: updated));
   }
 
-
   void onDragEnter() => emit(state.copyWith(isDragging: true));
   void onDragExit() => emit(state.copyWith(isDragging: false));
 
-
   void _updateFile(
-  int index, {
-  double? progress,
-  UploadStatus? status,
-  DateTime? uploadedAt,
-  String? fileId,              
-}) {
-  if (isClosed || index >= state.files.length) return;
-  final updated = List<UploadedFileItem>.from(state.files);
-  updated[index] = updated[index].copyWith(
-    progress: progress,
-    status: status,
-    uploadedAt: uploadedAt,
-    fileId: fileId,            
-  );
-  emit(state.copyWith(files: updated));
-}
+    int index, {
+    double? progress,
+    UploadStatus? status,
+    DateTime? uploadedAt,
+    String? fileId,
+  }) {
+    if (isClosed || index >= state.files.length) return;
+    final updated = List<UploadedFileItem>.from(state.files);
+    updated[index] = updated[index].copyWith(
+      progress: progress,
+      status: status,
+      uploadedAt: uploadedAt,
+      fileId: fileId,
+    );
+    emit(state.copyWith(files: updated));
+  }
 
   void _markFailed(int index, String error) {
     _updateFile(index, status: UploadStatus.failed);

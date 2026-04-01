@@ -91,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               verticalSpace(16),
 
-              // ── Icon ──
               Container(
                 width: 60.w,
                 height: 60.w,
@@ -111,7 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               verticalSpace(20),
 
-              // ── Title ──
               Text(
                 "Welcome Back",
                 style: TextStyle(
@@ -133,7 +131,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               verticalSpace(36),
 
-              // ── Email ──
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -169,7 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               verticalSpace(16),
 
-              // ── Password ──
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -216,7 +212,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               verticalSpace(8),
 
-              // ── Forgot Password ──
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -240,7 +235,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               verticalSpace(28),
 
-              // ── Login Button ──
               BlocConsumer<LoginCubit, LoginState>(
                 listener: (context, state) {
                   if (state is LoginLoaded) {

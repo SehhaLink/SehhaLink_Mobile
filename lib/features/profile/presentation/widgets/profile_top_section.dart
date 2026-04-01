@@ -26,7 +26,6 @@ class ProfileTopSection extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 32.h),
           child: Column(
             children: [
-              // ── Top bar ─────────────────────────────────
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -45,12 +44,10 @@ class ProfileTopSection extends StatelessWidget {
 
               SizedBox(height: 20.h),
 
-              // ── Avatar ──────────────────────────────────
               const ProfileImageSection(),
 
               SizedBox(height: 14.h),
 
-              // ── Full name ───────────────────────────────
               Text(
                 user.fullName,
                 style: TextStyle(
@@ -62,7 +59,6 @@ class ProfileTopSection extends StatelessWidget {
 
               SizedBox(height: 4.h),
 
-              // ── Email ───────────────────────────────────
               Text(
                 user.email,
                 style: TextStyle(
@@ -73,7 +69,6 @@ class ProfileTopSection extends StatelessWidget {
 
               SizedBox(height: 8.h),
 
-              // ── Role badge ──────────────────────────────
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 5.h),
                 decoration: BoxDecoration(

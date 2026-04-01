@@ -35,7 +35,7 @@ class CurrentUserState extends Equatable {
       files: files ?? this.files,
       isLoading: isLoading ?? this.isLoading,
       isUpdating: isUpdating ?? this.isUpdating,
-      isUpdatingImage: isUpdatingImage ?? this.isUpdatingImage, // ✅ زود
+      isUpdatingImage: isUpdatingImage ?? this.isUpdatingImage, 
       isLoadingFiles: isLoadingFiles ?? this.isLoadingFiles,
       error: error,
     );
@@ -47,7 +47,7 @@ class CurrentUserState extends Equatable {
         files,
         isLoading,
         isUpdating,
-        isUpdatingImage, // ✅ زود
+        isUpdatingImage, 
         isLoadingFiles,
         error,
       ];

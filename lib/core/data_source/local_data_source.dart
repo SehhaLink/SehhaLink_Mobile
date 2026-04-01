@@ -109,14 +109,12 @@ class LocalDataSourceImpl extends LocalDataSource {
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final saved = await imageFile.copy('$localPath/profile_$timestamp.png');
 
-      // ✅ بنحدث الـ profileImage مباشرة على الـ existing model
       existing.profileImage = saved.path;
 
       await isar.writeTxn(() async {
         await isar.userModels.put(existing);
       });
 
-      // ✅ بنمسح الصورة القديمة بعد ما حفظنا الجديدة
       if (oldPath != null && oldPath.isNotEmpty) {
         final old = File(oldPath);
         if (await old.exists()) await old.delete();

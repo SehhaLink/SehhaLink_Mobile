@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: profileImagePath != null
                 ? Image.file(
                     File(profileImagePath!),
-                    key: ValueKey(profileImagePath), // ✅ يمنع الكاش
+                    key: ValueKey(profileImagePath), 
                     width: 50.w,
                     height: 50.h,
                     fit: BoxFit.cover,

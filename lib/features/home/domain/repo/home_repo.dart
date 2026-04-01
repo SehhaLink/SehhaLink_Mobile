@@ -5,4 +5,5 @@ abstract class HomeRepo {
     File file, {
     void Function(double progress)? onProgress,
   });
+   Future<void> saveFile(FileModel file); 
 }

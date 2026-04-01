@@ -49,7 +49,7 @@ final UpdateProfileImageUseCase _updateProfileImageUseCase;
   Future<void> addFile(UserFile file) async {
     try {
       await _addFileUseCase(file);
-      await loadFiles(); // refresh
+      await loadFiles(); 
     } catch (e) {
       emit(state.copyWith(error: 'Failed to add file: $e'));
     }
@@ -60,7 +60,7 @@ final UpdateProfileImageUseCase _updateProfileImageUseCase;
   Future<void> deleteFile(String fileId) async {
     try {
       await _deleteFileUseCase(fileId);
-      await loadFiles(); // refresh
+      await loadFiles(); 
     } catch (e) {
       emit(state.copyWith(error: 'Failed to delete file: $e'));
     }

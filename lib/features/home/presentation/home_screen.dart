@@ -14,6 +14,7 @@ import 'package:sehhalink/features/home/presentation/widgets/custom_app_bar.dart
 import 'package:sehhalink/features/home/presentation/widgets/drop_zoon.dart';
 import 'package:sehhalink/features/home/presentation/widgets/upload_progress.dart';
 import 'package:sehhalink/features/home/presentation/widgets/upload_summery_card.dart';
+import 'package:sehhalink/features/view_details/presentation/view_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -37,16 +38,30 @@ class HomeScreen extends StatelessWidget {
                 final cubit = context.read<HomeCubit>();
 
                 return SingleChildScrollView(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 20.h,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       UploadSummaryCard(
                         totalReports: state.doneCount,
-                        lastUpload:
-                            state.lastUploadLabel ?? 'No uploads yet',
-                        onViewDetails: () {},
+                        lastUpload: state.lastUploadLabel ?? 'No uploads yet',
+                        onViewDetails: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => BlocProvider.value(
+                                value: context
+                                    .read<
+                                      CurrentUserCubit
+                                    >(),
+                                child: const ViewDetailsScreen(),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       verticalSpace(24),
                       _SectionTitle(title: 'Upload Report'),
@@ -115,8 +130,7 @@ class _ErrorBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFFEE2E2),
         borderRadius: BorderRadius.circular(10.r),
-        border:
-            Border.all(color: const Color(0xFFEF4444).withOpacity(0.4)),
+        border: Border.all(color: const Color(0xFFEF4444).withOpacity(0.4)),
       ),
       child: Row(
         children: [

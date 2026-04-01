@@ -70,7 +70,6 @@ class RegisterFieldsPage1 extends StatelessWidget {
         ),
         verticalSpace(16),
 
-        // Birth Date
         _buildLabel("Birth Date"),
         verticalSpace(8),
         GestureDetector(
@@ -129,7 +128,6 @@ class RegisterFieldsPage1 extends StatelessWidget {
         ),
         verticalSpace(16),
 
-        // Gender
         _buildLabel("Gender"),
         verticalSpace(8),
         Row(

@@ -26,7 +26,6 @@ class _RegisterFormState extends State<RegisterForm> {
   final _page2Key = GlobalKey<FormState>();
   int _currentPage = 0;
 
-  // Controllers
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
@@ -73,7 +72,6 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Progress indicator
         _buildProgressIndicator(),
         verticalSpace(24),
 
@@ -176,7 +174,6 @@ class _RegisterFormState extends State<RegisterForm> {
       builder: (context, state) {
         return Row(
           children: [
-            // Back button
             OutlinedButton(
               onPressed: _prevPage,
               style: OutlinedButton.styleFrom(
@@ -189,7 +186,6 @@ class _RegisterFormState extends State<RegisterForm> {
               child: Icon(Icons.arrow_back, color: AppColors.primaryBlue),
             ),
             SizedBox(width: 12.w),
-            // Submit button
             Expanded(
               child: AppButton(
                 buttonHeight: 56.h,
