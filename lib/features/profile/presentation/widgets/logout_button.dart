@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
@@ -21,7 +22,7 @@ class LogoutButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.r),
         ),
         title: Text(
-          'Logout',
+          'profile.logout'.tr(),
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
@@ -29,15 +30,15 @@ class LogoutButton extends StatelessWidget {
           ),
         ),
         content: Text(
-          'Are you sure you want to logout?',
+          'profile.logout_confirm'.tr(),
           style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: AppColors.textSecondary),
+            child: Text(
+              'profile.cancel'.tr(),
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           ),
           ElevatedButton(
@@ -51,9 +52,9 @@ class LogoutButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.r),
               ),
             ),
-            child: const Text(
-              'Logout',
-              style: TextStyle(color: AppColors.textWhite),
+            child: Text(
+              'profile.logout'.tr(),
+              style: const TextStyle(color: AppColors.textWhite),
             ),
           ),
         ],

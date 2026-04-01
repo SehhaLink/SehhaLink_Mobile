@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
               verticalSpace(20),
 
               Text(
-                "Welcome Back",
+                'login.welcome_back'.tr(),
                 style: TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 24.sp,
@@ -120,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               verticalSpace(8),
               Text(
-                "Manage your family's health with\nAI-powered insights.",
+                'login.subtitle'.tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.textSecondary,
@@ -132,9 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
               verticalSpace(36),
 
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: AlignmentDirectional.centerStart,
                 child: Text(
-                  "Email Address",
+                  'login.email_label'.tr(),
                   style: TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 14.sp,
@@ -145,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
               verticalSpace(8),
               AppTextFormField(
                 controller: _emailController,
-                hintText: "name@example.com",
+                hintText: 'login.email_hint'.tr(),
                 borderRadius: 14.r,
                 backgroundColor: AppColors.backgroundSoft,
                 enabledBorderColor: AppColors.borderLight,
@@ -161,15 +162,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   size: 20,
                 ),
                 validator: (val) => val == null || !val.contains('@')
-                    ? "Enter a valid email"
+                    ? 'validation.enter_valid_email'.tr()
                     : null,
               ),
               verticalSpace(16),
 
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: AlignmentDirectional.centerStart,
                 child: Text(
-                  "Password",
+                  'login.password_label'.tr(),
                   style: TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 14.sp,
@@ -207,13 +208,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       setState(() => _obscurePassword = !_obscurePassword),
                 ),
                 validator: (val) => val == null || val.length < 6
-                    ? "Password must be at least 6 characters"
+                    ? 'validation.password_min_chars'.tr()
                     : null,
               ),
               verticalSpace(8),
 
               Align(
-                alignment: Alignment.centerRight,
+                alignment: AlignmentDirectional.centerEnd,
                 child: TextButton(
                   onPressed: () {
                     context.pushNamed(Routes.forgetPasswordScreen);
@@ -224,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
-                    "Forgot Password?",
+                    'login.forgot_password'.tr(),
                     style: TextStyle(
                       color: AppColors.primaryBlue,
                       fontSize: 13.sp,
@@ -267,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: state is LoginLoading
                         ? const CircularProgressIndicator(color: Colors.white)
                         : Text(
-                            "Log In",
+                            'login.log_in_button'.tr(),
                             style: TextStyle(
                               color: AppColors.textWhite,
                               fontSize: 16.sp,
@@ -283,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account?",
+                    'login.no_account'.tr(),
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14.sp,
@@ -298,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     child: Text(
-                      "Create an Account",
+                      'login.create_account'.tr(),
                       style: TextStyle(
                         color: AppColors.primaryBlue,
                         fontSize: 14.sp,

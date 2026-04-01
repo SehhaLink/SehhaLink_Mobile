@@ -1,4 +1,5 @@
 // forget_password_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,6 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
   final _emailFormKey = GlobalKey<FormState>();
   final _resetFormKey = GlobalKey<FormState>();
 
-  // ── Controllers in UI ──
   final _emailController = TextEditingController();
   final _otpController = TextEditingController();
   final _newPasswordController = TextEditingController();
@@ -111,8 +111,8 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
             );
           } else if (state is ResetPasswordSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Password reset successfully!'),
+              SnackBar(
+                content: Text('forgot_password.password_reset_success'.tr()),
                 backgroundColor: Colors.green,
               ),
             );
@@ -187,7 +187,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Remember Password? ",
+                      'forgot_password.remember_password'.tr(),
                       style: TextStyle(
                         color: AppColors.textLight,
                         fontSize: 14.sp,
@@ -197,7 +197,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
                     GestureDetector(
                       onTap: () => context.pop(),
                       child: Text(
-                        "Login",
+                        'forgot_password.login_link'.tr(),
                         style: TextStyle(
                           color: AppColors.primaryBlue,
                           fontSize: 14.sp,

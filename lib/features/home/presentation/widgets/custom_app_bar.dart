@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -38,7 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: profileImagePath != null
                 ? Image.file(
                     File(profileImagePath!),
-                    key: ValueKey(profileImagePath), 
+                    key: ValueKey(profileImagePath),
                     width: 50.w,
                     height: 50.h,
                     fit: BoxFit.cover,
@@ -119,9 +120,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   String _getGreeting() {
     final hour = DateTime.now().hour;
-    if (hour >= 5 && hour < 12) return 'Good Morning 🌅';
-    if (hour >= 12 && hour < 17) return 'Good Afternoon ☀️';
-    if (hour >= 17 && hour < 21) return 'Good Evening 🌆';
-    return 'Good Night 🌙';
+    if (hour >= 5 && hour < 12) return 'greeting.morning'.tr();
+    if (hour >= 12 && hour < 17) return 'greeting.afternoon'.tr();
+    if (hour >= 17 && hour < 21) return 'greeting.evening'.tr();
+    return 'greeting.night'.tr();
   }
 }

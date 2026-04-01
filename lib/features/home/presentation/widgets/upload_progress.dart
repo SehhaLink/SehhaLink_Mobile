@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -53,7 +54,6 @@ class FileProgressCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // File icon
           Container(
             padding: EdgeInsets.all(10.r),
             decoration: BoxDecoration(
@@ -64,7 +64,6 @@ class FileProgressCard extends StatelessWidget {
           ),
           horizontalSpace(12),
 
-          // Name + progress bar
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,8 +135,6 @@ class FileProgressCard extends StatelessWidget {
   }
 }
 
-// ─── Status Badge ─────────────────────────────────────────────────────────────
-
 class _StatusBadge extends StatelessWidget {
   const _StatusBadge({required this.status});
   final UploadStatus status;
@@ -152,17 +149,17 @@ class _StatusBadge extends StatelessWidget {
       case UploadStatus.done:
         bg = const Color(0xFFDCFCE7);
         fg = AppColors.successGreen;
-        label = 'Done';
+        label = 'home.status_done'.tr();
         break;
       case UploadStatus.failed:
         bg = const Color(0xFFFEE2E2);
         fg = const Color(0xFFEF4444);
-        label = 'Failed';
+        label = 'home.status_failed'.tr();
         break;
       case UploadStatus.uploading:
         bg = const Color(0xFFE8F4F8);
         fg = AppColors.primaryBlue;
-        label = 'Uploading';
+        label = 'home.status_uploading'.tr();
         break;
     }
 
@@ -183,8 +180,6 @@ class _StatusBadge extends StatelessWidget {
     );
   }
 }
-
-// ─── File Action ─────────────────────────────────────────────────────────────
 
 class _FileAction extends StatelessWidget {
   const _FileAction({

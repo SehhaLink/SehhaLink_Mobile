@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,16 +48,13 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       UploadSummaryCard(
                         totalReports: state.doneCount,
-                        lastUpload: state.lastUploadLabel ?? 'No uploads yet',
+                        lastUpload: state.lastUploadLabel ?? 'home.no_uploads_yet'.tr(),
                         onViewDetails: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (_) => BlocProvider.value(
-                                value: context
-                                    .read<
-                                      CurrentUserCubit
-                                    >(),
+                                value: context.read<CurrentUserCubit>(),
                                 child: const ViewDetailsScreen(),
                               ),
                             ),
@@ -64,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                       verticalSpace(24),
-                      _SectionTitle(title: 'Upload Report'),
+                      _SectionTitle(title: 'home.upload_report_section'.tr()),
                       verticalSpace(12),
                       DropZone(
                         isDragging: state.isDragging,
@@ -74,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       verticalSpace(24),
                       if (state.hasFiles) ...[
-                        _SectionTitle(title: 'Upload Progress'),
+                        _SectionTitle(title: 'home.upload_progress_section'.tr()),
                         verticalSpace(12),
                         ...state.files.asMap().entries.map(
                           (entry) => Padding(

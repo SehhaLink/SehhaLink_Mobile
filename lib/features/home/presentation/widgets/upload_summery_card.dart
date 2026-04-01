@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -37,12 +38,11 @@ class UploadSummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Header ──────────────────────────────────────
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Upload Summary',
+                'home.upload_summary'.tr(),
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeightHelper.semiBold,
@@ -64,7 +64,7 @@ class UploadSummaryCard extends StatelessWidget {
                     ),
                     horizontalSpace(4),
                     Text(
-                      'Active',
+                      'home.active'.tr(),
                       style: TextStyle(
                         fontSize: 10.sp,
                         color: Colors.white,
@@ -79,18 +79,17 @@ class UploadSummaryCard extends StatelessWidget {
 
           verticalSpace(16),
 
-          // ── Stats Row ────────────────────────────────────
           Row(
             children: [
               _StatItem(
                 icon: Icons.description_outlined,
-                label: 'Reports',
+                label: 'home.reports'.tr(),
                 value: '$totalReports',
               ),
               _Divider(),
               _StatItem(
                 icon: Icons.schedule_outlined,
-                label: 'Last Upload',
+                label: 'home.last_upload'.tr(),
                 value: lastUpload,
               ),
             ],
@@ -98,7 +97,6 @@ class UploadSummaryCard extends StatelessWidget {
 
           verticalSpace(16),
 
-          // ── View Details Button ───────────────────────────
           GestureDetector(
             onTap: onViewDetails,
             child: Container(
@@ -113,7 +111,7 @@ class UploadSummaryCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'View Details',
+                    'home.view_details'.tr(),
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeightHelper.semiBold,
@@ -135,8 +133,6 @@ class UploadSummaryCard extends StatelessWidget {
     );
   }
 }
-
-// ─── Stat Item ────────────────────────────────────────────────────────────────
 
 class _StatItem extends StatelessWidget {
   const _StatItem({

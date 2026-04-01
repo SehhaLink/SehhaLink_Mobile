@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
@@ -32,9 +33,9 @@ class ProfileScreen extends StatelessWidget {
 
           final user = state.user;
           if (user == null) {
-            return const Scaffold(
+            return Scaffold(
               backgroundColor: AppColors.backgroundMain,
-              body: Center(child: Text('No user data found')),
+              body: Center(child: Text('profile.no_user_data'.tr())),
             );
           }
 

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user.dart';
@@ -18,7 +19,7 @@ class ProfileBody extends StatelessWidget {
           SizedBox(height: 4.h),
 
           Text(
-            'Personal Information',
+            'profile.personal_information'.tr(),
             style: TextStyle(
               fontSize: 15.sp,
               fontWeight: FontWeight.w700,
@@ -31,49 +32,49 @@ class ProfileBody extends StatelessWidget {
 
           ProfileInfoTile(
             icon: Icons.person_rounded,
-            label: 'Full Name',
+            label: 'profile.full_name'.tr(),
             value: user.fullName,
           ),
           SizedBox(height: 10.h),
 
           ProfileInfoTile(
             icon: Icons.email_rounded,
-            label: 'Email',
+            label: 'profile.email'.tr(),
             value: user.email,
           ),
           SizedBox(height: 10.h),
 
           ProfileInfoTile(
             icon: Icons.phone_rounded,
-            label: 'Phone',
+            label: 'profile.phone'.tr(),
             value: user.phoneNumber,
           ),
           SizedBox(height: 10.h),
 
           ProfileInfoTile(
             icon: Icons.cake_rounded,
-            label: 'Birth Date',
+            label: 'profile.birth_date'.tr(),
             value: user.birthDate,
           ),
           SizedBox(height: 10.h),
 
           ProfileInfoTile(
             icon: Icons.wc_rounded,
-            label: 'Gender',
+            label: 'profile.gender'.tr(),
             value: user.gender,
           ),
           SizedBox(height: 10.h),
 
           ProfileInfoTile(
             icon: Icons.calendar_today_rounded,
-            label: 'Age',
+            label: 'profile.age'.tr(),
             value: '${user.age} years',
           ),
           SizedBox(height: 10.h),
 
           ProfileInfoTile(
             icon: Icons.badge_rounded,
-            label: 'Role',
+            label: 'profile.role'.tr(),
             value: user.role,
           ),
 

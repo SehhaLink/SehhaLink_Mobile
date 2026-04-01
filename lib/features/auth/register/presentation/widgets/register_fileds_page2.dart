@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -31,11 +32,11 @@ class RegisterFieldsPage2 extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildLabel("Phone Number"),
+        _buildLabel('register.phone_label'.tr()),
         verticalSpace(8),
         AppTextFormField(
           controller: phoneNumberController,
-          hintText: "+1 (555) 000-0000",
+          hintText: 'register.phone_hint'.tr(),
           borderRadius: 14.r,
           backgroundColor: AppColors.backgroundSoft,
           enabledBorderColor: AppColors.borderLight,
@@ -43,13 +44,13 @@ class RegisterFieldsPage2 extends StatelessWidget {
           textStyle: TextStyle(color: AppColors.textPrimary, fontSize: 14.sp),
           keyboardType: TextInputType.phone,
           label: Icon(Icons.phone_outlined, color: AppColors.iconGray, size: 20),
-          validator: (val) => val == null || val.isEmpty ? "Enter your phone number" : null,
+          validator: (val) => val == null || val.isEmpty
+              ? 'validation.enter_phone'.tr()
+              : null,
         ),
         verticalSpace(16),
 
-       
-
-        _buildLabel("Password"),
+        _buildLabel('register.password_label'.tr()),
         verticalSpace(8),
         AppTextFormField(
           controller: passwordController,
@@ -70,12 +71,12 @@ class RegisterFieldsPage2 extends StatelessWidget {
             onPressed: onTogglePassword,
           ),
           validator: (val) => val == null || val.length < 6
-              ? "Password must be at least 6 characters"
+              ? 'validation.password_min_chars'.tr()
               : null,
         ),
         verticalSpace(16),
 
-        _buildLabel("Confirm Password"),
+        _buildLabel('register.confirm_password_label'.tr()),
         verticalSpace(8),
         AppTextFormField(
           controller: confirmPasswordController,
@@ -96,8 +97,8 @@ class RegisterFieldsPage2 extends StatelessWidget {
             onPressed: onToggleConfirmPassword,
           ),
           validator: (val) {
-            if (val == null || val.length < 6) return "Password must be at least 6 characters";
-            if (val != passwordController.text) return "Passwords do not match";
+            if (val == null || val.length < 6) return 'validation.password_min_chars'.tr();
+            if (val != passwordController.text) return 'validation.passwords_no_match'.tr();
             return null;
           },
         ),

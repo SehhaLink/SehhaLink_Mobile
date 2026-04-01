@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -149,7 +150,7 @@ class _RegisterFormState extends State<RegisterForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Next",
+              'register.next_button'.tr(),
               style: TextStyle(color: AppColors.textWhite, fontSize: 16.sp),
             ),
             SizedBox(width: 8.w),
@@ -213,7 +214,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 child: state is RegisterLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : Text(
-                        "Sign Up",
+                        'register.sign_up_button'.tr(),
                         style: TextStyle(
                           color: AppColors.textWhite,
                           fontSize: 16.sp,

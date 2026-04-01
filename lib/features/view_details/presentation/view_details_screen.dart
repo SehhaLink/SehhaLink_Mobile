@@ -1,4 +1,4 @@
-// view_details_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,7 +29,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
       backgroundColor: AppColors.backgroundMain,
       appBar: AppBar(
         title: Text(
-          'My Files',
+          'view_details.title'.tr(),
           style: TextStyle(
             fontWeight: FontWeightHelper.bold,
             fontSize: 18.sp,
@@ -99,15 +99,13 @@ class _ErrorView extends StatelessWidget {
               ),
             ),
             onPressed: () => context.read<CurrentUserCubit>().loadFiles(),
-            child: const Text('Retry'),
+            child: Text('view_details.retry'.tr()),
           ),
         ],
       ),
     );
   }
 }
-
-
 
 class _EmptyView extends StatelessWidget {
   const _EmptyView();
@@ -121,7 +119,7 @@ class _EmptyView extends StatelessWidget {
           Icon(Icons.folder_open, size: 72.sp, color: AppColors.textLight),
           verticalSpace(16),
           Text(
-            'No files yet',
+            'view_details.no_files_title'.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               color: AppColors.textSecondary,
@@ -130,7 +128,7 @@ class _EmptyView extends StatelessWidget {
           ),
           verticalSpace(8),
           Text(
-            'Upload your medical files to get started',
+            'view_details.no_files_subtitle'.tr(),
             style: TextStyle(fontSize: 13.sp, color: AppColors.textLight),
           ),
         ],
@@ -138,7 +136,6 @@ class _EmptyView extends StatelessWidget {
     );
   }
 }
-
 
 class _FilesList extends StatelessWidget {
   final List files;

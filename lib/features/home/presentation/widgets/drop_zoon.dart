@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -57,7 +58,7 @@ class DropZone extends StatelessWidget {
             ),
             verticalSpace(16),
             Text(
-              'Tap to upload or drag & drop',
+              'home.drop_zone_tap'.tr(),
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeightHelper.semiBold,
@@ -66,7 +67,7 @@ class DropZone extends StatelessWidget {
             ),
             verticalSpace(6),
             Text(
-              'PDF, JPG, PNG, DICOM up to 50 MB',
+              'home.drop_zone_formats'.tr(),
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeightHelper.regular,
@@ -81,7 +82,7 @@ class DropZone extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Text(
-                'Browse Files',
+                'home.browse_files'.tr(),
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeightHelper.semiBold,

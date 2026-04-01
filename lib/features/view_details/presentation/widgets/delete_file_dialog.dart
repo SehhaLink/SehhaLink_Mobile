@@ -1,4 +1,5 @@
 // widgets/delete_file_dialog.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -23,7 +24,7 @@ class DeleteFileDialog extends StatelessWidget {
           ),
           horizontalSpace(8),
           Text(
-            'Delete File',
+            'view_details.delete_title'.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeightHelper.bold,
@@ -40,7 +41,7 @@ class DeleteFileDialog extends StatelessWidget {
             height: 1.5,
           ),
           children: [
-            const TextSpan(text: 'Are you sure you want to delete '),
+            TextSpan(text: 'view_details.delete_confirm'.tr()),
             TextSpan(
               text: '"$fileName"',
               style: TextStyle(
@@ -48,10 +49,7 @@ class DeleteFileDialog extends StatelessWidget {
                 color: AppColors.textPrimary,
               ),
             ),
-            const TextSpan(
-              text:
-                  '?\n\nThis will also remove its summary and cannot be undone.',
-            ),
+            TextSpan(text: 'view_details.delete_suffix'.tr()),
           ],
         ),
       ),
@@ -59,7 +57,7 @@ class DeleteFileDialog extends StatelessWidget {
         TextButton(
           onPressed: () => Navigator.pop(context, false),
           child: Text(
-            'Cancel',
+            'view_details.cancel'.tr(),
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13.sp,
@@ -78,7 +76,7 @@ class DeleteFileDialog extends StatelessWidget {
           ),
           onPressed: () => Navigator.pop(context, true),
           child: Text(
-            'Delete',
+            'view_details.delete'.tr(),
             style: TextStyle(
               fontSize: 13.sp,
               fontWeight: FontWeightHelper.semiBold,

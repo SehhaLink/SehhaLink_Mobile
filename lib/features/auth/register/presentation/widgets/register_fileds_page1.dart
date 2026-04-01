@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -29,11 +30,11 @@ class RegisterFieldsPage1 extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildLabel("Full Name"),
+        _buildLabel('register.full_name_label'.tr()),
         verticalSpace(8),
         AppTextFormField(
           controller: fullNameController,
-          hintText: "John Doe",
+          hintText: 'register.full_name_hint'.tr(),
           borderRadius: 14.r,
           backgroundColor: AppColors.backgroundSoft,
           enabledBorderColor: AppColors.borderLight,
@@ -45,15 +46,15 @@ class RegisterFieldsPage1 extends StatelessWidget {
             size: 20,
           ),
           validator: (val) =>
-              val == null || val.isEmpty ? "Enter your full name" : null,
+              val == null || val.isEmpty ? 'validation.enter_full_name'.tr() : null,
         ),
         verticalSpace(16),
 
-        _buildLabel("Email Address"),
+        _buildLabel('register.email_label'.tr()),
         verticalSpace(8),
         AppTextFormField(
           controller: emailController,
-          hintText: "name@example.com",
+          hintText: 'register.email_hint'.tr(),
           borderRadius: 14.r,
           backgroundColor: AppColors.backgroundSoft,
           enabledBorderColor: AppColors.borderLight,
@@ -66,11 +67,11 @@ class RegisterFieldsPage1 extends StatelessWidget {
             size: 20,
           ),
           validator: (val) =>
-              val == null || !val.contains('@') ? "Enter a valid email" : null,
+              val == null || !val.contains('@') ? 'validation.enter_valid_email'.tr() : null,
         ),
         verticalSpace(16),
 
-        _buildLabel("Birth Date"),
+        _buildLabel('register.birth_date_label'.tr()),
         verticalSpace(8),
         GestureDetector(
           onTap: () async {
@@ -114,7 +115,7 @@ class RegisterFieldsPage1 extends StatelessWidget {
                 Text(
                   selectedDate != null
                       ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                      : "Select your birth date",
+                      : 'register.birth_date_hint'.tr(),
                   style: TextStyle(
                     color: selectedDate != null
                         ? AppColors.textPrimary
@@ -128,53 +129,26 @@ class RegisterFieldsPage1 extends StatelessWidget {
         ),
         verticalSpace(16),
 
-        _buildLabel("Gender"),
+        _buildLabel('register.gender_label'.tr()),
         verticalSpace(8),
         Row(
-          children: ['Male', 'Female'].map((gender) {
-            final isSelected = selectedGender == gender;
-            return Expanded(
-              child: GestureDetector(
-                onTap: () => onGenderSelected(gender),
-                child: Container(
-                  margin: EdgeInsets.only(right: gender == 'Male' ? 8.w : 0),
-                  padding: EdgeInsets.symmetric(vertical: 14.h),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primaryBlue
-                        : AppColors.backgroundSoft,
-                    borderRadius: BorderRadius.circular(14.r),
-                    border: Border.all(
-                      color: isSelected
-                          ? AppColors.primaryBlue
-                          : AppColors.borderLight,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        gender == 'Male' ? Icons.male : Icons.female,
-                        color: isSelected ? Colors.white : AppColors.iconGray,
-                        size: 20,
-                      ),
-                      SizedBox(width: 6.w),
-                      Text(
-                        gender,
-                        style: TextStyle(
-                          color: isSelected
-                              ? Colors.white
-                              : AppColors.textPrimary,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeightHelper.semiBold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+          children: [
+            _GenderButton(
+              label: 'register.gender_male'.tr(),
+              icon: Icons.male,
+              isSelected: selectedGender == 'Male',
+              onTap: () => onGenderSelected('Male'),
+              isFirst: true,
+            ),
+            SizedBox(width: 8.w),
+            _GenderButton(
+              label: 'register.gender_female'.tr(),
+              icon: Icons.female,
+              isSelected: selectedGender == 'Female',
+              onTap: () => onGenderSelected('Female'),
+              isFirst: false,
+            ),
+          ],
         ),
       ],
     );
@@ -187,6 +161,60 @@ class RegisterFieldsPage1 extends StatelessWidget {
         color: AppColors.textPrimary,
         fontSize: 14.sp,
         fontWeight: FontWeightHelper.semiBold,
+      ),
+    );
+  }
+}
+
+class _GenderButton extends StatelessWidget {
+  const _GenderButton({
+    required this.label,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+    required this.isFirst,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final bool isFirst;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 14.h),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primaryBlue : AppColors.backgroundSoft,
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(
+              color: isSelected ? AppColors.primaryBlue : AppColors.borderLight,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: isSelected ? Colors.white : AppColors.iconGray,
+                size: 20,
+              ),
+              SizedBox(width: 6.w),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : AppColors.textPrimary,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeightHelper.semiBold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

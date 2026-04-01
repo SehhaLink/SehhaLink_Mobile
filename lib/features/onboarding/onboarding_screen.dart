@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/extensions.dart';
@@ -38,7 +39,7 @@ class OnboardingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        'SehhaLink',
+                        'app_name'.tr(),
                         style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeightHelper.medium,
@@ -70,7 +71,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   verticalSpace(20),
                   Text(
-                    'Your health,\nall in one place',
+                    'onboarding.tagline'.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 22.sp,
@@ -81,7 +82,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   verticalSpace(8),
                   Text(
-                    'Manage your family\'s healthcare\nsmarter and simpler',
+                    'onboarding.subtitle'.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 13.sp,
@@ -108,9 +109,8 @@ class OnboardingScreen extends StatelessWidget {
                           icon: Icons.folder_copy_rounded,
                           iconColor: AppColors.primaryBlue,
                           iconBg: const Color(0xFFE8F4F8),
-                          title: 'All in one place',
-                          subtitle:
-                              'All your medical reports & scans in one spot',
+                          title: 'onboarding.feature_all_in_one_title'.tr(),
+                          subtitle: 'onboarding.feature_all_in_one_subtitle'.tr(),
                         ),
                       ),
                       SizedBox(width: 12.w),
@@ -119,9 +119,8 @@ class OnboardingScreen extends StatelessWidget {
                           icon: Icons.insights_rounded,
                           iconColor: AppColors.accentOrange,
                           iconBg: const Color(0xFFFEF3E8),
-                          title: 'Easy summary',
-                          subtitle:
-                              'Understand your health with simple insights',
+                          title: 'onboarding.feature_easy_summary_title'.tr(),
+                          subtitle: 'onboarding.feature_easy_summary_subtitle'.tr(),
                         ),
                       ),
                     ],
@@ -135,7 +134,7 @@ class OnboardingScreen extends StatelessWidget {
                     backgroundColor: AppColors.primaryBlue,
                     radius: 14.r,
                     child: Text(
-                      'Get Started',
+                      'onboarding.get_started'.tr(),
                       style: TextStyle(
                         color: AppColors.textWhite,
                         fontSize: 15.sp,
@@ -156,7 +155,7 @@ class OnboardingScreen extends StatelessWidget {
                       width: 1.5,
                     ),
                     child: Text(
-                      'Log in',
+                      'onboarding.log_in'.tr(),
                       style: TextStyle(
                         color: AppColors.primaryBlue,
                         fontSize: 15.sp,
@@ -168,7 +167,7 @@ class OnboardingScreen extends StatelessWidget {
                   verticalSpace(20),
 
                   Text(
-                    'Privacy  •  Terms',
+                    'onboarding.privacy_terms'.tr(),
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: AppColors.textLight,

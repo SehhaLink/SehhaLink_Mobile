@@ -1,5 +1,6 @@
 // forget_password_email_section.dart
 // ignore_for_file: deprecated_member_use
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -28,7 +29,7 @@ class ForgetPasswordEmailSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Forgot Password?",
+          'forgot_password.title'.tr(),
           style: TextStyle(
             color: AppColors.textWhite,
             fontSize: 26.sp,
@@ -37,7 +38,7 @@ class ForgetPasswordEmailSection extends StatelessWidget {
         ),
         verticalSpace(10),
         Text(
-          "Don't worry! Enter the email address\nlinked to your account.",
+          'forgot_password.description'.tr(),
           textAlign: TextAlign.center,
           style: TextStyle(
             color: AppColors.textLight,
@@ -54,14 +55,14 @@ class ForgetPasswordEmailSection extends StatelessWidget {
             focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
             enabledBorderColor: Colors.white.withOpacity(0.08),
             textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
-            hintText: "example@email.com",
+            hintText: 'forgot_password.email_hint'.tr(),
             suffixIcon: Icon(
               Icons.alternate_email_rounded,
               color: AppColors.textLight,
               size: 20.sp,
             ),
             validator: (val) =>
-                val == null || !val.contains('@') ? "Enter a valid email" : null,
+                val == null || !val.contains('@') ? 'validation.enter_valid_email'.tr() : null,
           ),
         ),
         verticalSpace(24),
@@ -85,7 +86,7 @@ class ForgetPasswordEmailSection extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Send OTP",
+                      'forgot_password.send_otp'.tr(),
                       style: TextStyle(
                         color: AppColors.textWhite,
                         fontSize: 16.sp,

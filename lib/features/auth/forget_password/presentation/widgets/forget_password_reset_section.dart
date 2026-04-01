@@ -1,5 +1,6 @@
 // forget_password_reset_section.dart
 // ignore_for_file: deprecated_member_use
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -42,7 +43,7 @@ class _ForgetPasswordResetSectionState
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Reset Password",
+          'forgot_password.reset_title'.tr(),
           style: TextStyle(
             color: AppColors.textWhite,
             fontSize: 26.sp,
@@ -51,7 +52,7 @@ class _ForgetPasswordResetSectionState
         ),
         verticalSpace(10),
         Text(
-          "Enter the OTP sent to your email\nand set your new password.",
+          'forgot_password.reset_description'.tr(),
           textAlign: TextAlign.center,
           style: TextStyle(color: AppColors.textLight, fontSize: 14.sp),
         ),
@@ -60,7 +61,6 @@ class _ForgetPasswordResetSectionState
           key: widget.formKey,
           child: Column(
             children: [
-              // OTP
               AppTextFormField(
                 controller: widget.otpController,
                 borderRadius: 14.r,
@@ -68,16 +68,15 @@ class _ForgetPasswordResetSectionState
                 focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
                 enabledBorderColor: Colors.white.withOpacity(0.08),
                 textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
-                hintText: "123456",
+                hintText: 'forgot_password.otp_hint'.tr(),
                 keyboardType: TextInputType.number,
                 suffixIcon: Icon(Icons.pin_rounded,
                     color: AppColors.textLight, size: 20.sp),
                 validator: (val) =>
-                    val == null || val.isEmpty ? "Enter OTP" : null,
+                    val == null || val.isEmpty ? 'validation.enter_otp'.tr() : null,
               ),
               verticalSpace(16),
 
-              // New Password
               AppTextFormField(
                 controller: widget.newPasswordController,
                 borderRadius: 14.r,
@@ -85,7 +84,7 @@ class _ForgetPasswordResetSectionState
                 focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
                 enabledBorderColor: Colors.white.withOpacity(0.08),
                 textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
-                hintText: "New Password",
+                hintText: 'forgot_password.new_password_hint'.tr(),
                 obscureText: !_isNewPasswordVisible,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -99,12 +98,11 @@ class _ForgetPasswordResetSectionState
                       () => _isNewPasswordVisible = !_isNewPasswordVisible),
                 ),
                 validator: (val) => val == null || val.length < 6
-                    ? "Min 6 characters"
+                    ? 'validation.min_6_chars'.tr()
                     : null,
               ),
               verticalSpace(16),
 
-              // Confirm Password
               AppTextFormField(
                 controller: widget.confirmPasswordController,
                 borderRadius: 14.r,
@@ -112,7 +110,7 @@ class _ForgetPasswordResetSectionState
                 focusedBorderColor: AppColors.primaryBlue.withOpacity(0.6),
                 enabledBorderColor: Colors.white.withOpacity(0.08),
                 textStyle: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
-                hintText: "Confirm Password",
+                hintText: 'forgot_password.confirm_password_hint'.tr(),
                 obscureText: !_isConfirmPasswordVisible,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -126,7 +124,7 @@ class _ForgetPasswordResetSectionState
                       _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
                 ),
                 validator: (val) => val != widget.newPasswordController.text
-                    ? "Passwords don't match"
+                    ? 'validation.passwords_no_match_short'.tr()
                     : null,
               ),
             ],
@@ -153,7 +151,7 @@ class _ForgetPasswordResetSectionState
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Reset Password",
+                      'forgot_password.reset_button'.tr(),
                       style: TextStyle(
                         color: AppColors.textWhite,
                         fontSize: 16.sp,
