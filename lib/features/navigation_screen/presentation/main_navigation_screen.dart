@@ -1,9 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_state.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
@@ -20,22 +19,17 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentUserCubit, CurrentUserState>(
       builder: (context, state) {
-        // Loading
         if (state.isLoading) {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(
+              child: CircularProgressIndicator(color: AppColors.primaryBlue),
+            ),
           );
         }
 
-        // Error
         if (state.error != null) {
           return Scaffold(
             body: Center(
@@ -62,13 +56,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           );
         }
 
-        final user = state.user;
-
-        if (user == null) {
+        if (state.user == null) {
           return const Scaffold(body: Center(child: Text("No user found")));
         }
 
-        return _MainNavigationContent();
+        return const _MainNavigationContent();
       },
     );
   }
@@ -84,65 +76,72 @@ class _MainNavigationContent extends StatefulWidget {
 class _MainNavigationContentState extends State<_MainNavigationContent> {
   int _currentIndex = 0;
 
+  final _screens = const <Widget>[HomeScreen(), ProfileScreen()];
+
   @override
   Widget build(BuildContext context) {
-    final screens = <Widget>[const HomeScreen(), const ProfileScreen()];
-
     return WillPopScope(
       onWillPop: () async {
         SystemNavigator.pop();
         return false;
       },
       child: Scaffold(
-        body: IndexedStack(index: _currentIndex, children: screens),
-        bottomNavigationBar: _buildBottomNavigationBar(),
+        backgroundColor: AppColors.backgroundMain,
+        body: IndexedStack(index: _currentIndex, children: _screens),
+        bottomNavigationBar: _buildNavBar(),
       ),
     );
   }
 
-  Widget _buildBottomNavigationBar() {
+  Widget _buildNavBar() {
     return Container(
       decoration: BoxDecoration(
+        color: AppColors.primaryBlue,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
+            color: Colors.black.withOpacity(0.07),
+            blurRadius: 20,
+            offset: const Offset(0, -4),
           ),
         ],
       ),
-      child: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.primaryBlue,
-        selectedItemColor: AppColors.backgroundSoft,
-        unselectedItemColor: Colors.grey,
-        selectedLabelStyle: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: TextStyle(
-          fontSize: 11.sp,
-          fontWeight: FontWeight.w500,
-        ),
-        elevation: 0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined, size: 24.sp),
-            activeIcon: Icon(Icons.home, size: 26.sp),
-            label: 'Home',
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: SalomonBottomBar(
+            currentIndex: _currentIndex,
+            onTap: (index) => setState(() => _currentIndex = index),
+            selectedItemColor: AppColors.backgroundMain, //
+            unselectedItemColor: AppColors.backgroundMain.withOpacity(0.5),
+            itemPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            items: [
+              SalomonBottomBarItem(
+                icon: Icon(Icons.home_outlined, size: 24.sp),
+                activeIcon: Icon(Icons.home_rounded, size: 24.sp),
+                title: Text(
+                  'Home',
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                selectedColor: AppColors.backgroundMain,
+              ),
+              SalomonBottomBarItem(
+                icon: Icon(Icons.person_outline_rounded, size: 24.sp),
+                activeIcon: Icon(Icons.person_rounded, size: 24.sp),
+                title: Text(
+                  'Profile',
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                selectedColor: AppColors.backgroundMain,
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline, size: 24.sp),
-            activeIcon: Icon(Icons.person, size: 26.sp),
-            label: 'Profile',
-          ),
-        ],
+        ),
       ),
     );
   }
