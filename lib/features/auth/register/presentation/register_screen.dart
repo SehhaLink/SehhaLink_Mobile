@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           width: 36.w,
           height: 36.w,
           decoration: BoxDecoration(
-            color: AppColors.backgroundSoft, // ✅ soft gra card
+            color: AppColors.backgroundSoft, 
             borderRadius: BorderRadius.circular(36.r),
           ),
           child: IconButton(
@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Text(
               "Create Account",
               style: TextStyle(
-                color: AppColors.textPrimary, // ✅
+                color: AppColors.textPrimary, 
                 fontWeight: FontWeightHelper.bold,
                 fontSize: 24.sp,
               ),

@@ -8,7 +8,6 @@ import 'package:sehhalink/core/widgets/app_text_form_field.dart';
 
 class RegisterFieldsPage2 extends StatelessWidget {
   final TextEditingController phoneNumberController;
-  final TextEditingController ageController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
   final bool obscurePassword;
@@ -19,7 +18,6 @@ class RegisterFieldsPage2 extends StatelessWidget {
   const RegisterFieldsPage2({
     super.key,
     required this.phoneNumberController,
-    required this.ageController,
     required this.passwordController,
     required this.confirmPasswordController,
     required this.obscurePassword,
@@ -49,26 +47,7 @@ class RegisterFieldsPage2 extends StatelessWidget {
         ),
         verticalSpace(16),
 
-        _buildLabel("Age"),
-        verticalSpace(8),
-        AppTextFormField(
-          controller: ageController,
-          hintText: "25",
-          borderRadius: 14.r,
-          backgroundColor: AppColors.backgroundSoft,
-          enabledBorderColor: AppColors.borderLight,
-          focusedBorderColor: AppColors.primaryBlue,
-          textStyle: TextStyle(color: AppColors.textPrimary, fontSize: 14.sp),
-          keyboardType: TextInputType.number,
-          label: Icon(Icons.cake_outlined, color: AppColors.iconGray, size: 20),
-          validator: (val) {
-            if (val == null || val.isEmpty) return "Enter your age";
-            final age = int.tryParse(val);
-            if (age == null || age < 1 || age > 120) return "Enter a valid age";
-            return null;
-          },
-        ),
-        verticalSpace(16),
+       
 
         _buildLabel("Password"),
         verticalSpace(8),

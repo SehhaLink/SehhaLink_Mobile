@@ -13,10 +13,7 @@ RegisterRequestBody _$RegisterRequestBodyFromJson(Map<String, dynamic> json) =>
       password: json['password'] as String,
       fullName: json['fullName'] as String,
       confirmPassword: json['confirmPassword'] as String,
-      age: (json['age'] as num?)?.toInt(),
-      birthDate: json['birthDate'] == null
-          ? null
-          : DateTime.parse(json['birthDate'] as String),
+      birthDate: json['birthDate'] as String?,
       gender: json['gender'] as String?,
     );
 
@@ -28,7 +25,6 @@ Map<String, dynamic> _$RegisterRequestBodyToJson(
       'password': instance.password,
       'confirmPassword': instance.confirmPassword,
       'fullName': instance.fullName,
-      'age': instance.age,
-      'birthDate': instance.birthDate?.toIso8601String(),
+      'birthDate': instance.birthDate,
       'gender': instance.gender,
     };

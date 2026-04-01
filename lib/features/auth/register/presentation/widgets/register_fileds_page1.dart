@@ -39,8 +39,13 @@ class RegisterFieldsPage1 extends StatelessWidget {
           enabledBorderColor: AppColors.borderLight,
           focusedBorderColor: AppColors.primaryBlue,
           textStyle: TextStyle(color: AppColors.textPrimary, fontSize: 14.sp),
-          label: Icon(Icons.person_outline_rounded, color: AppColors.iconGray, size: 20),
-          validator: (val) => val == null || val.isEmpty ? "Enter your full name" : null,
+          label: Icon(
+            Icons.person_outline_rounded,
+            color: AppColors.iconGray,
+            size: 20,
+          ),
+          validator: (val) =>
+              val == null || val.isEmpty ? "Enter your full name" : null,
         ),
         verticalSpace(16),
 
@@ -55,8 +60,13 @@ class RegisterFieldsPage1 extends StatelessWidget {
           focusedBorderColor: AppColors.primaryBlue,
           textStyle: TextStyle(color: AppColors.textPrimary, fontSize: 14.sp),
           keyboardType: TextInputType.emailAddress,
-          label: Icon(Icons.email_outlined, color: AppColors.iconGray, size: 20),
-          validator: (val) => val == null || !val.contains('@') ? "Enter a valid email" : null,
+          label: Icon(
+            Icons.email_outlined,
+            color: AppColors.iconGray,
+            size: 20,
+          ),
+          validator: (val) =>
+              val == null || !val.contains('@') ? "Enter a valid email" : null,
         ),
         verticalSpace(16),
 
@@ -71,6 +81,19 @@ class RegisterFieldsPage1 extends StatelessWidget {
               barrierColor: AppColors.primaryBlue,
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
+              builder: (context, child) {
+                return Theme(
+                  data: Theme.of(context).copyWith(
+                    colorScheme: ColorScheme.light(
+                      primary: AppColors.primaryBlue,
+                      onPrimary: AppColors.textWhite,
+                      onSurface: AppColors.textPrimary,
+                    ),
+                    dialogBackgroundColor: AppColors.backgroundSoft,
+                  ),
+                  child: child!,
+                );
+              },
             );
             if (picked != null) onDateSelected(picked);
           },
@@ -83,14 +106,20 @@ class RegisterFieldsPage1 extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.calendar_today_outlined, color: AppColors.iconGray, size: 20),
+                Icon(
+                  Icons.calendar_today_outlined,
+                  color: AppColors.iconGray,
+                  size: 20,
+                ),
                 SizedBox(width: 12.w),
                 Text(
                   selectedDate != null
                       ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
                       : "Select your birth date",
                   style: TextStyle(
-                    color: selectedDate != null ? AppColors.textPrimary : AppColors.iconGray,
+                    color: selectedDate != null
+                        ? AppColors.textPrimary
+                        : AppColors.iconGray,
                     fontSize: 14.sp,
                   ),
                 ),
@@ -113,10 +142,14 @@ class RegisterFieldsPage1 extends StatelessWidget {
                   margin: EdgeInsets.only(right: gender == 'Male' ? 8.w : 0),
                   padding: EdgeInsets.symmetric(vertical: 14.h),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.primaryBlue : AppColors.backgroundSoft,
+                    color: isSelected
+                        ? AppColors.primaryBlue
+                        : AppColors.backgroundSoft,
                     borderRadius: BorderRadius.circular(14.r),
                     border: Border.all(
-                      color: isSelected ? AppColors.primaryBlue : AppColors.borderLight,
+                      color: isSelected
+                          ? AppColors.primaryBlue
+                          : AppColors.borderLight,
                     ),
                   ),
                   child: Row(
@@ -131,7 +164,9 @@ class RegisterFieldsPage1 extends StatelessWidget {
                       Text(
                         gender,
                         style: TextStyle(
-                          color: isSelected ? Colors.white : AppColors.textPrimary,
+                          color: isSelected
+                              ? Colors.white
+                              : AppColors.textPrimary,
                           fontSize: 14.sp,
                           fontWeight: FontWeightHelper.semiBold,
                         ),

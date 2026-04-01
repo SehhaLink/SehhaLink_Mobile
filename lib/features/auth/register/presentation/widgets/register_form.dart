@@ -19,6 +19,7 @@ class RegisterForm extends StatefulWidget {
   @override
   State<RegisterForm> createState() => _RegisterFormState();
 }
+
 class _RegisterFormState extends State<RegisterForm> {
   final PageController _pageController = PageController();
   final _page1Key = GlobalKey<FormState>();
@@ -89,21 +90,25 @@ class _RegisterFormState extends State<RegisterForm> {
                   emailController: emailController,
                   selectedDate: _selectedDate,
                   selectedGender: _selectedGender,
-                  onDateSelected: (date) => setState(() => _selectedDate = date),
-                  onGenderSelected: (gender) => setState(() => _selectedGender = gender),
+                  onDateSelected: (date) =>
+                      setState(() => _selectedDate = date),
+                  onGenderSelected: (gender) =>
+                      setState(() => _selectedGender = gender),
                 ),
               ),
               Form(
                 key: _page2Key,
                 child: RegisterFieldsPage2(
                   phoneNumberController: phoneNumberController,
-                  ageController: ageController,
                   passwordController: passwordController,
                   confirmPasswordController: confirmPasswordController,
                   obscurePassword: _obscurePassword,
                   obscureConfirmPassword: _obscureConfirmPassword,
-                  onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
-                  onToggleConfirmPassword: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                  onTogglePassword: () =>
+                      setState(() => _obscurePassword = !_obscurePassword),
+                  onToggleConfirmPassword: () => setState(
+                    () => _obscureConfirmPassword = !_obscureConfirmPassword,
+                  ),
                 ),
               ),
             ],
@@ -145,7 +150,10 @@ class _RegisterFormState extends State<RegisterForm> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Next", style: TextStyle(color: AppColors.textWhite, fontSize: 16.sp)),
+            Text(
+              "Next",
+              style: TextStyle(color: AppColors.textWhite, fontSize: 16.sp),
+            ),
             SizedBox(width: 8.w),
             Icon(Icons.arrow_forward, color: AppColors.textWhite, size: 20),
           ],
@@ -158,7 +166,10 @@ class _RegisterFormState extends State<RegisterForm> {
         if (state is RegisterSuccess) context.pushNamed(Routes.loginScreen);
         if (state is RegisterError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: const Color(0xFFEF4444)),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: const Color(0xFFEF4444),
+            ),
           );
         }
       },
@@ -170,7 +181,9 @@ class _RegisterFormState extends State<RegisterForm> {
               onPressed: _prevPage,
               style: OutlinedButton.styleFrom(
                 minimumSize: Size(56.w, 56.h),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
                 side: BorderSide(color: AppColors.primaryBlue),
               ),
               child: Icon(Icons.arrow_back, color: AppColors.primaryBlue),
@@ -189,8 +202,11 @@ class _RegisterFormState extends State<RegisterForm> {
                         phoneNumber: phoneNumberController.text,
                         password: passwordController.text,
                         confirmPassword: confirmPasswordController.text,
-                        age: int.tryParse(ageController.text),
-                        birthDate: _selectedDate,
+                        birthDate: _selectedDate != null
+                            ? "${_selectedDate!.year.toString().padLeft(4, '0')}-"
+                                  "${_selectedDate!.month.toString().padLeft(2, '0')}-"
+                                  "${_selectedDate!.day.toString().padLeft(2, '0')}"
+                            : null,
                         gender: _selectedGender,
                       ),
                     );
@@ -200,7 +216,13 @@ class _RegisterFormState extends State<RegisterForm> {
                 radius: 16.r,
                 child: state is RegisterLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : Text("Sign Up", style: TextStyle(color: AppColors.textWhite, fontSize: 16.sp)),
+                    : Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          color: AppColors.textWhite,
+                          fontSize: 16.sp,
+                        ),
+                      ),
               ),
             ),
           ],

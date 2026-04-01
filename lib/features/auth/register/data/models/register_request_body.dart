@@ -8,8 +8,7 @@ class RegisterRequestBody {
   final String password;
   final String confirmPassword;
   final String fullName;
-  final int? age;
-  final DateTime? birthDate;
+  final String? birthDate;
   final String? gender;
 
   RegisterRequestBody({
@@ -18,7 +17,6 @@ class RegisterRequestBody {
     required this.password,
     required this.fullName,
     required this.confirmPassword,
-    required this.age,
     required this.birthDate,
     required this.gender,
   });
