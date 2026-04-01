@@ -6,6 +6,7 @@ class UploadedFileItem {
   final double progress;
   final UploadStatus status;
   final DateTime? uploadedAt; 
+  final String? fileId;
 
   const UploadedFileItem({
     required this.name,
@@ -13,6 +14,7 @@ class UploadedFileItem {
     required this.progress,
     required this.status,
     this.uploadedAt,
+    this.fileId,
   });
 
   UploadedFileItem copyWith({
@@ -21,6 +23,7 @@ class UploadedFileItem {
     double? progress,
     UploadStatus? status,
     DateTime? uploadedAt,
+    String? fileId,
   }) {
     return UploadedFileItem(
       name: name ?? this.name,
@@ -28,6 +31,7 @@ class UploadedFileItem {
       progress: progress ?? this.progress,
       status: status ?? this.status,
       uploadedAt: uploadedAt ?? this.uploadedAt,
+      fileId: fileId ?? this.fileId,
     );
   }
 }

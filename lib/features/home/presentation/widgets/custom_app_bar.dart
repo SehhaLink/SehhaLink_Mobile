@@ -33,12 +33,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: 70.h,
       title: Row(
         children: [
-          // Profile Image
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: profileImagePath != null
                 ? Image.file(
                     File(profileImagePath!),
+                    key: ValueKey(profileImagePath), // ✅ يمنع الكاش
                     width: 50.w,
                     height: 50.h,
                     fit: BoxFit.cover,
@@ -97,7 +97,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     child: Center(
                       child: Text(
-                        notificationCount > 9 ? '9+' : '$notificationCount',
+                        notificationCount > 9
+                            ? '9+'
+                            : '$notificationCount',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 9.sp,
@@ -117,14 +119,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   String _getGreeting() {
     final hour = DateTime.now().hour;
-    if (hour >= 5 && hour < 12) {
-      return 'Good Morning 🌅';
-    } else if (hour >= 12 && hour < 17) {
-      return 'Good Afternoon ☀️';
-    } else if (hour >= 17 && hour < 21) {
-      return 'Good Evening 🌆';
-    } else {
-      return 'Good Night 🌙';
-    }
+    if (hour >= 5 && hour < 12) return 'Good Morning 🌅';
+    if (hour >= 12 && hour < 17) return 'Good Afternoon ☀️';
+    if (hour >= 17 && hour < 21) return 'Good Evening 🌆';
+    return 'Good Night 🌙';
   }
 }

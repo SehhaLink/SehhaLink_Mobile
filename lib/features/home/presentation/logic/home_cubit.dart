@@ -54,28 +54,28 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
 
-  Future<void> _uploadSingle(File file, int index) async {
-    try {
-      await uploadFileUseCase(
-        file,
-        onProgress: (progress) => _updateFile(
-          index,
-          progress: progress,
-          status: UploadStatus.uploading,
-        ),
-      );
-
-      _updateFile(
+Future<void> _uploadSingle(File file, int index) async {
+  try {
+    final fileModel = await uploadFileUseCase(   // ✅ استقبل الـ FileModel
+      file,
+      onProgress: (progress) => _updateFile(
         index,
-        progress: 1.0,
-        status: UploadStatus.done,
-        uploadedAt: DateTime.now(),
-      );
-    } catch (e) {
-      _markFailed(index, e.toString());
-    }
-  }
+        progress: progress,
+        status: UploadStatus.uploading,
+      ),
+    );
 
+    _updateFile(
+      index,
+      progress: 1.0,
+      status: UploadStatus.done,
+      uploadedAt: DateTime.now(),
+      fileId: fileModel.fileId,       // ✅ احفظ الـ fileId في الـ state
+    );
+  } catch (e) {
+    _markFailed(index, e.toString());
+  }
+}
 
   void retryUpload(int index) {
     _updateFile(index, progress: 0.0, status: UploadStatus.uploading);
@@ -94,20 +94,22 @@ class HomeCubit extends Cubit<HomeState> {
 
 
   void _updateFile(
-    int index, {
-    double? progress,
-    UploadStatus? status,
-    DateTime? uploadedAt,
-  }) {
-    if (isClosed || index >= state.files.length) return;
-    final updated = List<UploadedFileItem>.from(state.files);
-    updated[index] = updated[index].copyWith(
-      progress: progress,
-      status: status,
-      uploadedAt: uploadedAt,
-    );
-    emit(state.copyWith(files: updated));
-  }
+  int index, {
+  double? progress,
+  UploadStatus? status,
+  DateTime? uploadedAt,
+  String? fileId,              
+}) {
+  if (isClosed || index >= state.files.length) return;
+  final updated = List<UploadedFileItem>.from(state.files);
+  updated[index] = updated[index].copyWith(
+    progress: progress,
+    status: status,
+    uploadedAt: uploadedAt,
+    fileId: fileId,            
+  );
+  emit(state.copyWith(files: updated));
+}
 
   void _markFailed(int index, String error) {
     _updateFile(index, status: UploadStatus.failed);

@@ -1,11 +1,12 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:sehhalink/core/networking/api_const.dart';
 import 'package:sehhalink/core/networking/network_service.dart';
+import 'package:sehhalink/core/service/secure_storage_service.dart';
+import 'package:sehhalink/core/current_user/data/model/file_model.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<void> uploadFile(
+  Future<FileModel> uploadFile(
     File file, {
     void Function(double progress)? onProgress,
   });
@@ -13,35 +14,48 @@ abstract class HomeRemoteDataSource {
 
 class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   HomeRemoteDataSourceImpl({required this.networkService});
-
   final NetworkService networkService;
 
   @override
-  Future<void> uploadFile(
+  Future<FileModel> uploadFile(
     File file, {
     void Function(double progress)? onProgress,
   }) async {
-    try {
-      final formData = FormData.fromMap({
-        'file': await MultipartFile.fromFile(
-          file.path,
-          filename: file.path.split('/').last,
-        ),
-      });
+    final token = await SecureStorageService.getToken();
 
-      final response = await networkService.post(
-        ApiConst.uploadDocument,
-        formData,
-        onSendProgress: (sent, total) {
-          if (total > 0) onProgress?.call(sent / total);
+    final formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(
+        file.path,
+        filename: file.path.split('/').last,
+      ),
+    });
+
+    final response = await networkService.post(
+      ApiConst.uploadDocument,
+      formData,
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'multipart/form-data',
         },
-      );
+      ),
+      onSendProgress: (sent, total) {
+        if (total > 0) onProgress?.call(sent / total);
+      },
+    );
 
-      if (response.statusCode != 200) {
-        throw Exception('Upload failed with status ${response.statusCode}');
-      }
-    } catch (e) {
-      rethrow;
+    if (response.statusCode != 200) {
+      throw Exception('Upload failed with status ${response.statusCode}');
     }
+
+    final data = response.data['data'];
+
+    return FileModel()
+      ..fileId = data['id'].toString()
+      ..fileName = data['fileName'] ?? ''
+      ..filePath = file.path
+      ..summary = ''
+      ..fileType = file.path.split('.').last
+      ..createdAt = DateTime.now().toIso8601String();
   }
 }
