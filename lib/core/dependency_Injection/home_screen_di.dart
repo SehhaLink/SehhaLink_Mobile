@@ -7,25 +7,19 @@ import 'package:sehhalink/features/home/domain/use_cases/upload_file_use_case.da
 import 'package:sehhalink/features/home/presentation/logic/home_cubit.dart';
 
 void homeScreenDi() {
-  if (getIt.isRegistered<HomeCubit>()) {
-    return;
-  }
-
   registerLazyIfNotRegistered<HomeRemoteDataSource>(
     () => HomeRemoteDataSourceImpl(networkService: getIt()),
   );
-
   registerLazyIfNotRegistered<HomeRepo>(
-    () => HomeRepoImpl(homeRemoteDataSource: getIt<HomeRemoteDataSource>()),
+    () => HomeRepoImpl(
+      homeRemoteDataSource: getIt<HomeRemoteDataSource>(),
+      localDataSource: getIt(),
+    ),
   );
-
-  // Register UseCase
   registerLazyIfNotRegistered<UploadFileUseCase>(
     () => UploadFileUseCase(homeRepo: getIt<HomeRepo>()),
   );
-
-  // Register Cubit
-  getIt.registerFactory<HomeCubit>(
+  registerLazyIfNotRegistered<HomeCubit>(
     () => HomeCubit(uploadFileUseCase: getIt<UploadFileUseCase>()),
   );
 }

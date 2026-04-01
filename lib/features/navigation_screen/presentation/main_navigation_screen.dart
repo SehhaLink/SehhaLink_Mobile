@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_state.dart';
-import 'package:sehhalink/core/dependency_Injection/get_it.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/features/home/presentation/home_screen.dart';
@@ -23,76 +22,59 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      context.read<CurrentUserCubit>().loadUser();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: getIt<CurrentUserCubit>(),
-      child: BlocBuilder<CurrentUserCubit, CurrentUserState>(
-        builder: (context, state) {
-          // Loading
-          if (state.isLoading) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
+    return BlocBuilder<CurrentUserCubit, CurrentUserState>(
+      builder: (context, state) {
+        // Loading
+        if (state.isLoading) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
 
-          // Error
-          if (state.error != null) {
-            return Scaffold(
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      size: 60,
-                      color: Colors.red,
-                    ),
-                    verticalSpace(16),
-                    Text(
-                      'Error Occurred',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    verticalSpace(8),
-                    Text(state.error!),
-                    verticalSpace(16),
-                    ElevatedButton(
-                      onPressed: () =>
-                          context.read<CurrentUserCubit>().loadUser(),
-                      child: const Text('Try Again'),
-                    ),
-                  ],
-                ),
+        // Error
+        if (state.error != null) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 60, color: Colors.red),
+                  verticalSpace(16),
+                  Text(
+                    'Error Occurred',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  verticalSpace(8),
+                  Text(state.error!),
+                  verticalSpace(16),
+                  ElevatedButton(
+                    onPressed: () =>
+                        context.read<CurrentUserCubit>().loadUser(),
+                    child: const Text('Try Again'),
+                  ),
+                ],
               ),
-            );
-          }
+            ),
+          );
+        }
 
-          final user = state.user;
+        final user = state.user;
 
-          if (user == null) {
-            return const Scaffold(body: Center(child: Text("No user found")));
-          }
+        if (user == null) {
+          return const Scaffold(body: Center(child: Text("No user found")));
+        }
 
-        
-
-        
-
-        
-
-          return _MainNavigationContent();
-        },
-      ),
+        return _MainNavigationContent();
+      },
     );
   }
 }
 
 class _MainNavigationContent extends StatefulWidget {
-
   const _MainNavigationContent();
 
   @override
@@ -104,10 +86,7 @@ class _MainNavigationContentState extends State<_MainNavigationContent> {
 
   @override
   Widget build(BuildContext context) {
-    final screens = <Widget>[
-      const HomeScreen(),
-      const ProfileScreen(),
-    ];
+    final screens = <Widget>[const HomeScreen(), const ProfileScreen()];
 
     return WillPopScope(
       onWillPop: () async {
@@ -168,5 +147,3 @@ class _MainNavigationContentState extends State<_MainNavigationContent> {
     );
   }
 }
-
-

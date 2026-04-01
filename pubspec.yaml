@@ -44,6 +44,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   get_it: ^9.2.0
   i: ^1.0.1
+  image_picker: ^1.2.1
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
   isar_generator: ^3.1.0+1

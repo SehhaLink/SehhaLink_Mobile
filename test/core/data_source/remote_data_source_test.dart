@@ -30,17 +30,16 @@ void main() {
       );
 
       final user = LoginResponseBody(
-        firstName: 'adel',
-        lastName: 'saeed',
-        email: 'admin@1234',
-        phoneNumber: '01020163',
-        country: 'Egypt',
-        city: 'Cairo',
-        address: 'Helwan',
-        role: 'admin',
-        loginToken: 'fadsffadfadsfadf',
+        email: "admin@gmail.com",
+        phoneNumber: "01020237163",
+        token: "fake_token",
+        fullName: "Adel Saeed",
+        birthDate: "2000-01-01",
+        gender: "male",
+        age: 25,
+        role: "user",
+        id: "123",
       );
-
       final response = Response(
         requestOptions: RequestOptions(path: ApiConst.login),
         statusCode: 200,
@@ -83,7 +82,10 @@ void main() {
         email: "admin@gmail.com",
         phoneNumber: "01020237163",
         password: "adel1234@",
+        confirmPassword: "adel1234@",
         fullName: "Adel saeed",
+        birthDate: "2000-01-01",
+        gender: "male",
       );
 
       final mockResponse = Response(
@@ -106,7 +108,10 @@ void main() {
         email: "admin@gmail.com",
         phoneNumber: "01020237163",
         password: "adel1234@",
+        confirmPassword: "adel1234@",
         fullName: "Adel saeed",
+        birthDate: "2000-01-01",
+        gender: "male",
       );
 
       final mockResponse = Response(

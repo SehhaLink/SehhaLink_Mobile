@@ -60,6 +60,7 @@ class MockNetworkService extends _i1.Mock implements _i3.NetworkService {
   _i4.Future<_i2.Response<dynamic>> post(
     String? url,
     dynamic body, {
+    _i2.Options? options,
     void Function(
       int,
       int,
@@ -72,7 +73,10 @@ class MockNetworkService extends _i1.Mock implements _i3.NetworkService {
             url,
             body,
           ],
-          {#onSendProgress: onSendProgress},
+          {
+            #options: options,
+            #onSendProgress: onSendProgress,
+          },
         ),
         returnValue:
             _i4.Future<_i2.Response<dynamic>>.value(_FakeResponse_0<dynamic>(
@@ -83,7 +87,10 @@ class MockNetworkService extends _i1.Mock implements _i3.NetworkService {
               url,
               body,
             ],
-            {#onSendProgress: onSendProgress},
+            {
+              #options: options,
+              #onSendProgress: onSendProgress,
+            },
           ),
         )),
       ) as _i4.Future<_i2.Response<dynamic>>);

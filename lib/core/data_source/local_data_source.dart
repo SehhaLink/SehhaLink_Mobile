@@ -11,7 +11,7 @@ import 'package:sehhalink/core/service/secure_storage_service.dart';
 abstract class LocalDataSource {
   Future<UserModel> getCurrentUser();
   Future<void> saveUser(UserModel user);
-  Future<void> updateUser(User user);
+  Future<void> updateUser(User user, {File? imageFile});
   Future<void> updateProfileImage(File imageFile);
   Future<void> logout();
   Future<bool> hasCurrentUser();
@@ -92,39 +92,47 @@ class LocalDataSourceImpl extends LocalDataSource {
     }
   }
 
- @override
-Future<void> updateProfileImage(File imageFile) async {
-  try {
-    final user = await getCurrentUser();
-    final oldPath = user.profileImage;
+  @override
+  Future<void> updateProfileImage(File imageFile) async {
+    try {
+      final isar = await IsarService.instance;
+      final existing = await isar.userModels.where().findFirst();
+      if (existing == null) throw CacheException('User not found');
 
-    final appDir = await getApplicationDocumentsDirectory();
-    final localPath = '${appDir.path}/profile_images';
-    final directory = Directory(localPath);
-    if (!await directory.exists()) await directory.create(recursive: true);
+      final oldPath = existing.profileImage;
 
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final savedImage = await imageFile.copy('$localPath/profile_$timestamp.png');
+      final appDir = await getApplicationDocumentsDirectory();
+      final localPath = '${appDir.path}/profile_images';
+      final directory = Directory(localPath);
+      if (!await directory.exists()) await directory.create(recursive: true);
 
-    user.profileImage = savedImage.path;
-    await updateUser(user.toEntity()); 
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final saved = await imageFile.copy('$localPath/profile_$timestamp.png');
 
-    if (oldPath != null && oldPath.isNotEmpty) {
-      final oldFile = File(oldPath);
-      if (await oldFile.exists()) await oldFile.delete();
+      // ✅ بنحدث الـ profileImage مباشرة على الـ existing model
+      existing.profileImage = saved.path;
+
+      await isar.writeTxn(() async {
+        await isar.userModels.put(existing);
+      });
+
+      // ✅ بنمسح الصورة القديمة بعد ما حفظنا الجديدة
+      if (oldPath != null && oldPath.isNotEmpty) {
+        final old = File(oldPath);
+        if (await old.exists()) await old.delete();
+      }
+    } catch (e) {
+      if (e is CacheException) rethrow;
+      throw CacheException('Failed to update profile image: $e');
     }
-  } catch (e) {
-    if (e is CacheException) rethrow;
-    throw CacheException('Failed to update profile image: $e');
   }
-}
 
   @override
   Future<void> logout() async {
     try {
       final isar = await IsarService.instance;
       await isar.writeTxn(() async {
-        await isar.userModels.clear(); 
+        await isar.userModels.clear();
       });
       await SecureStorageService.deleteToken();
     } catch (e) {
@@ -145,7 +153,7 @@ Future<void> updateProfileImage(File imageFile) async {
 
   @override
   Future<bool> hasValidToken() async {
-    return await SecureStorageService.hasValidToken(); 
+    return await SecureStorageService.hasValidToken();
   }
 
   @override

@@ -38,7 +38,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       throw Exception(response.data['message']);
     }
 
-    return LoginResponseBody.fromJson(response.data);
+    return LoginResponseBody.fromJson(response.data['data']);
   }
 
   @override
