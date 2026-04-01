@@ -19,8 +19,13 @@ class CurrentUserRepositoryImpl extends CurrentUserRepository {
   }
 
   @override
+Future<void> updateProfileImage(File imageFile) async {
+  await localDataSource.updateProfileImage(imageFile);
+}
+
+  @override
   Future<void> updateUser(User user, {File? imageFile}) async {
-    await localDataSource.updateUser(user);
+    await localDataSource.updateUser(user, imageFile: imageFile);
   }
 
   @override

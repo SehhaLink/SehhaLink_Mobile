@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user_file.dart';
@@ -6,6 +8,7 @@ import 'package:sehhalink/core/current_user/domain/use_cases/delete_file_use_cas
 import 'package:sehhalink/core/current_user/domain/use_cases/get_all_files_use_case.dart';
 import 'package:sehhalink/core/current_user/domain/use_cases/get_current_user_use_case.dart';
 import 'package:sehhalink/core/current_user/domain/use_cases/update_current_user.dart';
+import 'package:sehhalink/core/current_user/domain/use_cases/update_profile_image_use_case.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_state.dart';
 
 class CurrentUserCubit extends Cubit<CurrentUserState> {
@@ -14,14 +17,14 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
   final AddFileUseCase _addFileUseCase;
   final GetUserFilesUseCase _getUserFilesUseCase;
   final DeleteFileUseCase _deleteFileUseCase;
-
+final UpdateProfileImageUseCase _updateProfileImageUseCase;
   CurrentUserCubit({
     required GetCurrentUserUseCase getCurrentUserUseCase,
     required UpdateCurrentUserUseCase updateUserUseCase,
     required AddFileUseCase addFileUseCase,
     required GetUserFilesUseCase getUserFilesUseCase,
-    required DeleteFileUseCase deleteFileUseCase,
-  }) : _getCurrentUserUseCase = getCurrentUserUseCase,
+    required DeleteFileUseCase deleteFileUseCase, required UpdateProfileImageUseCase updateProfileImageUseCase,
+  }) : _updateProfileImageUseCase = updateProfileImageUseCase, _getCurrentUserUseCase = getCurrentUserUseCase,
        _updateUserUseCase = updateUserUseCase,
        _addFileUseCase = addFileUseCase,
        _getUserFilesUseCase = getUserFilesUseCase,
@@ -52,6 +55,8 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
     }
   }
 
+
+
   Future<void> deleteFile(String fileId) async {
     try {
       await _deleteFileUseCase(fileId);
@@ -60,6 +65,23 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
       emit(state.copyWith(error: 'Failed to delete file: $e'));
     }
   }
+Future<void> updateProfileImage(File imageFile) async {
+  if (state.user == null) {
+    emit(state.copyWith(error: 'No user loaded'));
+    return;
+  }
+  emit(state.copyWith(isUpdatingImage: true, error: null));
+  try {
+    await _updateProfileImageUseCase(imageFile); 
+    final updatedUser = await _getCurrentUserUseCase();
+    emit(state.copyWith(user: updatedUser, isUpdatingImage: false));
+  } catch (e) {
+    emit(state.copyWith(
+      isUpdatingImage: false,
+      error: 'Failed to update image: $e',
+    ));
+  }
+}
 
   Future<void> loadUser() async {
     emit(state.copyWith(isLoading: true, error: null));

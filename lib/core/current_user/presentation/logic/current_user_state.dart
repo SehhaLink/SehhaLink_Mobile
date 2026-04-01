@@ -4,10 +4,11 @@ import 'package:sehhalink/core/current_user/domain/entity/user_file.dart';
 
 class CurrentUserState extends Equatable {
   final User? user;
-  final List<UserFile> files; 
+  final List<UserFile> files;
   final bool isLoading;
   final bool isUpdating;
-  final bool isLoadingFiles; 
+  final bool isUpdatingImage; 
+  final bool isLoadingFiles;
   final String? error;
 
   const CurrentUserState({
@@ -15,6 +16,7 @@ class CurrentUserState extends Equatable {
     this.files = const [],
     this.isLoading = false,
     this.isUpdating = false,
+    this.isUpdatingImage = false,
     this.isLoadingFiles = false,
     this.error,
   });
@@ -24,6 +26,7 @@ class CurrentUserState extends Equatable {
     List<UserFile>? files,
     bool? isLoading,
     bool? isUpdating,
+    bool? isUpdatingImage,
     bool? isLoadingFiles,
     String? error,
   }) {
@@ -32,11 +35,20 @@ class CurrentUserState extends Equatable {
       files: files ?? this.files,
       isLoading: isLoading ?? this.isLoading,
       isUpdating: isUpdating ?? this.isUpdating,
+      isUpdatingImage: isUpdatingImage ?? this.isUpdatingImage, // ✅ زود
       isLoadingFiles: isLoadingFiles ?? this.isLoadingFiles,
       error: error,
     );
   }
 
   @override
-  List<Object?> get props => [user, files, isLoading, isUpdating, isLoadingFiles, error];
+  List<Object?> get props => [
+        user,
+        files,
+        isLoading,
+        isUpdating,
+        isUpdatingImage, // ✅ زود
+        isLoadingFiles,
+        error,
+      ];
 }
