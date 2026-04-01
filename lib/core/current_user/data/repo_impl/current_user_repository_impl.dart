@@ -33,6 +33,11 @@ Future<void> updateProfileImage(File imageFile) async {
     final fileModel = FileModel.fromEntity(file);
     await localDataSource.addFile(fileModel);
   }
+  @override
+  Future<void> logout() async {
+    await SecureStorageService.deleteToken();
+    await localDataSource.clearUserData();
+  }
 
   @override
   Future<List<UserFile>> getUserFiles() async {

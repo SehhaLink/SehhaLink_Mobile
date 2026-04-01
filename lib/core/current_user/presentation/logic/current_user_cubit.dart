@@ -55,6 +55,14 @@ final UpdateProfileImageUseCase _updateProfileImageUseCase;
     }
   }
 
+Future<void> logout() async {
+    try {
+      await _deleteFileUseCase('all'); 
+      emit(state.copyWith(user: null, files: []));
+    } catch (e) {
+      emit(state.copyWith(error: 'Failed to logout: $e'));
+    }
+  }
 
 
   Future<void> deleteFile(String fileId) async {

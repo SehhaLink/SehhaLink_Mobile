@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
-import 'package:sehhalink/features/profile/presentation/widgets/logout_button.dart';
 import 'package:sehhalink/features/profile/presentation/widgets/profile_image_section.dart';
 
 class ProfileTopSection extends StatelessWidget {
-  const ProfileTopSection({super.key, required this.user});
+  const ProfileTopSection({
+    super.key,
+    required this.user,
+    required this.drawerController,
+  });
+
   final User user;
+  final AdvancedDrawerController drawerController;
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +44,30 @@ class ProfileTopSection extends StatelessWidget {
                       letterSpacing: 0.4,
                     ),
                   ),
-                  const LogoutButton(),
+                  IconButton(
+                    icon: ValueListenableBuilder(
+                      valueListenable: drawerController,
+                      builder: (_, value, __) {
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: Icon(
+                            value.visible
+                                ? Icons.close_rounded
+                                : Icons.menu_rounded,
+                            key: ValueKey(value.visible),
+                            color: AppColors.textWhite,
+                            size: 26.sp,
+                          ),
+                        );
+                      },
+                    ),
+                    onPressed: drawerController.toggleDrawer,
+                  ),
                 ],
               ),
-
               SizedBox(height: 20.h),
-
               const ProfileImageSection(),
-
               SizedBox(height: 14.h),
-
               Text(
                 user.fullName,
                 style: TextStyle(
@@ -56,9 +76,7 @@ class ProfileTopSection extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-
               SizedBox(height: 4.h),
-
               Text(
                 user.email,
                 style: TextStyle(
@@ -66,11 +84,10 @@ class ProfileTopSection extends StatelessWidget {
                   fontSize: 13.sp,
                 ),
               ),
-
               SizedBox(height: 8.h),
-
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 5.h),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 14.w, vertical: 5.h),
                 decoration: BoxDecoration(
                   color: AppColors.textWhite.withOpacity(0.18),
                   borderRadius: BorderRadius.circular(20.r),

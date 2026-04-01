@@ -10,4 +10,5 @@ Future<void> updateProfileImage(File imageFile);
   Future<void> addFile(UserFile file);
   Future<List<UserFile>> getUserFiles();
   Future<void> deleteFile(String fileId);
+  Future<void> logout();
 }

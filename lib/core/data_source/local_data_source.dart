@@ -19,6 +19,7 @@ abstract class LocalDataSource {
   Future<void> addFile(FileModel file);
   Future<List<FileModel>> getUserFiles();
   Future<void> deleteFile(String fileId);
+  Future<void> clearUserData();
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
@@ -194,5 +195,10 @@ class LocalDataSourceImpl extends LocalDataSource {
     } catch (e) {
       throw CacheException('Failed to delete file: $e');
     }
+  }
+
+  @override
+  Future<void> clearUserData() {
+    throw UnimplementedError();
   }
 }
