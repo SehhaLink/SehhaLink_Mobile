@@ -2,7 +2,7 @@ class UserFile {
   final String fileId;
   final String fileName;
   final String filePath;
-  final String summary;
+  final String? summary;
   final String fileType;
   final String createdAt;
 

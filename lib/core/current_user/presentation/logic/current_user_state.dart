@@ -10,6 +10,7 @@ class CurrentUserState extends Equatable {
   final bool isUpdatingImage; 
   final bool isLoadingFiles;
   final String? error;
+  final Set<String> loadingSummaries; 
 
   const CurrentUserState({
     this.user,
@@ -19,6 +20,7 @@ class CurrentUserState extends Equatable {
     this.isUpdatingImage = false,
     this.isLoadingFiles = false,
     this.error,
+      this.loadingSummaries = const {},
   });
 
   CurrentUserState copyWith({
@@ -29,6 +31,7 @@ class CurrentUserState extends Equatable {
     bool? isUpdatingImage,
     bool? isLoadingFiles,
     String? error,
+      Set<String>? loadingSummaries,
   }) {
     return CurrentUserState(
       user: user ?? this.user,
@@ -38,6 +41,7 @@ class CurrentUserState extends Equatable {
       isUpdatingImage: isUpdatingImage ?? this.isUpdatingImage, 
       isLoadingFiles: isLoadingFiles ?? this.isLoadingFiles,
       error: error,
+          loadingSummaries: loadingSummaries ?? this.loadingSummaries,
     );
   }
 
@@ -50,5 +54,6 @@ class CurrentUserState extends Equatable {
         isUpdatingImage, 
         isLoadingFiles,
         error,
+        loadingSummaries
       ];
 }

@@ -94,4 +94,21 @@ class MockNetworkService extends _i1.Mock implements _i3.NetworkService {
           ),
         )),
       ) as _i4.Future<_i2.Response<dynamic>>);
+
+  @override
+  _i4.Future<_i2.Response<dynamic>> postEmpty(String? url) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #postEmpty,
+          [url],
+        ),
+        returnValue:
+            _i4.Future<_i2.Response<dynamic>>.value(_FakeResponse_0<dynamic>(
+          this,
+          Invocation.method(
+            #postEmpty,
+            [url],
+          ),
+        )),
+      ) as _i4.Future<_i2.Response<dynamic>>);
 }

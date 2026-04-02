@@ -4,6 +4,7 @@ import 'package:sehhalink/core/current_user/domain/use_cases/add_file_use_case.d
 import 'package:sehhalink/core/current_user/domain/use_cases/delete_file_use_case.dart';
 import 'package:sehhalink/core/current_user/domain/use_cases/get_all_files_use_case.dart';
 import 'package:sehhalink/core/current_user/domain/use_cases/get_current_user_use_case.dart';
+import 'package:sehhalink/core/current_user/domain/use_cases/get_file_summary_use_case.dart';
 import 'package:sehhalink/core/current_user/domain/use_cases/update_current_user.dart';
 import 'package:sehhalink/core/current_user/domain/use_cases/update_profile_image_use_case.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
@@ -31,8 +32,13 @@ void currentUserDi() {
     () => UpdateProfileImageUseCase(getIt()),
   );
 
+  registerLazyIfNotRegistered<GetFileSummaryUseCase>(
+    () => GetFileSummaryUseCase(getIt()),
+  );
+
   registerLazyIfNotRegistered<CurrentUserCubit>(
     () => CurrentUserCubit(
+      getFileSummaryUseCase: getIt(),
       updateProfileImageUseCase: getIt(),
       getCurrentUserUseCase: getIt(),
       updateUserUseCase: getIt(),

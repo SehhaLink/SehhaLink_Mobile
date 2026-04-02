@@ -1,9 +1,15 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sehhalink/core/current_user/data/model/file_model.dart';
 import 'package:sehhalink/core/current_user/data/model/user_model.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user.dart';
+import 'package:sehhalink/core/networking/api_const.dart';
+import 'package:sehhalink/core/networking/api_error_factory.dart';
+import 'package:sehhalink/core/networking/api_error_handler.dart';
+import 'package:sehhalink/core/networking/api_result.dart';
+import 'package:sehhalink/core/networking/network_service.dart';
 import 'package:sehhalink/core/service/cache_exception.dart';
 import 'package:sehhalink/core/service/isar_service.dart';
 import 'package:sehhalink/core/service/secure_storage_service.dart';
@@ -20,6 +26,8 @@ abstract class LocalDataSource {
   Future<List<FileModel>> getUserFiles();
   Future<void> deleteFile(String fileId);
   Future<void> clearUserData();
+  Future<ApiResult<String>> summarizeFile(String fileId);
+  Future<void> updateFileSummary(String fileId, String summary);
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
@@ -33,6 +41,70 @@ class LocalDataSourceImpl extends LocalDataSource {
     } catch (e) {
       if (e is CacheException) rethrow;
       throw CacheException('Failed to get user: $e');
+    }
+  }
+
+  @override
+  Future<ApiResult<String>> summarizeFile(String fileId) async {
+    try {
+      // 1. Check cache first
+      final isar = await IsarService.instance;
+      final cached = await isar.fileModels
+          .filter()
+          .fileIdEqualTo(fileId)
+          .findFirst();
+
+      if (cached?.summary != null && cached!.summary!.isNotEmpty) {
+        return ApiResult.success(cached.summary!);
+      }
+
+      // 2. API call
+      final networkService = NetworkServiceImp();
+      final response = await networkService.postEmpty(
+        ApiConst.summarize(int.parse(fileId)),
+      );
+
+      if (response.statusCode != 200 || response.data['success'] != true) {
+        return ApiResult.error(
+          ApiErrorHandler.handle(
+            DioException(
+              requestOptions: RequestOptions(),
+              response: response,
+              type: DioExceptionType.badResponse,
+            ),
+          ),
+        );
+      }
+
+      final summary = response.data['data']['summary'] as String;
+
+      // 3. Save locally
+      await updateFileSummary(fileId, summary);
+
+      return ApiResult.success(summary);
+    } on DioException catch (e) {
+      return ApiResult.error(ApiErrorHandler.handle(e));
+    } catch (e) {
+      return ApiResult.error(ApiErrorFactory.defaultError);
+    }
+  }
+
+  @override
+  Future<void> updateFileSummary(String fileId, String summary) async {
+    try {
+      final isar = await IsarService.instance;
+      await isar.writeTxn(() async {
+        final file = await isar.fileModels
+            .filter()
+            .fileIdEqualTo(fileId)
+            .findFirst();
+        if (file != null) {
+          file.summary = summary;
+          await isar.fileModels.put(file);
+        }
+      });
+    } catch (e) {
+      throw CacheException('Failed to update summary: $e');
     }
   }
 

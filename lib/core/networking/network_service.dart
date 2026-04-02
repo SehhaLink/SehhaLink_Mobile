@@ -6,9 +6,10 @@ abstract class NetworkService {
   Future<Response> post(
     String url,
     dynamic body, {
-    Options? options,                              
+    Options? options,
     void Function(int sent, int total)? onSendProgress,
   });
+  Future<Response> postEmpty(String url);
 }
 
 class NetworkServiceImp extends NetworkService {
@@ -23,14 +24,19 @@ class NetworkServiceImp extends NetworkService {
   Future<Response> post(
     String url,
     dynamic body, {
-    Options? options,                             
+    Options? options,
     void Function(int sent, int total)? onSendProgress,
   }) async {
     return await dio.post(
       url,
       data: body,
-      options: options,                         
+      options: options,
       onSendProgress: onSendProgress,
     );
+  }
+
+  @override
+  Future<Response> postEmpty(String url) async {
+    return await dio.post(url);
   }
 }

@@ -81,7 +81,12 @@ int _fileModelEstimateSize(
   bytesCount += 3 + object.fileName.length * 3;
   bytesCount += 3 + object.filePath.length * 3;
   bytesCount += 3 + object.fileType.length * 3;
-  bytesCount += 3 + object.summary.length * 3;
+  {
+    final value = object.summary;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -112,7 +117,7 @@ FileModel _fileModelDeserialize(
   object.filePath = reader.readString(offsets[3]);
   object.fileType = reader.readString(offsets[4]);
   object.id = id;
-  object.summary = reader.readString(offsets[5]);
+  object.summary = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
@@ -134,7 +139,7 @@ P _fileModelDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -940,8 +945,24 @@ extension FileModelQueryFilter
     });
   }
 
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> summaryIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'summary',
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> summaryIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'summary',
+      ));
+    });
+  }
+
   QueryBuilder<FileModel, FileModel, QAfterFilterCondition> summaryEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -954,7 +975,7 @@ extension FileModelQueryFilter
   }
 
   QueryBuilder<FileModel, FileModel, QAfterFilterCondition> summaryGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -969,7 +990,7 @@ extension FileModelQueryFilter
   }
 
   QueryBuilder<FileModel, FileModel, QAfterFilterCondition> summaryLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -984,8 +1005,8 @@ extension FileModelQueryFilter
   }
 
   QueryBuilder<FileModel, FileModel, QAfterFilterCondition> summaryBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1335,7 +1356,7 @@ extension FileModelQueryProperty
     });
   }
 
-  QueryBuilder<FileModel, String, QQueryOperations> summaryProperty() {
+  QueryBuilder<FileModel, String?, QQueryOperations> summaryProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'summary');
     });

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:sehhalink/core/current_user/domain/entity/user_file.dart';
 import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/current_user_state.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';
@@ -56,10 +57,8 @@ class _FileCardState extends State<FileCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => _ImageViewerScreen(
-              path: path,
-              fileName: widget.file.fileName,
-            ),
+            builder: (_) =>
+                _ImageViewerScreen(path: path, fileName: widget.file.fileName),
           ),
         );
       }
@@ -124,15 +123,21 @@ class _FileCardState extends State<FileCard> {
                 ),
                 horizontalSpace(8),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 6.h,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.primaryBlue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.open_in_new_rounded,
-                          size: 13.sp, color: AppColors.primaryBlue),
+                      Icon(
+                        Icons.open_in_new_rounded,
+                        size: 13.sp,
+                        color: AppColors.primaryBlue,
+                      ),
                       horizontalSpace(4),
                       Text(
                         'view_details.open'.tr(),
@@ -149,7 +154,10 @@ class _FileCardState extends State<FileCard> {
                 GestureDetector(
                   onTap: _confirmDelete,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 6.h,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.redAccent.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(8.r),
@@ -168,13 +176,22 @@ class _FileCardState extends State<FileCard> {
 
         verticalSpace(12),
 
-        FileSummaryWidget(summary: widget.file.summary),
+        BlocBuilder<CurrentUserCubit, CurrentUserState>(
+          builder: (context, state) {
+            final isLoading = state.loadingSummaries.contains(
+              widget.file.fileId,
+            );
+            return FileSummaryWidget(
+              fileId: widget.file.fileId,
+              summary: widget.file.summary,
+              isLoading: isLoading,
+            );
+          },
+        ),
       ],
     );
   }
 }
-
-
 
 class _ImageViewerScreen extends StatelessWidget {
   final String path;
@@ -208,8 +225,7 @@ class _ImageViewerScreen extends StatelessWidget {
             errorBuilder: (_, _, _) => Center(
               child: Text(
                 'view_details.cannot_load_image'.tr(),
-                style: TextStyle(
-                    color: AppColors.textWhite, fontSize: 14.sp),
+                style: TextStyle(color: AppColors.textWhite, fontSize: 14.sp),
               ),
             ),
           ),

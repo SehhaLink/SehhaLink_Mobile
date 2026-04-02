@@ -56,28 +56,30 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _uploadSingle(File file, int index) async {
-    try {
-      final fileModel = await uploadFileUseCase(
-        file,
-        onProgress: (progress) => _updateFile(
-          index,
-          progress: progress,
-          status: UploadStatus.uploading,
-        ),
-      );
-
-      await saveFileUseCase(fileModel);
-
-      _updateFile(
+    final result = await uploadFileUseCase(
+      file,
+      onProgress: (progress) => _updateFile(
         index,
-        progress: 1.0,
-        status: UploadStatus.done,
-        uploadedAt: DateTime.now(),
-        fileId: fileModel.fileId,
-      );
-    } catch (e) {
-      _markFailed(index, e.toString());
-    }
+        progress: progress,
+        status: UploadStatus.uploading,
+      ),
+    );
+
+    result.when(
+      onSuccess: (fileModel) async {
+        await saveFileUseCase(fileModel);
+        _updateFile(
+          index,
+          progress: 1.0,
+          status: UploadStatus.done,
+          uploadedAt: DateTime.now(),
+          fileId: fileModel.fileId,
+        );
+      },
+      onError: (error) {
+        _markFailed(index, error.message);
+      },
+    );
   }
 
   void retryUpload(int index) {
