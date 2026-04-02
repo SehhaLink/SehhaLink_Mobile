@@ -21,8 +21,6 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
     File file, {
     void Function(double progress)? onProgress,
   }) async {
-    final token = await SecureStorageService.getToken();
-
     final formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(
         file.path,
@@ -33,12 +31,6 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
     final response = await networkService.post(
       ApiConst.uploadDocument,
       formData,
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'multipart/form-data',
-        },
-      ),
       onSendProgress: (sent, total) {
         if (total > 0) onProgress?.call(sent / total);
       },

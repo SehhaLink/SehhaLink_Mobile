@@ -3,6 +3,7 @@ import 'package:sehhalink/core/utils/register_lazy_if_not_registered.dart';
 import 'package:sehhalink/features/home/data/data_source/home_remote_data_source.dart';
 import 'package:sehhalink/features/home/data/repo_impl/home_repo_impl.dart';
 import 'package:sehhalink/features/home/domain/repo/home_repo.dart';
+import 'package:sehhalink/features/home/domain/use_cases/get_saved_files_use_case.dart';
 import 'package:sehhalink/features/home/domain/use_cases/save_file_use_case.dart';
 import 'package:sehhalink/features/home/domain/use_cases/upload_file_use_case.dart';
 import 'package:sehhalink/features/home/presentation/logic/home_cubit.dart';
@@ -23,8 +24,13 @@ void homeScreenDi() {
   registerLazyIfNotRegistered<SaveFileUseCase>(
     () => SaveFileUseCase(homeRepo: getIt<HomeRepo>()),
   );
+  registerLazyIfNotRegistered<GetSavedFilesUseCase>(
+    () => GetSavedFilesUseCase(getIt<HomeRepo>()),
+  );
+
   registerLazyIfNotRegistered<HomeCubit>(
     () => HomeCubit(
+      getSavedFilesUseCase: getIt<GetSavedFilesUseCase>(),
       uploadFileUseCase: getIt<UploadFileUseCase>(),
       saveFileUseCase: getIt<SaveFileUseCase>(),
     ),

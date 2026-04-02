@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:sehhalink/core/networking/api_const.dart';
+import 'package:sehhalink/core/service/secure_storage_service.dart';
 
 class DioFactory {
   DioFactory._();
-
   static Dio? _dio;
 
   static Dio getDio() {
@@ -12,15 +12,26 @@ class DioFactory {
       _dio = Dio(
         BaseOptions(
           baseUrl: ApiConst.baseurl,
-          connectTimeout: const Duration(seconds: 30),
-          receiveTimeout: const Duration(seconds: 30),
-
+          connectTimeout: const Duration(seconds: 60),
+          receiveTimeout: const Duration(seconds: 60),
           validateStatus: (status) {
             return status != null && status >= 200 && status < 300;
           },
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+          },
+        ),
+      );
+
+      _dio!.interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) async {
+            final token = await SecureStorageService.getToken();
+            if (token != null && token.isNotEmpty) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
+            handler.next(options);
           },
         ),
       );

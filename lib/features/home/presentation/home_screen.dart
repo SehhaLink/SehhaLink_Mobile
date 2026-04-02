@@ -24,10 +24,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     homeScreenDi();
     return BlocProvider(
-      create: (_) => getIt<HomeCubit>(),
+      create: (_) => getIt<HomeCubit>()..loadSavedFiles(),
       child: BlocBuilder<CurrentUserCubit, CurrentUserState>(
         builder: (context, userState) {
+          final currentUserCubit = context.read<CurrentUserCubit>();
           final user = userState.user;
+
           return Scaffold(
             backgroundColor: AppColors.backgroundMain,
             appBar: CustomAppBar(
@@ -51,7 +53,8 @@ class HomeScreen extends StatelessWidget {
                         lastUpload: () {
                           final label = state.lastUploadLabel;
                           if (label == null) return 'home.no_uploads_yet'.tr();
-                          if (label == 'home.today' || label == 'home.yesterday') {
+                          if (label == 'home.today' ||
+                              label == 'home.yesterday') {
                             return label.tr();
                           }
                           return label;
@@ -61,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (_) => BlocProvider.value(
-                                value: context.read<CurrentUserCubit>(),
+                                value: currentUserCubit,
                                 child: const ViewDetailsScreen(),
                               ),
                             ),
@@ -79,7 +82,9 @@ class HomeScreen extends StatelessWidget {
                       ),
                       verticalSpace(24),
                       if (state.hasFiles) ...[
-                        _SectionTitle(title: 'home.upload_progress_section'.tr()),
+                        _SectionTitle(
+                          title: 'home.upload_progress_section'.tr(),
+                        ),
                         verticalSpace(12),
                         ...state.files.asMap().entries.map(
                           (entry) => Padding(
@@ -88,6 +93,7 @@ class HomeScreen extends StatelessWidget {
                               file: entry.value,
                               onCancel: () => cubit.cancelUpload(entry.key),
                               onRetry: () => cubit.retryUpload(entry.key),
+                              onRemove: () => cubit.removeFile(entry.key),
                             ),
                           ),
                         ),

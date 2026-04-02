@@ -42,10 +42,20 @@ const FileModelSchema = CollectionSchema(
       name: r'fileType',
       type: IsarType.string,
     ),
-    r'summary': PropertySchema(
+    r'size': PropertySchema(
       id: 5,
+      name: r'size',
+      type: IsarType.string,
+    ),
+    r'summary': PropertySchema(
+      id: 6,
       name: r'summary',
       type: IsarType.string,
+    ),
+    r'uploadedAt': PropertySchema(
+      id: 7,
+      name: r'uploadedAt',
+      type: IsarType.dateTime,
     )
   },
   estimateSize: _fileModelEstimateSize,
@@ -82,6 +92,12 @@ int _fileModelEstimateSize(
   bytesCount += 3 + object.filePath.length * 3;
   bytesCount += 3 + object.fileType.length * 3;
   {
+    final value = object.size;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.summary;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -101,7 +117,9 @@ void _fileModelSerialize(
   writer.writeString(offsets[2], object.fileName);
   writer.writeString(offsets[3], object.filePath);
   writer.writeString(offsets[4], object.fileType);
-  writer.writeString(offsets[5], object.summary);
+  writer.writeString(offsets[5], object.size);
+  writer.writeString(offsets[6], object.summary);
+  writer.writeDateTime(offsets[7], object.uploadedAt);
 }
 
 FileModel _fileModelDeserialize(
@@ -117,7 +135,9 @@ FileModel _fileModelDeserialize(
   object.filePath = reader.readString(offsets[3]);
   object.fileType = reader.readString(offsets[4]);
   object.id = id;
-  object.summary = reader.readStringOrNull(offsets[5]);
+  object.size = reader.readStringOrNull(offsets[5]);
+  object.summary = reader.readStringOrNull(offsets[6]);
+  object.uploadedAt = reader.readDateTimeOrNull(offsets[7]);
   return object;
 }
 
@@ -140,6 +160,10 @@ P _fileModelDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
+    case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
+      return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -945,6 +969,152 @@ extension FileModelQueryFilter
     });
   }
 
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'size',
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'size',
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'size',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'size',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'size',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> sizeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'size',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<FileModel, FileModel, QAfterFilterCondition> summaryIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1091,6 +1261,77 @@ extension FileModelQueryFilter
       ));
     });
   }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> uploadedAtIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'uploadedAt',
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition>
+      uploadedAtIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'uploadedAt',
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> uploadedAtEqualTo(
+      DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'uploadedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition>
+      uploadedAtGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'uploadedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> uploadedAtLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'uploadedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterFilterCondition> uploadedAtBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'uploadedAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension FileModelQueryObject
@@ -1173,6 +1414,18 @@ extension FileModelQuerySortBy on QueryBuilder<FileModel, FileModel, QSortBy> {
     });
   }
 
+  QueryBuilder<FileModel, FileModel, QAfterSortBy> sortBySize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterSortBy> sortBySizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.desc);
+    });
+  }
+
   QueryBuilder<FileModel, FileModel, QAfterSortBy> sortBySummary() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'summary', Sort.asc);
@@ -1182,6 +1435,18 @@ extension FileModelQuerySortBy on QueryBuilder<FileModel, FileModel, QSortBy> {
   QueryBuilder<FileModel, FileModel, QAfterSortBy> sortBySummaryDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'summary', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterSortBy> sortByUploadedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uploadedAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterSortBy> sortByUploadedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uploadedAt', Sort.desc);
     });
   }
 }
@@ -1260,6 +1525,18 @@ extension FileModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<FileModel, FileModel, QAfterSortBy> thenBySize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterSortBy> thenBySizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.desc);
+    });
+  }
+
   QueryBuilder<FileModel, FileModel, QAfterSortBy> thenBySummary() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'summary', Sort.asc);
@@ -1269,6 +1546,18 @@ extension FileModelQuerySortThenBy
   QueryBuilder<FileModel, FileModel, QAfterSortBy> thenBySummaryDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'summary', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterSortBy> thenByUploadedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uploadedAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QAfterSortBy> thenByUploadedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uploadedAt', Sort.desc);
     });
   }
 }
@@ -1310,10 +1599,23 @@ extension FileModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<FileModel, FileModel, QDistinct> distinctBySize(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'size', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<FileModel, FileModel, QDistinct> distinctBySummary(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'summary', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FileModel, FileModel, QDistinct> distinctByUploadedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'uploadedAt');
     });
   }
 }
@@ -1356,9 +1658,21 @@ extension FileModelQueryProperty
     });
   }
 
+  QueryBuilder<FileModel, String?, QQueryOperations> sizeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'size');
+    });
+  }
+
   QueryBuilder<FileModel, String?, QQueryOperations> summaryProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'summary');
+    });
+  }
+
+  QueryBuilder<FileModel, DateTime?, QQueryOperations> uploadedAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'uploadedAt');
     });
   }
 }

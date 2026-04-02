@@ -13,11 +13,13 @@ class FileProgressCard extends StatelessWidget {
     required this.file,
     this.onCancel,
     this.onRetry,
+    this.onRemove,
   });
 
   final UploadedFileItem file;
   final VoidCallback? onCancel;
   final VoidCallback? onRetry;
+  final VoidCallback? onRemove;
 
   Color get _statusColor {
     switch (file.status) {
@@ -128,6 +130,7 @@ class FileProgressCard extends StatelessWidget {
             status: file.status,
             onCancel: onCancel,
             onRetry: onRetry,
+            onRemove: onRemove,
           ),
         ],
       ),
@@ -186,11 +189,13 @@ class _FileAction extends StatelessWidget {
     required this.status,
     this.onCancel,
     this.onRetry,
+    this.onRemove,
   });
 
   final UploadStatus status;
   final VoidCallback? onCancel;
   final VoidCallback? onRetry;
+  final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -198,17 +203,40 @@ class _FileAction extends StatelessWidget {
       case UploadStatus.uploading:
         return GestureDetector(
           onTap: onCancel,
-          child: Icon(Icons.close_rounded,
-              color: AppColors.textSecondary, size: 20.sp),
+          child: Icon(
+            Icons.close_rounded,
+            color: AppColors.textSecondary,
+            size: 20.sp,
+          ),
         );
       case UploadStatus.done:
-        return Icon(Icons.check_circle_rounded,
-            color: AppColors.successGreen, size: 22.sp);
+        return Icon(
+          Icons.check_circle_rounded,
+          color: AppColors.successGreen,
+          size: 22.sp,
+        );
       case UploadStatus.failed:
-        return GestureDetector(
-          onTap: onRetry,
-          child: Icon(Icons.refresh_rounded,
-              color: const Color(0xFFEF4444), size: 22.sp),
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onTap: onRetry,
+              child: Icon(
+                Icons.refresh_rounded,
+                color: const Color(0xFFEF4444),
+                size: 22.sp,
+              ),
+            ),
+            SizedBox(width: 8.w),
+            GestureDetector(
+              onTap: onRemove,
+              child: Icon(
+                Icons.close_rounded,
+                color: AppColors.textSecondary,
+                size: 20.sp,
+              ),
+            ),
+          ],
         );
     }
   }

@@ -5,5 +5,5 @@ class ApiConst {
   static const String forgetPassword = "/Account/forget-password";
   static const String resetPassword = "/Account/reset-password";
   static const String uploadDocument = "/Documents/upload";
-  static String summarize(int fileId) => '/Documents/$fileId/summarize';
+  static String summarize(int fileId) => '/Documents/27/summarize';
 }

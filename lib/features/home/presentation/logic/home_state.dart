@@ -1,60 +1,47 @@
-import 'package:equatable/equatable.dart';
 import 'package:sehhalink/features/home/domain/entities/upload_file_item.dart';
 
-class HomeState extends Equatable {
+class HomeState {
   final List<UploadedFileItem> files;
-  final bool isPickingFile;
   final bool isDragging;
+  final bool isPickingFile;
   final String? errorMessage;
+  final DateTime? lastUploadTime;
 
   const HomeState({
     this.files = const [],
-    this.isPickingFile = false,
     this.isDragging = false,
+    this.isPickingFile = false,
     this.errorMessage,
+    this.lastUploadTime,
   });
-
-  int get totalFiles => files.length;
-
-  bool get hasFiles => files.isNotEmpty;
 
   int get doneCount => files.where((f) => f.status == UploadStatus.done).length;
 
-  int get uploadingCount =>
-      files.where((f) => f.status == UploadStatus.uploading).length;
-
-  int get failedCount =>
-      files.where((f) => f.status == UploadStatus.failed).length;
-
   String? get lastUploadLabel {
-    if (files.isEmpty) return null;
-    final last = files.last.uploadedAt;
-    if (last == null) return null;
+    if (lastUploadTime == null) return null;
     final now = DateTime.now();
-    final diff = DateTime(now.year, now.month, now.day)
-        .difference(DateTime(last.year, last.month, last.day))
-        .inDays;
-    if (diff == 0) return 'home.today';
-    if (diff == 1) return 'home.yesterday';
-    return '${last.day}/${last.month}/${last.year}';
+    final diff = now.difference(lastUploadTime!);
+    if (diff.inDays == 0) return 'home.today';
+    if (diff.inDays == 1) return 'home.yesterday';
+    return '${lastUploadTime!.day}/${lastUploadTime!.month}/${lastUploadTime!.year}';
   }
 
-  // ── copyWith ──────────────────────────────────────────────────────────────
+  bool get hasFiles => files.isNotEmpty;
+
   HomeState copyWith({
     List<UploadedFileItem>? files,
-    bool? isPickingFile,
     bool? isDragging,
+    bool? isPickingFile,
     String? errorMessage,
     bool clearError = false,
+    DateTime? lastUploadTime,
   }) {
     return HomeState(
       files: files ?? this.files,
-      isPickingFile: isPickingFile ?? this.isPickingFile,
       isDragging: isDragging ?? this.isDragging,
-      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      isPickingFile: isPickingFile ?? this.isPickingFile,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
+      lastUploadTime: lastUploadTime ?? this.lastUploadTime,
     );
   }
-
-  @override
-  List<Object?> get props => [files, isPickingFile, isDragging, errorMessage];
 }

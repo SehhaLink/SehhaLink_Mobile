@@ -13,8 +13,10 @@ class HomeRepoImpl extends HomeRepo {
     required this.homeRemoteDataSource,
     required this.localDataSource,
   });
+
   final HomeRemoteDataSource homeRemoteDataSource;
   final LocalDataSource localDataSource;
+
   @override
   Future<ApiResult<FileModel>> uploadFile(
     File file, {
@@ -36,5 +38,15 @@ class HomeRepoImpl extends HomeRepo {
   @override
   Future<void> saveFile(FileModel file) async {
     await localDataSource.addFile(file);
+  }
+
+  @override
+  Future<List<FileModel>> getSavedFiles() async {
+    return await localDataSource.getUserFiles(); 
+  }
+
+  @override
+  Future<void> deleteSavedFile(String fileId) async {
+    await localDataSource.deleteFile(fileId); 
   }
 }
