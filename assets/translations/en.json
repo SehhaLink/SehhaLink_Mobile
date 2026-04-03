@@ -169,5 +169,9 @@
     "passwords_no_match_short": "Passwords don't match",
     "enter_otp": "Enter OTP",
     "min_6_chars": "Min 6 characters"
-  }
+  },
+  "notifications": {
+  "coming_soon_title": "Notifications coming soon",
+  "coming_soon_sub": "We're working on it — stay tuned for updates!"
+}
 }

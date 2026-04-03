@@ -9,8 +9,10 @@ class HomeState {
   final int savedFilesCount;
   final bool isGeneralSummaryLoading;
   final String? generalSummary;
+  final bool isLoading;
 
   const HomeState({
+    this.isLoading = true,
     this.files = const [],
     this.isDragging = false,
     this.isPickingFile = false,
@@ -44,6 +46,7 @@ class HomeState {
     int? savedFilesCount,
     String? generalSummary,
     bool? isGeneralSummaryLoading,
+    bool? isLoading,
   }) {
     return HomeState(
       files: files ?? this.files,
@@ -55,6 +58,7 @@ class HomeState {
       generalSummary: generalSummary ?? this.generalSummary,
       isGeneralSummaryLoading:
           isGeneralSummaryLoading ?? this.isGeneralSummaryLoading,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

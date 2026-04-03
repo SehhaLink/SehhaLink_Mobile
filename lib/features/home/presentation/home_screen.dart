@@ -15,6 +15,7 @@ import 'package:sehhalink/features/home/presentation/widgets/custom_app_bar.dart
 import 'package:sehhalink/features/home/presentation/widgets/drop_zoon.dart';
 import 'package:sehhalink/features/home/presentation/widgets/general_summary_card.dart'
     show GeneralSummaryCard;
+import 'package:sehhalink/features/home/presentation/widgets/home_shimmer.dart';
 import 'package:sehhalink/features/home/presentation/widgets/upload_progress.dart';
 import 'package:sehhalink/features/home/presentation/widgets/upload_summary_card.dart';
 import 'package:sehhalink/features/view_details/presentation/view_details_screen.dart';
@@ -41,6 +42,7 @@ class HomeScreen extends StatelessWidget {
             body: BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
                 final cubit = context.read<HomeCubit>();
+                if (state.isLoading) return const HomeShimmer();
 
                 return SingleChildScrollView(
                   padding: EdgeInsets.symmetric(

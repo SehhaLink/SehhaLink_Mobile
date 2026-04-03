@@ -24,6 +24,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(70.h);
 
+  void _showComingSoonOverlay(BuildContext context) {
+    final overlay = Overlay.of(context);
+    late OverlayEntry entry;
+
+    entry = OverlayEntry(
+      builder: (_) => _NotificationComingSoonToast(
+        onDismiss: () => entry.remove(),
+      ),
+    );
+
+    overlay.insert(entry);
+
+    // ✅ تختفي تلقائياً بعد 3 ثواني
+    Future.delayed(const Duration(seconds: 3), () {
+      if (entry.mounted) entry.remove();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -76,7 +94,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         GestureDetector(
-          onTap: onNotificationTap,
+          onTap: () => _showComingSoonOverlay(context), // ✅
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -98,9 +116,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     child: Center(
                       child: Text(
-                        notificationCount > 9
-                            ? '9+'
-                            : '$notificationCount',
+                        notificationCount > 9 ? '9+' : '$notificationCount',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 9.sp,
@@ -124,5 +140,137 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (hour >= 12 && hour < 17) return 'greeting.afternoon'.tr();
     if (hour >= 17 && hour < 21) return 'greeting.evening'.tr();
     return 'greeting.night'.tr();
+  }
+}
+
+// ─── Toast Widget ─────────────────────────────────────────────────────────────
+
+class _NotificationComingSoonToast extends StatefulWidget {
+  const _NotificationComingSoonToast({required this.onDismiss});
+  final VoidCallback onDismiss;
+
+  @override
+  State<_NotificationComingSoonToast> createState() =>
+      _NotificationComingSoonToastState();
+}
+
+class _NotificationComingSoonToastState
+    extends State<_NotificationComingSoonToast>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+  late Animation<Offset> _slide;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _opacity = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+    _slide = Tween<Offset>(
+      begin: const Offset(0, -0.3),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+
+    // ✅ fade out قبل الاختفاء
+    Future.delayed(const Duration(milliseconds: 2500), () {
+      if (mounted) _controller.reverse().then((_) => widget.onDismiss());
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 80.h,
+      right: 16.w,
+      left: 16.w,
+      child: SlideTransition(
+        position: _slide,
+        child: FadeTransition(
+          opacity: _opacity,
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14.r),
+                border: Border.all(
+                  color: AppColors.primaryBlue.withOpacity(0.2),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8.r),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE8F4F8),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Icon(
+                      Icons.notifications_outlined,
+                      color: AppColors.primaryBlue,
+                      size: 20.sp,
+                    ),
+                  ),
+                  horizontalSpace(12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'notifications.coming_soon_title'.tr(),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeightHelper.semiBold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        verticalSpace(3),
+                        Text(
+                          'notifications.coming_soon_sub'.tr(),
+                          style: TextStyle(
+                            fontSize: 11.sp,
+                            color: AppColors.textSecondary,
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  horizontalSpace(8),
+                  GestureDetector(
+                    onTap: widget.onDismiss,
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 16.sp,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -52,9 +52,12 @@ class HomeCubit extends Cubit<HomeState> {
           files: items,
           lastUploadTime: lastUpload,
           savedFilesCount: savedFiles.length,
+          isLoading: false,
         ),
       );
-    } catch (_) {}
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+    }
   }
 
  Future<void> loadGeneralSummary() async {
