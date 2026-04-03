@@ -11,4 +11,5 @@ abstract class HomeRepo {
 
   Future<List<FileModel>> getSavedFiles();
   Future<void> deleteSavedFile(String fileId);
+  Future<ApiResult<String>> getGeneralSummary();
 }

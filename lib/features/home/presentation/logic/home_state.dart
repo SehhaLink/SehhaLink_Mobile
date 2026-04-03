@@ -6,6 +6,9 @@ class HomeState {
   final bool isPickingFile;
   final String? errorMessage;
   final DateTime? lastUploadTime;
+  final int savedFilesCount;
+  final bool isGeneralSummaryLoading;
+  final String? generalSummary;
 
   const HomeState({
     this.files = const [],
@@ -13,9 +16,12 @@ class HomeState {
     this.isPickingFile = false,
     this.errorMessage,
     this.lastUploadTime,
+    this.savedFilesCount = 0,
+    this.generalSummary,
+    this.isGeneralSummaryLoading = false,
   });
 
-  int get doneCount => files.where((f) => f.status == UploadStatus.done).length;
+  int get doneCount => savedFilesCount;
 
   String? get lastUploadLabel {
     if (lastUploadTime == null) return null;
@@ -35,6 +41,9 @@ class HomeState {
     String? errorMessage,
     bool clearError = false,
     DateTime? lastUploadTime,
+    int? savedFilesCount,
+    String? generalSummary,
+    bool? isGeneralSummaryLoading,
   }) {
     return HomeState(
       files: files ?? this.files,
@@ -42,6 +51,10 @@ class HomeState {
       isPickingFile: isPickingFile ?? this.isPickingFile,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       lastUploadTime: lastUploadTime ?? this.lastUploadTime,
+      savedFilesCount: savedFilesCount ?? this.savedFilesCount,
+      generalSummary: generalSummary ?? this.generalSummary,
+      isGeneralSummaryLoading:
+          isGeneralSummaryLoading ?? this.isGeneralSummaryLoading,
     );
   }
 }

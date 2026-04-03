@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sehhalink/features/home/domain/entities/upload_file_item.dart';
 import 'package:sehhalink/features/home/domain/use_cases/get_saved_files_use_case.dart';
+import 'package:sehhalink/features/home/domain/use_cases/get_user_general_summary_use_case.dart';
 import 'package:sehhalink/features/home/domain/use_cases/save_file_use_case.dart';
 import 'package:sehhalink/features/home/domain/use_cases/upload_file_use_case.dart';
 import 'package:sehhalink/features/home/presentation/logic/home_state.dart';
@@ -12,11 +13,13 @@ class HomeCubit extends Cubit<HomeState> {
     required this.uploadFileUseCase,
     required this.saveFileUseCase,
     required this.getSavedFilesUseCase,
+    required this.getUserGeneralSummaryUseCase,
   }) : super(const HomeState());
 
   final UploadFileUseCase uploadFileUseCase;
   final SaveFileUseCase saveFileUseCase;
   final GetSavedFilesUseCase getSavedFilesUseCase;
+  final GetUserGeneralSummaryUseCase getUserGeneralSummaryUseCase;
 
   Future<void> loadSavedFiles() async {
     try {
@@ -44,9 +47,32 @@ class HomeCubit extends Cubit<HomeState> {
             (prev, curr) => prev == null || curr.isAfter(prev) ? curr : prev,
           );
 
-      emit(state.copyWith(files: items, lastUploadTime: lastUpload));
+      emit(
+        state.copyWith(
+          files: items,
+          lastUploadTime: lastUpload,
+          savedFilesCount: savedFiles.length,
+        ),
+      );
     } catch (_) {}
   }
+
+ Future<void> loadGeneralSummary() async {
+  if (state.generalSummary != null) return; 
+  emit(state.copyWith(isGeneralSummaryLoading: true));
+  final summary = await getUserGeneralSummaryUseCase();
+  if (isClosed) return;
+  summary.when(
+    onSuccess: (data) => emit(state.copyWith(
+      generalSummary: data,
+      isGeneralSummaryLoading: false,
+    )),
+    onError: (error) => emit(state.copyWith(
+      errorMessage: error.message,
+      isGeneralSummaryLoading: false,
+    )),
+  );
+}
 
   Future<void> pickAndUpload() async {
     emit(state.copyWith(isPickingFile: true, clearError: true));
@@ -98,8 +124,9 @@ class HomeCubit extends Cubit<HomeState> {
 
     result.when(
       onSuccess: (fileModel) async {
-        await saveFileUseCase(fileModel);
         final now = DateTime.now();
+        fileModel.uploadedAt = now;
+
         _updateFile(
           index,
           progress: 1.0,
@@ -107,7 +134,27 @@ class HomeCubit extends Cubit<HomeState> {
           uploadedAt: now,
           fileId: fileModel.fileId,
         );
-        emit(state.copyWith(lastUploadTime: now));
+
+        await saveFileUseCase(fileModel);
+
+        if (isClosed) return;
+        final updated = state.files
+            .map((f) {
+              if (f.fileId == fileModel.fileId) {
+                return f.copyWith(isStored: true);
+              }
+              return f;
+            })
+            .where((f) => !f.isStored)
+            .toList();
+
+        emit(
+          state.copyWith(
+            files: updated,
+            lastUploadTime: now,
+            savedFilesCount: state.savedFilesCount + 1,
+          ),
+        );
       },
       onError: (error) {
         _markFailed(index, error.message);
@@ -115,24 +162,17 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  // ✅ Retry — لو نجح يتشال من الـ list
   Future<void> retryUpload(int index) async {
     final file = state.files[index];
     if (file.fileId == null) {
-      // مفيش path محفوظ — شيله بس
       cancelUpload(index);
       return;
     }
 
     _updateFile(index, progress: 0.0, status: UploadStatus.uploading);
     emit(state.copyWith(clearError: true));
-
-    // بعد ما ينجح الـ _uploadSingle هيعمل done
-    // لو عايز تشيله بعد النجاح uncommment السطر ده:
-    // _removeFileAt(index);
   }
 
-  // ✅ Remove failed من الـ list
   void removeFile(int index) {
     final updated = List<UploadedFileItem>.from(state.files)..removeAt(index);
     emit(state.copyWith(files: updated));
@@ -153,7 +193,9 @@ class HomeCubit extends Cubit<HomeState> {
     DateTime? uploadedAt,
     String? fileId,
   }) {
-    if (isClosed || index >= state.files.length) return;
+    if (isClosed) return;
+    if (index < 0 || index >= state.files.length) return;
+
     final updated = List<UploadedFileItem>.from(state.files);
     updated[index] = updated[index].copyWith(
       progress: progress,

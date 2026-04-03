@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:ui' as ui;
 import 'package:sehhalink/core/helpers/spacing.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';
@@ -9,19 +10,31 @@ import 'package:sehhalink/core/theme/font_weight_helper.dart';
 class UploadSummaryCard extends StatelessWidget {
   const UploadSummaryCard({
     super.key,
-    this.totalReports = 12,
+    this.totalReports = 0,
     this.lastUpload = '',
-    this.storageUsed = '',
     this.onViewDetails,
   });
 
   final int totalReports;
   final String lastUpload;
-  final String storageUsed;
   final VoidCallback? onViewDetails;
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = Directionality.of(context) == ui.TextDirection.rtl;
+
+    final reportsItem = _StatItem(
+      icon: Icons.description_outlined,
+      label: 'home.upload_summary_reports'.tr(),
+      value: '$totalReports',
+    );
+
+    final lastUploadItem = _StatItem(
+      icon: Icons.schedule_outlined,
+      label: 'home.upload_summary_last_data_upload'.tr(),
+      value: lastUpload,
+    );
+
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
@@ -79,20 +92,11 @@ class UploadSummaryCard extends StatelessWidget {
 
           verticalSpace(16),
 
+          // ✅ عكس الترتيب في RTL
           Row(
-            children: [
-              _StatItem(
-                icon: Icons.description_outlined,
-                label: 'home.reports'.tr(),
-                value: '$totalReports',
-              ),
-              _Divider(),
-              _StatItem(
-                icon: Icons.schedule_outlined,
-                label: 'home.last_upload'.tr(),
-                value: lastUpload,
-              ),
-            ],
+            children: isRtl
+                ? [lastUploadItem, _Divider(), reportsItem]
+                : [reportsItem, _Divider(), lastUploadItem],
           ),
 
           verticalSpace(16),
@@ -111,7 +115,7 @@ class UploadSummaryCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'home.view_details'.tr(),
+                    'home.upload_summary_view_details'.tr(),
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeightHelper.semiBold,
@@ -119,8 +123,11 @@ class UploadSummaryCard extends StatelessWidget {
                     ),
                   ),
                   horizontalSpace(6),
+                  // ✅ arrow صح حسب الاتجاه
                   Icon(
-                    Icons.arrow_forward_rounded,
+                    isRtl
+                        ? Icons.arrow_back_rounded
+                        : Icons.arrow_forward_rounded,
                     color: Colors.white,
                     size: 16.sp,
                   ),

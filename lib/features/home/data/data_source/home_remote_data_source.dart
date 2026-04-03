@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:sehhalink/core/networking/api_const.dart';
 import 'package:sehhalink/core/networking/network_service.dart';
-import 'package:sehhalink/core/service/secure_storage_service.dart';
 import 'package:sehhalink/core/current_user/data/model/file_model.dart';
 
 abstract class HomeRemoteDataSource {
@@ -10,6 +9,7 @@ abstract class HomeRemoteDataSource {
     File file, {
     void Function(double progress)? onProgress,
   });
+  Future<String> getGeneralSummary();
 }
 
 class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
@@ -49,5 +49,13 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
       ..summary = ''
       ..fileType = file.path.split('.').last
       ..createdAt = DateTime.now().toIso8601String();
+  }
+
+  Future<String> getGeneralSummary() async {
+    final response = await networkService.get(ApiConst.historySummary);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to fetch general summary');
+    }
+    return response.data['data']['summary'] ?? '';
   }
 }

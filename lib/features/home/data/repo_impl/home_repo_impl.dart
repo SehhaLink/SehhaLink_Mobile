@@ -42,11 +42,23 @@ class HomeRepoImpl extends HomeRepo {
 
   @override
   Future<List<FileModel>> getSavedFiles() async {
-    return await localDataSource.getUserFiles(); 
+    return await localDataSource.getUserFiles();
   }
 
   @override
   Future<void> deleteSavedFile(String fileId) async {
-    await localDataSource.deleteFile(fileId); 
+    await localDataSource.deleteFile(fileId);
+  }
+
+  @override
+  Future<ApiResult<String>> getGeneralSummary() async {
+    try {
+      final summary = await homeRemoteDataSource.getGeneralSummary();
+      return ApiResult.success(summary);
+    } on DioException catch (e) {
+      return ApiResult.error(ApiErrorHandler.handle(e));
+    } catch (e) {
+      return ApiResult.error(ApiErrorFactory.defaultError);
+    }
   }
 }

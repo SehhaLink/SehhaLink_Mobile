@@ -13,8 +13,10 @@ import 'package:sehhalink/features/home/presentation/logic/home_cubit.dart';
 import 'package:sehhalink/features/home/presentation/logic/home_state.dart';
 import 'package:sehhalink/features/home/presentation/widgets/custom_app_bar.dart';
 import 'package:sehhalink/features/home/presentation/widgets/drop_zoon.dart';
+import 'package:sehhalink/features/home/presentation/widgets/general_summary_card.dart'
+    show GeneralSummaryCard;
 import 'package:sehhalink/features/home/presentation/widgets/upload_progress.dart';
-import 'package:sehhalink/features/home/presentation/widgets/upload_summery_card.dart';
+import 'package:sehhalink/features/home/presentation/widgets/upload_summary_card.dart';
 import 'package:sehhalink/features/view_details/presentation/view_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -72,14 +74,22 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                       verticalSpace(24),
+                      GeneralSummaryCard(
+                        summary: state.generalSummary,
+                        isLoading: state.isGeneralSummaryLoading,
+                        onExpand: cubit.loadGeneralSummary,
+                      ),
+                      verticalSpace(16),
                       _SectionTitle(title: 'home.upload_report_section'.tr()),
                       verticalSpace(12),
+
                       DropZone(
                         isDragging: state.isDragging,
                         onDragEnter: cubit.onDragEnter,
                         onDragExit: cubit.onDragExit,
                         onTap: cubit.pickAndUpload,
                       ),
+
                       verticalSpace(24),
                       if (state.hasFiles) ...[
                         _SectionTitle(
