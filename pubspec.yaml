@@ -40,6 +40,8 @@ dependencies:
     sdk: flutter
   flutter_advanced_drawer: ^1.5.0
   flutter_bloc: ^9.1.1
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
   flutter_screenutil: ^5.9.3
   flutter_secure_storage: ^10.0.0
   flutter_splash_screen: ^4.0.0
@@ -105,3 +107,8 @@ flutter_assets:
   assets_path: assets/images/
   output_path: lib/core/utils/
   filename: app_assets.dart
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"

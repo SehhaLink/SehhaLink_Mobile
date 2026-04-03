@@ -60,22 +60,22 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
- Future<void> loadGeneralSummary() async {
-  if (state.generalSummary != null) return; 
-  emit(state.copyWith(isGeneralSummaryLoading: true));
-  final summary = await getUserGeneralSummaryUseCase();
-  if (isClosed) return;
-  summary.when(
-    onSuccess: (data) => emit(state.copyWith(
-      generalSummary: data,
-      isGeneralSummaryLoading: false,
-    )),
-    onError: (error) => emit(state.copyWith(
-      errorMessage: error.message,
-      isGeneralSummaryLoading: false,
-    )),
-  );
-}
+  Future<void> loadGeneralSummary() async {
+    emit(state.copyWith(isGeneralSummaryLoading: true));
+    final summary = await getUserGeneralSummaryUseCase();
+    if (isClosed) return;
+    summary.when(
+      onSuccess: (data) => emit(
+        state.copyWith(generalSummary: data, isGeneralSummaryLoading: false),
+      ),
+      onError: (error) => emit(
+        state.copyWith(
+          errorMessage: error.message,
+          isGeneralSummaryLoading: false,
+        ),
+      ),
+    );
+  }
 
   Future<void> pickAndUpload() async {
     emit(state.copyWith(isPickingFile: true, clearError: true));
@@ -156,6 +156,7 @@ class HomeCubit extends Cubit<HomeState> {
             files: updated,
             lastUploadTime: now,
             savedFilesCount: state.savedFilesCount + 1,
+            clearGeneralSummary: true,
           ),
         );
       },
