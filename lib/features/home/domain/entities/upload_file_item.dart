@@ -7,6 +7,7 @@ class UploadedFileItem {
   final DateTime? uploadedAt;
   final String? fileId;
   final bool isStored; 
+   final String? filePath; 
 
   const UploadedFileItem({
     required this.name,
@@ -16,6 +17,7 @@ class UploadedFileItem {
     this.uploadedAt,
     this.fileId,
     this.isStored = false, 
+    this.filePath
   });
 
   UploadedFileItem copyWith({
@@ -26,6 +28,7 @@ class UploadedFileItem {
     DateTime? uploadedAt,
     String? fileId,
     bool? isStored, 
+    String? filePath
   }) {
     return UploadedFileItem(
       name: name ?? this.name,
@@ -35,6 +38,7 @@ class UploadedFileItem {
       uploadedAt: uploadedAt ?? this.uploadedAt,
       fileId: fileId ?? this.fileId,
       isStored: isStored ?? this.isStored, 
+      filePath: filePath?? this.filePath
     );
   }
 }

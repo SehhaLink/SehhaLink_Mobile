@@ -39,83 +39,90 @@ class HomeScreen extends StatelessWidget {
               name: user?.fullName ?? '',
               profileImagePath: user?.profileImage,
             ),
-            body: BlocBuilder<HomeCubit, HomeState>(
-              builder: (context, state) {
-                final cubit = context.read<HomeCubit>();
-                if (state.isLoading) return const HomeShimmer();
+            body: BlocListener<CurrentUserCubit, CurrentUserState>(
+              listenWhen: (prev, curr) =>
+                  prev.files.length != curr.files.length,
+              listener: (context, state) {
+                context.read<HomeCubit>().onFilesChanged();
+              },
+              child: BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  final cubit = context.read<HomeCubit>();
+                  if (state.isLoading) return const HomeShimmer();
 
-                return SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 20.h,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      UploadSummaryCard(
-                        totalReports: state.doneCount,
-                        lastUpload: () {
-                          final label = state.lastUploadLabel;
-                          if (label == null) return 'home.no_uploads_yet'.tr();
-                          if (label == 'home.today' ||
-                              label == 'home.yesterday') {
-                            return label.tr();
-                          }
-                          return label;
-                        }(),
-                        onViewDetails: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BlocProvider.value(
-                                value: currentUserCubit,
-                                child: const ViewDetailsScreen(),
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 20.h,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        UploadSummaryCard(
+                          totalReports: state.doneCount,
+                          lastUpload: () {
+                            final label = state.lastUploadLabel;
+                            if (label == null) {
+                              return 'home.no_uploads_yet'.tr();
+                            }
+                            if (label == 'home.today' ||
+                                label == 'home.yesterday') {
+                              return label.tr();
+                            }
+                            return label;
+                          }(),
+                          onViewDetails: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BlocProvider.value(
+                                  value: currentUserCubit,
+                                  child: const ViewDetailsScreen(),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        verticalSpace(24),
+                        GeneralSummaryCard(
+                          summary: state.generalSummary,
+                          isLoading: state.isGeneralSummaryLoading,
+                          onExpand: cubit.loadGeneralSummary,
+                        ),
+                        verticalSpace(16),
+                        _SectionTitle(title: 'home.upload_report_section'.tr()),
+                        verticalSpace(12),
+                        DropZone(
+                          isDragging: state.isDragging,
+                          onDragEnter: cubit.onDragEnter,
+                          onDragExit: cubit.onDragExit,
+                          onTap: cubit.pickAndUpload,
+                        ),
+                        verticalSpace(24),
+                        if (state.hasFiles) ...[
+                          _SectionTitle(
+                            title: 'home.upload_progress_section'.tr(),
+                          ),
+                          verticalSpace(12),
+                          ...state.files.asMap().entries.map(
+                            (entry) => Padding(
+                              padding: EdgeInsets.only(bottom: 12.h),
+                              child: FileProgressCard(
+                                file: entry.value,
+                                onCancel: () => cubit.cancelUpload(entry.key),
+                                onRetry: () => cubit.retryUpload(entry.key),
+                                onRemove: () => cubit.removeFile(entry.key),
                               ),
                             ),
-                          );
-                        },
-                      ),
-                      verticalSpace(24),
-                      GeneralSummaryCard(
-                        summary: state.generalSummary,
-                        isLoading: state.isGeneralSummaryLoading,
-                        onExpand: cubit.loadGeneralSummary,
-                      ),
-                      verticalSpace(16),
-                      _SectionTitle(title: 'home.upload_report_section'.tr()),
-                      verticalSpace(12),
-
-                      DropZone(
-                        isDragging: state.isDragging,
-                        onDragEnter: cubit.onDragEnter,
-                        onDragExit: cubit.onDragExit,
-                        onTap: cubit.pickAndUpload,
-                      ),
-
-                      verticalSpace(24),
-                      if (state.hasFiles) ...[
-                        _SectionTitle(
-                          title: 'home.upload_progress_section'.tr(),
-                        ),
-                        verticalSpace(12),
-                        ...state.files.asMap().entries.map(
-                          (entry) => Padding(
-                            padding: EdgeInsets.only(bottom: 12.h),
-                            child: FileProgressCard(
-                              file: entry.value,
-                              onCancel: () => cubit.cancelUpload(entry.key),
-                              onRetry: () => cubit.retryUpload(entry.key),
-                              onRemove: () => cubit.removeFile(entry.key),
-                            ),
                           ),
-                        ),
+                        ],
+                        if (state.errorMessage != null)
+                          _ErrorBanner(message: state.errorMessage!),
                       ],
-                      if (state.errorMessage != null)
-                        _ErrorBanner(message: state.errorMessage!),
-                    ],
-                  ),
-                );
-              },
+                    ),
+                  );
+                },
+              ),
             ),
           );
         },

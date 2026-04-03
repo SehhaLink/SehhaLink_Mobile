@@ -24,20 +24,10 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> loadSavedFiles() async {
     try {
       final savedFiles = await getSavedFilesUseCase();
-      if (savedFiles.isEmpty) return;
-
-      final items = savedFiles
-          .map(
-            (f) => UploadedFileItem(
-              name: f.fileName,
-              size: f.size ?? '',
-              progress: 1.0,
-              status: UploadStatus.done,
-              uploadedAt: f.uploadedAt,
-              fileId: f.fileId,
-            ),
-          )
-          .toList();
+      if (savedFiles.isEmpty) {
+        emit(state.copyWith(isLoading: false));
+        return;
+      }
 
       final lastUpload = savedFiles
           .where((f) => f.uploadedAt != null)
@@ -49,7 +39,6 @@ class HomeCubit extends Cubit<HomeState> {
 
       emit(
         state.copyWith(
-          files: items,
           lastUploadTime: lastUpload,
           savedFilesCount: savedFiles.length,
           isLoading: false,
@@ -92,6 +81,7 @@ class HomeCubit extends Cubit<HomeState> {
         .map(
           (p) => UploadedFileItem(
             name: p.name,
+            filePath: p.path,
             size: _formatSize(p.size),
             progress: 0.0,
             status: UploadStatus.uploading,
@@ -168,13 +158,16 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> retryUpload(int index) async {
     final file = state.files[index];
-    if (file.fileId == null) {
+
+    if (file.filePath == null) {
       cancelUpload(index);
       return;
     }
 
     _updateFile(index, progress: 0.0, status: UploadStatus.uploading);
     emit(state.copyWith(clearError: true));
+
+    await _uploadSingle(File(file.filePath!), index);
   }
 
   void removeFile(int index) {
@@ -213,6 +206,10 @@ class HomeCubit extends Cubit<HomeState> {
   void _markFailed(int index, String error) {
     _updateFile(index, status: UploadStatus.failed);
     emit(state.copyWith(errorMessage: error));
+  }
+
+  void onFilesChanged() {
+    emit(state.copyWith(clearGeneralSummary: true, generalSummary: null));
   }
 
   String _formatSize(int bytes) {

@@ -11,7 +11,7 @@ class HomeState {
   final String? generalSummary;
   final bool isLoading;
   final bool clearGeneralSummary;
-
+  final List<UploadedFileItem> uploadingFiles;
 
   const HomeState({
     this.isLoading = true,
@@ -24,6 +24,7 @@ class HomeState {
     this.savedFilesCount = 0,
     this.generalSummary,
     this.isGeneralSummaryLoading = false,
+    this.uploadingFiles = const [],
   });
 
   int get doneCount => savedFilesCount;
@@ -51,6 +52,7 @@ class HomeState {
     bool? isGeneralSummaryLoading,
     bool? isLoading,
     bool? clearGeneralSummary,
+    List<UploadedFileItem>?uploadingFiles
   }) {
     return HomeState(
       clearGeneralSummary: clearGeneralSummary ?? this.clearGeneralSummary,
@@ -64,6 +66,7 @@ class HomeState {
       isGeneralSummaryLoading:
           isGeneralSummaryLoading ?? this.isGeneralSummaryLoading,
       isLoading: isLoading ?? this.isLoading,
+      uploadingFiles: uploadingFiles?? this.uploadingFiles
     );
   }
 }

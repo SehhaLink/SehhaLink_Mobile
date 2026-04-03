@@ -10,5 +10,5 @@ class ApiConst {
   static String deleteAccountDELETE = '/User/me';
   static String historySummary = "/Documents/history-summary";
   static const String uploadDocument = "/Documents/upload";
-  static String summarize(int fileId) => '/Documents/27/summarize';
+  static String summarize(int fileId) => '/Documents/$fileId/summarize';
 }
