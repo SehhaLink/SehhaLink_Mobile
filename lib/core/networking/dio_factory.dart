@@ -12,8 +12,8 @@ class DioFactory {
       _dio = Dio(
         BaseOptions(
           baseUrl: ApiConst.baseurl,
-          connectTimeout: const Duration(seconds: 60),
-          receiveTimeout: const Duration(seconds: 60),
+          connectTimeout: const Duration(seconds: 120),
+          receiveTimeout: const Duration(seconds: 120),
           validateStatus: (status) {
             return status != null && status >= 200 && status < 300;
           },

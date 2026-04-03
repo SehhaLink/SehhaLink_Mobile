@@ -40,12 +40,12 @@ class ProfileDrawer extends StatelessWidget {
               label: 'settings.privacy_security'.tr(),
               onTap: () {
                 drawerController.hideDrawer();
+                Navigator.pushNamed(context, Routes.privacySecurity);
               },
             ),
 
             verticalSpace(12),
 
-            
             _DrawerItem(
               icon: Icons.language_rounded,
               label: 'settings.language'.tr(),
@@ -203,7 +203,6 @@ class _DrawerItem extends StatelessWidget {
     );
   }
 }
-
 
 class _LanguageTile extends StatelessWidget {
   const _LanguageTile({

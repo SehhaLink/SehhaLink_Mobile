@@ -38,7 +38,9 @@ class PrivacySecurityCubit extends Cubit<PrivacySecurityState> {
     final result = await deactivateAccountUseCase(pass);
     if (isClosed) return;
     result.when(
-      onSuccess: (_) => emit(state.copyWith(isLoading: false, isSuccess: true)),
+      onSuccess: (_) {
+        emit(state.copyWith(isLoading: false, isSuccess: true));
+      },
       onError: (e) =>
           emit(state.copyWith(isLoading: false, errorMessage: e.message)),
     );
@@ -49,7 +51,9 @@ class PrivacySecurityCubit extends Cubit<PrivacySecurityState> {
     final result = await deleteAccountUseCase(pass);
     if (isClosed) return;
     result.when(
-      onSuccess: (_) => emit(state.copyWith(isLoading: false, isSuccess: true)),
+      onSuccess: (_) {
+        emit(state.copyWith(isLoading: false, isSuccess: true));
+      },
       onError: (e) =>
           emit(state.copyWith(isLoading: false, errorMessage: e.message)),
     );
@@ -68,7 +72,9 @@ class PrivacySecurityCubit extends Cubit<PrivacySecurityState> {
     final result = await changePasswordUseCase(currentPassword, newPassword);
     if (isClosed) return;
     result.when(
-      onSuccess: (_) => emit(state.copyWith(isLoading: false, isSuccess: true)),
+      onSuccess: (_) {
+        emit(state.copyWith(isLoading: false, isSuccess: true));
+      },
       onError: (e) =>
           emit(state.copyWith(isLoading: false, errorMessage: e.message)),
     );

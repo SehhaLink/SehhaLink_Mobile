@@ -6,6 +6,7 @@ import 'package:sehhalink/core/dependency_Injection/forget_password_screen_di.da
 import 'package:sehhalink/core/dependency_Injection/get_it.dart';
 import 'package:sehhalink/core/dependency_Injection/home_screen_di.dart';
 import 'package:sehhalink/core/dependency_Injection/login_screen_di.dart';
+import 'package:sehhalink/core/dependency_Injection/privacy_security_di.dart';
 import 'package:sehhalink/core/dependency_Injection/register_screen_di.dart';
 import 'package:sehhalink/core/routing/routes.dart';
 import 'package:sehhalink/features/auth/forget_password/presentation/forget_password_screen.dart';
@@ -17,6 +18,8 @@ import 'package:sehhalink/features/auth/register/presentation/register_screen.da
 import 'package:sehhalink/features/home/presentation/home_screen.dart';
 import 'package:sehhalink/features/navigation_screen/presentation/main_navigation_screen.dart';
 import 'package:sehhalink/features/onboarding/onboarding_screen.dart';
+import 'package:sehhalink/features/privacy_and_security/presentation/logic/privacy_and_security_cubit.dart';
+import 'package:sehhalink/features/privacy_and_security/presentation/privacy_and_security.dart';
 import 'package:sehhalink/features/view_details/presentation/view_details_screen.dart';
 
 class AppRoute {
@@ -62,6 +65,13 @@ class AppRoute {
 
       case Routes.viewDetailsScreen:
         page = const ViewDetailsScreen();
+        break;
+      case Routes.privacySecurity:
+        privacySecurityDi();
+        page = BlocProvider(
+          create: (context) => getIt<PrivacySecurityCubit>(),
+          child: PrivacySecurityScreen(),
+        );
         break;
       default:
         page = Scaffold(

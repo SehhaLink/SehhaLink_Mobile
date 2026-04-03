@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
-import 'package:sehhalink/core/routing/routes.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';
 import 'package:sehhalink/features/privacy_and_security/presentation/logic/privacy_and_secuirty_state.dart';
@@ -15,8 +14,26 @@ import 'package:sehhalink/features/privacy_and_security/presentation/widgets/pri
 import 'package:sehhalink/features/privacy_and_security/presentation/widgets/privacy_tile.dart';
 import 'package:sehhalink/features/privacy_and_security/presentation/widgets/section_label.dart';
 
-class PrivacySecurityScreen extends StatelessWidget {
+class PrivacySecurityScreen extends StatefulWidget {
   const PrivacySecurityScreen({super.key});
+
+  @override
+  State<PrivacySecurityScreen> createState() => _PrivacySecurityScreenState();
+}
+
+class _PrivacySecurityScreenState extends State<PrivacySecurityScreen> {
+  late PrivacySecurityCubit _cubit;
+
+   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _cubit = context.read<PrivacySecurityCubit>(); 
+  }
+  @override
+  void dispose() {
+    _cubit.closeSection(); 
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +50,11 @@ class PrivacySecurityScreen extends StatelessWidget {
             );
           } else if (state.activeAction == PrivacyAction.deactivate ||
               state.activeAction == PrivacyAction.delete) {
-            Navigator.of(
-              context,
-            ).pushNamedAndRemoveUntil(Routes.loginScreen, (route) => false);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/login', (route) => false);
+            });
           }
         }
         if (state.errorMessage != null) {

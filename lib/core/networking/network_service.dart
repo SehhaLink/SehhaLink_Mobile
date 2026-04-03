@@ -10,6 +10,8 @@ abstract class NetworkService {
     void Function(int sent, int total)? onSendProgress,
   });
   Future<Response> postEmpty(String url);
+  Future<Response> patch(String url, dynamic body);
+  Future<Response> delete(String url, dynamic body);
 }
 
 class NetworkServiceImp extends NetworkService {
@@ -38,5 +40,15 @@ class NetworkServiceImp extends NetworkService {
   @override
   Future<Response> postEmpty(String url) async {
     return await dio.post(url);
+  }
+
+  @override
+  Future<Response<dynamic>> delete(String url, body) async {
+    return await dio.delete(url, data: body);
+  }
+
+  @override
+  Future<Response<dynamic>> patch(String url, body) async {
+    return await dio.patch(url, data: body);
   }
 }
