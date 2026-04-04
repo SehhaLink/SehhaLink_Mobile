@@ -36,7 +36,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     overlay.insert(entry);
 
-    // ✅ تختفي تلقائياً بعد 3 ثواني
     Future.delayed(const Duration(seconds: 3), () {
       if (entry.mounted) entry.remove();
     });
@@ -94,7 +93,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         GestureDetector(
-          onTap: () => _showComingSoonOverlay(context), // ✅
+          onTap: () => _showComingSoonOverlay(context), 
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -143,7 +142,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-// ─── Toast Widget ─────────────────────────────────────────────────────────────
 
 class _NotificationComingSoonToast extends StatefulWidget {
   const _NotificationComingSoonToast({required this.onDismiss});
@@ -176,7 +174,6 @@ class _NotificationComingSoonToastState
 
     _controller.forward();
 
-    // ✅ fade out قبل الاختفاء
     Future.delayed(const Duration(milliseconds: 2500), () {
       if (mounted) _controller.reverse().then((_) => widget.onDismiss());
     });

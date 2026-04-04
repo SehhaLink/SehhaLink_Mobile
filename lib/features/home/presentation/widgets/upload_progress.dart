@@ -1,11 +1,12 @@
 // ignore_for_file: deprecated_member_use
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';
 import 'package:sehhalink/features/home/domain/entities/upload_file_item.dart';
+import 'package:sehhalink/features/home/presentation/widgets/file_action.dart';
+import 'package:sehhalink/features/home/presentation/widgets/status_badge.dart';
 
 class FileProgressCard extends StatelessWidget {
   const FileProgressCard({
@@ -86,7 +87,7 @@ class FileProgressCard extends StatelessWidget {
                       ),
                     ),
                     horizontalSpace(8),
-                    _StatusBadge(status: file.status),
+                    StatusBadge(status: file.status),
                   ],
                 ),
                 verticalSpace(6),
@@ -126,7 +127,7 @@ class FileProgressCard extends StatelessWidget {
           ),
 
           horizontalSpace(10),
-          _FileAction(
+          FileAction(
             status: file.status,
             onCancel: onCancel,
             onRetry: onRetry,
@@ -135,109 +136,5 @@ class FileProgressCard extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class _StatusBadge extends StatelessWidget {
-  const _StatusBadge({required this.status});
-  final UploadStatus status;
-
-  @override
-  Widget build(BuildContext context) {
-    late Color bg;
-    late Color fg;
-    late String label;
-
-    switch (status) {
-      case UploadStatus.done:
-        bg = const Color(0xFFDCFCE7);
-        fg = AppColors.successGreen;
-        label = 'home.status_done'.tr();
-        break;
-      case UploadStatus.failed:
-        bg = const Color(0xFFFEE2E2);
-        fg = const Color(0xFFEF4444);
-        label = 'home.status_failed'.tr();
-        break;
-      case UploadStatus.uploading:
-        bg = const Color(0xFFE8F4F8);
-        fg = AppColors.primaryBlue;
-        label = 'home.status_uploading'.tr();
-        break;
-    }
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 10.sp,
-          fontWeight: FontWeightHelper.semiBold,
-          color: fg,
-        ),
-      ),
-    );
-  }
-}
-
-class _FileAction extends StatelessWidget {
-  const _FileAction({
-    required this.status,
-    this.onCancel,
-    this.onRetry,
-    this.onRemove,
-  });
-
-  final UploadStatus status;
-  final VoidCallback? onCancel;
-  final VoidCallback? onRetry;
-  final VoidCallback? onRemove;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (status) {
-      case UploadStatus.uploading:
-        return GestureDetector(
-          onTap: onCancel,
-          child: Icon(
-            Icons.close_rounded,
-            color: AppColors.textSecondary,
-            size: 20.sp,
-          ),
-        );
-      case UploadStatus.done:
-        return Icon(
-          Icons.check_circle_rounded,
-          color: AppColors.successGreen,
-          size: 22.sp,
-        );
-      case UploadStatus.failed:
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: onRetry,
-              child: Icon(
-                Icons.refresh_rounded,
-                color: const Color(0xFFEF4444),
-                size: 22.sp,
-              ),
-            ),
-            SizedBox(width: 8.w),
-            GestureDetector(
-              onTap: onRemove,
-              child: Icon(
-                Icons.close_rounded,
-                color: AppColors.textSecondary,
-                size: 20.sp,
-              ),
-            ),
-          ],
-        );
-    }
   }
 }

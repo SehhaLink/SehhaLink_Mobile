@@ -8,7 +8,7 @@ import 'package:sehhalink/core/theme/font_weight_helper.dart';
 
 class FileSummaryWidget extends StatefulWidget {
   final String fileId;
-  final String? summary; // nullable دلوقتي
+  final String? summary; 
   final bool isLoading;
 
   const FileSummaryWidget({
@@ -28,17 +28,14 @@ class _FileSummaryWidgetState extends State<FileSummaryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // لو loading
     if (widget.isLoading) {
       return _SummaryLoadingWidget();
     }
 
-    // لو مفيش summary — اعرض الزرار
     if (widget.summary == null || widget.summary!.isEmpty) {
       return _GetSummaryButton(fileId: widget.fileId);
     }
 
-    // عرض الـ summary
     final isLong = widget.summary!.length > _summaryLimit;
     final displayed = (!_expanded && isLong)
         ? '${widget.summary!.substring(0, _summaryLimit)}...'

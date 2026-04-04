@@ -4,7 +4,7 @@ class UserFile {
   final String filePath;
   final String? summary;
   final String fileType;
-  final String createdAt;
+  final DateTime uploadedAt;
 
   UserFile({
     required this.fileId,
@@ -12,6 +12,6 @@ class UserFile {
     required this.filePath,
     required this.summary,
     required this.fileType,
-    required this.createdAt,
+    required this.uploadedAt,
   });
 }

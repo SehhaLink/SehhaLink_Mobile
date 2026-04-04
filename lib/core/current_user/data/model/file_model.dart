@@ -16,24 +16,24 @@ class FileModel {
   @Backlink(to: 'files')
   final user = IsarLink<UserModel>();
 
-  UserFile toEntity() {
-    return UserFile(
-      fileId: fileId,
-      fileName: fileName,
-      filePath: filePath,
-      summary: summary,
-      fileType: fileType,
-      createdAt: createdAt,
-    );
-  }
+ UserFile toEntity() {
+  return UserFile(
+    fileId: fileId,
+    fileName: fileName,
+    filePath: filePath,
+    summary: summary,
+    fileType: fileType,
+    uploadedAt: uploadedAt!, 
+  );
+}
 
-  static FileModel fromEntity(UserFile file) {
-    return FileModel()
-      ..fileId = file.fileId
-      ..fileName = file.fileName
-      ..filePath = file.filePath
-      ..summary = file.summary
-      ..fileType = file.fileType
-      ..createdAt = file.createdAt;
-  }
+static FileModel fromEntity(UserFile file) {
+  return FileModel()
+    ..fileId = file.fileId
+    ..fileName = file.fileName
+    ..filePath = file.filePath
+    ..summary = file.summary
+    ..fileType = file.fileType
+    ..uploadedAt = file.uploadedAt; 
+}
 }

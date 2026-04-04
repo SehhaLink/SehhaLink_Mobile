@@ -21,34 +21,6 @@ class HomeCubit extends Cubit<HomeState> {
   final GetSavedFilesUseCase getSavedFilesUseCase;
   final GetUserGeneralSummaryUseCase getUserGeneralSummaryUseCase;
 
-  Future<void> loadSavedFiles() async {
-    try {
-      final savedFiles = await getSavedFilesUseCase();
-      if (savedFiles.isEmpty) {
-        emit(state.copyWith(isLoading: false));
-        return;
-      }
-
-      final lastUpload = savedFiles
-          .where((f) => f.uploadedAt != null)
-          .map((f) => f.uploadedAt!)
-          .fold<DateTime?>(
-            null,
-            (prev, curr) => prev == null || curr.isAfter(prev) ? curr : prev,
-          );
-
-      emit(
-        state.copyWith(
-          lastUploadTime: lastUpload,
-          savedFilesCount: savedFiles.length,
-          isLoading: false,
-        ),
-      );
-    } catch (_) {
-      emit(state.copyWith(isLoading: false));
-    }
-  }
-
   Future<void> loadGeneralSummary() async {
     emit(state.copyWith(isGeneralSummaryLoading: true));
     final summary = await getUserGeneralSummaryUseCase();
@@ -64,6 +36,15 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       ),
     );
+  }
+
+  Future<void> loadSavedFiles() async {
+    try {
+      final savedFiles = await getSavedFilesUseCase();
+      emit(state.copyWith(isLoading: false));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+    }
   }
 
   Future<void> pickAndUpload() async {
@@ -141,14 +122,7 @@ class HomeCubit extends Cubit<HomeState> {
             .where((f) => !f.isStored)
             .toList();
 
-        emit(
-          state.copyWith(
-            files: updated,
-            lastUploadTime: now,
-            savedFilesCount: state.savedFilesCount + 1,
-            clearGeneralSummary: true,
-          ),
-        );
+        emit(state.copyWith(files: updated, clearGeneralSummary: true));
       },
       onError: (error) {
         _markFailed(index, error.message);
@@ -206,10 +180,6 @@ class HomeCubit extends Cubit<HomeState> {
   void _markFailed(int index, String error) {
     _updateFile(index, status: UploadStatus.failed);
     emit(state.copyWith(errorMessage: error));
-  }
-
-  void onFilesChanged() {
-    emit(state.copyWith(clearGeneralSummary: true, generalSummary: null));
   }
 
   String _formatSize(int bytes) {

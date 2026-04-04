@@ -112,7 +112,7 @@ class _FileCardState extends State<FileCard> {
                       ),
                       verticalSpace(4),
                       Text(
-                        widget.file.createdAt,
+                        widget.file.uploadedAt.toIso8601String(),
                         style: TextStyle(
                           fontSize: 11.sp,
                           color: AppColors.textLight,

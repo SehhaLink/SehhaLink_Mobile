@@ -92,7 +92,6 @@ class UploadSummaryCard extends StatelessWidget {
 
           verticalSpace(16),
 
-          // ✅ عكس الترتيب في RTL
           Row(
             children: isRtl
                 ? [lastUploadItem, _Divider(), reportsItem]
@@ -123,7 +122,6 @@ class UploadSummaryCard extends StatelessWidget {
                     ),
                   ),
                   horizontalSpace(6),
-                  // ✅ arrow صح حسب الاتجاه
                   Icon(
                     isRtl
                         ? Icons.arrow_back_rounded
