@@ -13,6 +13,7 @@ class LoginResponseBody {
   final String gender;
   final int age;
   final String role;
+  final String? profilePictureUrl;
 
   LoginResponseBody({
     required this.email,
@@ -22,7 +23,8 @@ class LoginResponseBody {
     required this.birthDate,
     required this.gender,
     required this.age,
-    required this.role, required this.id,
+    required this.role,
+    required this.id, this.profilePictureUrl,
   });
 
   factory LoginResponseBody.fromJson(Map<String, dynamic> json) =>

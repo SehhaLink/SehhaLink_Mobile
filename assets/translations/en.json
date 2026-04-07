@@ -57,6 +57,7 @@
     "password_reset_success": "Password reset successfully!"
   },
   "home": {
+    "summary_cached_hint": "Showing cached summary. Tap refresh when online to update.",
     "upload_summary": "Upload Summary",
     "active": "Active",
     "upload_summary_reports": "Reports",

@@ -13,7 +13,10 @@ import 'package:sehhalink/core/utils/register_lazy_if_not_registered.dart';
 
 void currentUserDi() {
   registerLazyIfNotRegistered<CurrentUserRepository>(
-    () => CurrentUserRepositoryImpl(localDataSource: getIt()),
+    () => CurrentUserRepositoryImpl(
+      localDataSource: getIt(),
+      remoteDataSource: getIt(),
+    ),
   );
   registerLazyIfNotRegistered<GetCurrentUserUseCase>(
     () => GetCurrentUserUseCase(getIt()),

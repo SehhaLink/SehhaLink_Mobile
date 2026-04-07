@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
+import 'package:sehhalink/core/routing/routes.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';
 import 'package:sehhalink/features/privacy_and_security/presentation/logic/privacy_and_secuirty_state.dart';
@@ -53,7 +54,7 @@ class _PrivacySecurityScreenState extends State<PrivacySecurityScreen> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.of(
                 context,
-              ).pushNamedAndRemoveUntil('/login', (route) => false);
+              ).pushNamedAndRemoveUntil(Routes.onboardingScreen, (route) => false);
             });
           }
         }

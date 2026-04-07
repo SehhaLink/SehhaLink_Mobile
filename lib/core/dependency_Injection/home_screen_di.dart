@@ -29,7 +29,7 @@ void homeScreenDi() {
     () => GetSavedFilesUseCase(getIt<HomeRepo>()),
   );
     registerLazyIfNotRegistered<GetUserGeneralSummaryUseCase>(
-      () => GetUserGeneralSummaryUseCase(getIt<HomeRepo>()),
+      () => GetUserGeneralSummaryUseCase(remoteDataSource: getIt<HomeRemoteDataSource>(), localDataSource: getIt()),
     );
 
   registerLazyIfNotRegistered<HomeCubit>(

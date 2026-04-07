@@ -20,8 +20,15 @@ class LoginRepoImpl extends LoginRepo {
   Future<ApiResult<void>> login(LoginRequestBody loginRequest) async {
     try {
       final remoteUser = await remoteDataSource.login(loginRequest);
-
       await SecureStorageService.saveToken(remoteUser.token);
+
+      String? localImagePath;
+      if (remoteUser.profilePictureUrl != null &&
+          remoteUser.profilePictureUrl!.isNotEmpty) {
+        localImagePath = await localDataSource.downloadAndCacheImage(
+          remoteUser.profilePictureUrl!,
+        );
+      }
 
       final userModel = UserModel.fromEntity(
         User(
@@ -33,10 +40,11 @@ class LoginRepoImpl extends LoginRepo {
           age: remoteUser.age,
           role: remoteUser.role,
           phoneNumber: remoteUser.phoneNumber,
+          profileImage: localImagePath,
         ),
       );
-      await localDataSource.saveUser(userModel);
 
+      await localDataSource.saveUser(userModel);
       return ApiResult.success(null);
     } catch (e) {
       return ApiResult.error(ApiErrorHandler.handle(e));

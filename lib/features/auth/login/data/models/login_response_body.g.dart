@@ -17,6 +17,7 @@ LoginResponseBody _$LoginResponseBodyFromJson(Map<String, dynamic> json) =>
       age: (json['age'] as num).toInt(),
       role: json['role'] as String,
       id: json['id'] as String,
+      profilePictureUrl: json['profilePictureUrl'] as String?,
     );
 
 Map<String, dynamic> _$LoginResponseBodyToJson(LoginResponseBody instance) =>
@@ -30,4 +31,5 @@ Map<String, dynamic> _$LoginResponseBodyToJson(LoginResponseBody instance) =>
       'gender': instance.gender,
       'age': instance.age,
       'role': instance.role,
+      'profilePictureUrl': instance.profilePictureUrl,
     };

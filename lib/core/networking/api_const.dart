@@ -4,11 +4,12 @@ class ApiConst {
   static const String login = '/Auth/Login';
   static const String forgetPassword = "/Account/forget-password";
   static const String resetPassword = "/Account/reset-password";
-  static String profile = '/User/me';
-  static String changeProfilePATCH = '/User/me';
-  static String deactivateAccount = '/User/deactivate';
-  static String deleteAccountDELETE = '/User/me';
-  static String historySummary = "/Documents/history-summary";
+  static const String profile = '/User/me';
+  static const String changeProfilePATCH = '/User/me';
+  static const String deactivateAccount = '/User/deactivate';
+  static const String deleteAccountDELETE = '/User/me';
+  static const String historySummary = "/Documents/history-summary";
   static const String uploadDocument = "/Documents/upload";
   static String summarize(int fileId) => '/Documents/$fileId/summarize';
+  static const String updateProfileImage = "/User/Upload-image";
 }
