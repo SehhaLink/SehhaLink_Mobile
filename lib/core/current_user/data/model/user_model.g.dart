@@ -42,23 +42,28 @@ const UserModelSchema = CollectionSchema(
       name: r'gender',
       type: IsarType.string,
     ),
-    r'phoneNumber': PropertySchema(
+    r'generalSummary': PropertySchema(
       id: 5,
+      name: r'generalSummary',
+      type: IsarType.string,
+    ),
+    r'phoneNumber': PropertySchema(
+      id: 6,
       name: r'phoneNumber',
       type: IsarType.string,
     ),
     r'profileImage': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'profileImage',
       type: IsarType.string,
     ),
     r'role': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'role',
       type: IsarType.string,
     ),
     r'userId': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'userId',
       type: IsarType.string,
     )
@@ -108,6 +113,12 @@ int _userModelEstimateSize(
   bytesCount += 3 + object.email.length * 3;
   bytesCount += 3 + object.fullName.length * 3;
   bytesCount += 3 + object.gender.length * 3;
+  {
+    final value = object.generalSummary;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.phoneNumber.length * 3;
   {
     final value = object.profileImage;
@@ -131,10 +142,11 @@ void _userModelSerialize(
   writer.writeString(offsets[2], object.email);
   writer.writeString(offsets[3], object.fullName);
   writer.writeString(offsets[4], object.gender);
-  writer.writeString(offsets[5], object.phoneNumber);
-  writer.writeString(offsets[6], object.profileImage);
-  writer.writeString(offsets[7], object.role);
-  writer.writeString(offsets[8], object.userId);
+  writer.writeString(offsets[5], object.generalSummary);
+  writer.writeString(offsets[6], object.phoneNumber);
+  writer.writeString(offsets[7], object.profileImage);
+  writer.writeString(offsets[8], object.role);
+  writer.writeString(offsets[9], object.userId);
 }
 
 UserModel _userModelDeserialize(
@@ -149,11 +161,12 @@ UserModel _userModelDeserialize(
   object.email = reader.readString(offsets[2]);
   object.fullName = reader.readString(offsets[3]);
   object.gender = reader.readString(offsets[4]);
+  object.generalSummary = reader.readStringOrNull(offsets[5]);
   object.id = id;
-  object.phoneNumber = reader.readString(offsets[5]);
-  object.profileImage = reader.readStringOrNull(offsets[6]);
-  object.role = reader.readString(offsets[7]);
-  object.userId = reader.readString(offsets[8]);
+  object.phoneNumber = reader.readString(offsets[6]);
+  object.profileImage = reader.readStringOrNull(offsets[7]);
+  object.role = reader.readString(offsets[8]);
+  object.userId = reader.readString(offsets[9]);
   return object;
 }
 
@@ -175,12 +188,14 @@ P _userModelDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
-    case 6:
       return (reader.readStringOrNull(offset)) as P;
-    case 7:
+    case 6:
       return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
+      return (reader.readString(offset)) as P;
+    case 9:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -955,6 +970,160 @@ extension UserModelQueryFilter
     });
   }
 
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'generalSummary',
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'generalSummary',
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'generalSummary',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'generalSummary',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'generalSummary',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'generalSummary',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'generalSummary',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'generalSummary',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'generalSummary',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'generalSummary',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'generalSummary',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      generalSummaryIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'generalSummary',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -1680,6 +1849,18 @@ extension UserModelQuerySortBy on QueryBuilder<UserModel, UserModel, QSortBy> {
     });
   }
 
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByGeneralSummary() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'generalSummary', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByGeneralSummaryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'generalSummary', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByPhoneNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.asc);
@@ -1791,6 +1972,18 @@ extension UserModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByGeneralSummary() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'generalSummary', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByGeneralSummaryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'generalSummary', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1888,6 +2081,14 @@ extension UserModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByGeneralSummary(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'generalSummary',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QDistinct> distinctByPhoneNumber(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1952,6 +2153,12 @@ extension UserModelQueryProperty
   QueryBuilder<UserModel, String, QQueryOperations> genderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'gender');
+    });
+  }
+
+  QueryBuilder<UserModel, String?, QQueryOperations> generalSummaryProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'generalSummary');
     });
   }
 

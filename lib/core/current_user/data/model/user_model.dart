@@ -15,6 +15,7 @@ class UserModel {
   late String gender;
   late int age;
   late String role;
+  String? generalSummary;
   late String phoneNumber;
   String? profileImage;
   final files = IsarLinks<FileModel>();
@@ -30,6 +31,7 @@ class UserModel {
     role = user.role;
     phoneNumber = user.phoneNumber;
     profileImage = user.profileImage;
+    generalSummary = user.generalSummary;
   }
   User toEntity({String? token}) {
     return User(
@@ -43,6 +45,7 @@ class UserModel {
       phoneNumber: phoneNumber,
       token: token,
       profileImage: profileImage,
+      generalSummary: generalSummary,
     );
   }
 
@@ -56,5 +59,6 @@ class UserModel {
     role = user.role;
     phoneNumber = user.phoneNumber;
     profileImage = user.profileImage;
+    generalSummary = user.generalSummary;
   }
 }

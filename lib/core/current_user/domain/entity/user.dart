@@ -7,8 +7,9 @@ class User {
   final int age;
   final String role;
   final String phoneNumber;
-  final String? token; 
+  final String? token;
   final String? profileImage;
+  final String? generalSummary;
 
   User({
     required this.id,
@@ -20,7 +21,8 @@ class User {
     required this.role,
     required this.phoneNumber,
     this.profileImage,
-    this.token, 
+    this.token,
+    this.generalSummary,
   });
 
   User copyWith({
@@ -34,6 +36,7 @@ class User {
     String? phoneNumber,
     String? token,
     String? profileImage,
+    String? generalSummary,
   }) {
     return User(
       id: id ?? this.id,
@@ -46,6 +49,7 @@ class User {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       token: token ?? this.token,
       profileImage: profileImage ?? this.profileImage,
+      generalSummary: generalSummary?? this.generalSummary,
     );
   }
 

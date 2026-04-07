@@ -12,4 +12,7 @@ abstract class CurrentUserRepository {
   Future<List<UserFile>> getUserFiles();
   Future<void> deleteFile(String fileId);
   Future<void> logout();
-Future<ApiResult<String>> summarizeFile(String fileId);}
+  Future<ApiResult<String>> summarizeFile(String fileId);
+  Future<String?> getCachedGeneralSummary();
+Future<void> saveGeneralSummary(String summary);
+}
