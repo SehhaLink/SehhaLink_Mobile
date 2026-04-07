@@ -28,7 +28,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     homeScreenDi();
     return BlocProvider(
-      create: (_) => getIt<HomeCubit>()..loadSavedFiles(),
+      create: (ctx) {
+        ctx.read<CurrentUserCubit>().loadFiles();
+        return getIt<HomeCubit>()..loadSavedFiles();
+      },
       child: BlocBuilder<CurrentUserCubit, CurrentUserState>(
         buildWhen: (prev, curr) =>
             prev.user?.fullName != curr.user?.fullName ||
@@ -98,7 +101,10 @@ class HomeScreen extends StatelessWidget {
                       GeneralSummaryCard(
                         summary: state.generalSummary,
                         isLoading: state.isGeneralSummaryLoading,
+                        isFromCache: state.isSummaryFromCache, // ← جديد
                         onExpand: cubit.loadGeneralSummary,
+                        onRefresh: () =>
+                            cubit.loadGeneralSummary(forceRefresh: true),
                       ),
                       verticalSpace(16),
                       SectionTitle(title: 'home.upload_report_section'.tr()),

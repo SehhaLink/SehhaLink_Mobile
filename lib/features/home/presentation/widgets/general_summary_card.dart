@@ -12,11 +12,15 @@ class GeneralSummaryCard extends StatefulWidget {
     required this.summary,
     required this.isLoading,
     required this.onExpand,
+    required this.onRefresh,
+    required this.isFromCache,
   });
 
   final String? summary;
   final bool isLoading;
   final VoidCallback onExpand;
+  final VoidCallback onRefresh;
+  final bool isFromCache;
 
   @override
   State<GeneralSummaryCard> createState() => _GeneralSummaryCardState();
@@ -52,7 +56,6 @@ class _GeneralSummaryCardState extends State<GeneralSummaryCard> {
       ),
       child: Column(
         children: [
-          // ✅ Header — قابل للضغط
           InkWell(
             onTap: _toggle,
             borderRadius: BorderRadius.circular(16.r),
@@ -105,12 +108,25 @@ class _GeneralSummaryCardState extends State<GeneralSummaryCard> {
                       size: 22.sp,
                     ),
                   ),
+                  if (_isExpanded &&
+                      widget.summary != null &&
+                      !widget.isLoading)
+                    GestureDetector(
+                      onTap: widget.onRefresh,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 8.w),
+                        child: Icon(
+                          Icons.refresh_rounded,
+                          color: AppColors.primaryBlue,
+                          size: 20.sp,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
 
-          // ✅ Expanded content
           AnimatedSize(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
@@ -146,13 +162,59 @@ class _GeneralSummaryCardState extends State<GeneralSummaryCard> {
                             ),
                           )
                         : widget.summary != null
-                        ? Text(
-                            widget.summary!,
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: AppColors.textPrimary,
-                              height: 1.7,
-                            ),
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (widget.isFromCache) ...[
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w,
+                                    vertical: 8.h,
+                                  ),
+                                  margin: EdgeInsets.only(bottom: 12.h),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.accentOrange.withOpacity(
+                                      0.08,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    border: Border.all(
+                                      color: AppColors.accentOrange.withOpacity(
+                                        0.35,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.wifi_off_rounded,
+                                        size: 14.sp,
+                                        color: AppColors.accentOrange,
+                                      ),
+                                      horizontalSpace(8),
+                                      Expanded(
+                                        child: Text(
+                                          'home.summary_cached_hint'.tr(),
+                                          style: TextStyle(
+                                            fontSize: 11.sp,
+                                            color: AppColors.accentOrange,
+                                            fontWeight: FontWeightHelper.medium,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                              Text(
+                                widget.summary!,
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  color: AppColors.textPrimary,
+                                  height: 1.7,
+                                ),
+                              ),
+                            ],
                           )
                         : Text(
                             'home.general_summary_empty'.tr(),

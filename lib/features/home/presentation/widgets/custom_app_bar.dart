@@ -29,9 +29,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     late OverlayEntry entry;
 
     entry = OverlayEntry(
-      builder: (_) => _NotificationComingSoonToast(
-        onDismiss: () => entry.remove(),
-      ),
+      builder: (_) =>
+          _NotificationComingSoonToast(onDismiss: () => entry.remove()),
     );
 
     overlay.insert(entry);
@@ -53,14 +52,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: profileImagePath != null
-                ? Image.file(
-                    File(profileImagePath!),
-                    key: ValueKey(profileImagePath),
-                    width: 50.w,
-                    height: 50.h,
-                    fit: BoxFit.cover,
-                  )
+            child: profileImagePath != null && profileImagePath!.isNotEmpty
+                ? (profileImagePath!.startsWith('http')
+                      ? Image.network(
+                          profileImagePath!,
+                          key: ValueKey(profileImagePath),
+                          width: 50.w,
+                          height: 50.h,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Image.asset(
+                            Assets.assetsImagesUser,
+                            width: 50.w,
+                            height: 50.h,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Image.file(
+                          File(profileImagePath!),
+                          key: ValueKey(profileImagePath),
+                          width: 50.w,
+                          height: 50.h,
+                          fit: BoxFit.cover,
+                        ))
                 : Image.asset(
                     Assets.assetsImagesUser,
                     width: 50.w,
@@ -93,7 +106,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         GestureDetector(
-          onTap: () => _showComingSoonOverlay(context), 
+          onTap: () => _showComingSoonOverlay(context),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -141,7 +154,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return 'greeting.night'.tr();
   }
 }
-
 
 class _NotificationComingSoonToast extends StatefulWidget {
   const _NotificationComingSoonToast({required this.onDismiss});

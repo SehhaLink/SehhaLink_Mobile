@@ -10,7 +10,7 @@ class HomeState {
   final bool isLoading;
   final bool clearGeneralSummary;
   final List<UploadedFileItem> uploadingFiles;
-
+    final bool isSummaryFromCache;
   const HomeState({
     this.isLoading = true,
     this.clearGeneralSummary = false,
@@ -21,6 +21,7 @@ class HomeState {
     this.generalSummary,
     this.isGeneralSummaryLoading = false,
     this.uploadingFiles = const [],
+    this.isSummaryFromCache = false,
   });
 
   bool get hasFiles => files.isNotEmpty;
@@ -36,6 +37,7 @@ class HomeState {
     bool? isLoading,
     bool? clearGeneralSummary,
     List<UploadedFileItem>? uploadingFiles,
+    bool? isSummaryFromCache,
   }) {
     return HomeState(
       clearGeneralSummary: clearGeneralSummary ?? this.clearGeneralSummary,
@@ -48,6 +50,7 @@ class HomeState {
           isGeneralSummaryLoading ?? this.isGeneralSummaryLoading,
       isLoading: isLoading ?? this.isLoading,
       uploadingFiles: uploadingFiles ?? this.uploadingFiles,
+      isSummaryFromCache: isSummaryFromCache??this.isSummaryFromCache
     );
   }
 }

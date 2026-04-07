@@ -51,6 +51,7 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
       ..createdAt = DateTime.now().toIso8601String();
   }
 
+  @override
   Future<String> getGeneralSummary() async {
     final response = await networkService.get(ApiConst.historySummary);
     if (response.statusCode != 200) {

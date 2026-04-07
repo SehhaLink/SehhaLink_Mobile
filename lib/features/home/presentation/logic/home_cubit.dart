@@ -21,20 +21,35 @@ class HomeCubit extends Cubit<HomeState> {
   final GetSavedFilesUseCase getSavedFilesUseCase;
   final GetUserGeneralSummaryUseCase getUserGeneralSummaryUseCase;
 
-  Future<void> loadGeneralSummary() async {
+  Future<void> loadGeneralSummary({bool forceRefresh = false}) async {
     emit(state.copyWith(isGeneralSummaryLoading: true));
-    final summary = await getUserGeneralSummaryUseCase();
+
+    final result = await getUserGeneralSummaryUseCase(
+      forceRefresh: forceRefresh,
+    );
+
     if (isClosed) return;
-    summary.when(
+
+    result.when(
       onSuccess: (data) => emit(
-        state.copyWith(generalSummary: data, isGeneralSummaryLoading: false),
-      ),
-      onError: (error) => emit(
         state.copyWith(
-          errorMessage: error.message,
+          generalSummary: data.summary,
           isGeneralSummaryLoading: false,
+          isSummaryFromCache: data.isFromCache,
         ),
       ),
+      onError: (error) {
+        emit(
+          state.copyWith(
+            errorMessage: error.message,
+            isGeneralSummaryLoading: false,
+          ),
+        );
+
+        Future.delayed(const Duration(seconds: 3), () {
+          if (!isClosed) emit(state.copyWith(clearError: true));
+        });
+      },
     );
   }
 
