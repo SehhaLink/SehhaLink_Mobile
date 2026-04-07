@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:sehhalink/core/networking/api_const.dart';
 import 'package:sehhalink/core/networking/network_service.dart';
 import 'package:sehhalink/features/auth/forget_password/data/models/reset_password_model.dart';
@@ -9,6 +12,7 @@ abstract class RemoteDataSource {
   Future<bool> register(RegisterRequestBody registerRequestBody);
   Future<LoginResponseBody> login(LoginRequestBody loginRequest);
   Future<bool> forgetPassword(String email);
+  Future<String?> updateProfileImage(File image);
   Future<bool> resetPassword(ResetPasswordModel resetModel);
 }
 
@@ -57,4 +61,21 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     );
     return response.data["success"] ?? false;
   }
+
+  @override
+  Future<String?> updateProfileImage(File image) async {
+    final formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(
+        image.path,
+        filename: image.path.split('/').last,
+      ),
+    });
+
+    final response = await networkService.post(
+      ApiConst.updateProfileImage,
+      formData,
+    );
+    return response.data["imageUrl"];
+  }
 }
+

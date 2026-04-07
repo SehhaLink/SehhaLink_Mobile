@@ -28,6 +28,9 @@ abstract class LocalDataSource {
   Future<void> clearUserData();
   Future<ApiResult<String>> summarizeFile(String fileId);
   Future<void> updateFileSummary(String fileId, String summary);
+  Future<String?> getCachedGeneralSummary();
+  Future<void> saveGeneralSummary(String summary);
+  Future<String?> downloadAndCacheImage(String imageUrl);
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
@@ -41,6 +44,33 @@ class LocalDataSourceImpl extends LocalDataSource {
     } catch (e) {
       if (e is CacheException) rethrow;
       throw CacheException('Failed to get user: $e');
+    }
+  }
+
+  @override
+  Future<String?> getCachedGeneralSummary() async {
+    try {
+      final isar = await IsarService.instance;
+      final user = await isar.userModels.where().findFirst();
+      return user?.generalSummary;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<void> saveGeneralSummary(String summary) async {
+    try {
+      final isar = await IsarService.instance;
+      await isar.writeTxn(() async {
+        final user = await isar.userModels.where().findFirst();
+        if (user != null) {
+          user.generalSummary = summary;
+          await isar.userModels.put(user);
+        }
+      });
+    } catch (e) {
+      throw CacheException('Failed to save general summary: $e');
     }
   }
 
@@ -225,6 +255,26 @@ class LocalDataSourceImpl extends LocalDataSource {
   @override
   Future<bool> hasValidToken() async {
     return await SecureStorageService.hasValidToken();
+  }
+
+  @override
+  Future<String?> downloadAndCacheImage(String imageUrl) async {
+    try {
+      final appDir = await getApplicationDocumentsDirectory();
+      final localPath = '${appDir.path}/profile_images';
+      final directory = Directory(localPath);
+      if (!await directory.exists()) await directory.create(recursive: true);
+
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final localFile = File('$localPath/profile_$timestamp.png');
+
+      final dio = Dio();
+      await dio.download(imageUrl, localFile.path);
+
+      return localFile.path;
+    } catch (e) {
+      return null; // fallback to null → default avatar
+    }
   }
 
   @override
