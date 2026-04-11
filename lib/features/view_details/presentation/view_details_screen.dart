@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_state.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/file_logic/files_cubit.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/file_logic/files_state.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';
@@ -20,7 +20,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<CurrentUserCubit>().loadFiles();
+    context.read<FilesCubit>().loadFiles();
   }
 
   @override
@@ -53,7 +53,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
           ),
         ),
       ),
-      body: BlocBuilder<CurrentUserCubit, CurrentUserState>(
+      body: BlocBuilder<FilesCubit, FilesState>(
         builder: (context, state) {
           if (state.isLoadingFiles) {
             return const Center(
@@ -98,7 +98,7 @@ class _ErrorView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.r),
               ),
             ),
-            onPressed: () => context.read<CurrentUserCubit>().loadFiles(),
+            onPressed: () => context.read<FilesCubit>().loadFiles(),
             child: Text('view_details.retry'.tr()),
           ),
         ],

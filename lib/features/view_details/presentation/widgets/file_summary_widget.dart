@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/file_logic/files_cubit.dart';
 import 'package:sehhalink/core/helpers/spacing.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';
@@ -113,7 +113,7 @@ class _GetSummaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.read<CurrentUserCubit>().summarizeFile(fileId),
+      onTap: () => context.read<FilesCubit>().summarizeFile(fileId),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
         decoration: BoxDecoration(

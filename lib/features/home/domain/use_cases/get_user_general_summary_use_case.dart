@@ -1,42 +1,16 @@
-import 'package:sehhalink/core/data_source/local_data_source.dart';
-import 'package:sehhalink/core/networking/api_error_handler.dart';
 import 'package:sehhalink/core/networking/api_result.dart';
-import 'package:sehhalink/features/home/data/data_source/home_remote_data_source.dart';
+import 'package:sehhalink/features/home/domain/entities/general_summary_result.dart';
+import 'package:sehhalink/features/home/domain/repo/home_repo.dart';
 
-class GeneralSummaryResult {
-  final String summary;
-  final bool isFromCache;
-  const GeneralSummaryResult({required this.summary, required this.isFromCache});
-}
 
 class GetUserGeneralSummaryUseCase {
-  final HomeRemoteDataSource remoteDataSource;
-  final LocalDataSource localDataSource;
+  final HomeRepo homeRepo;
 
-  GetUserGeneralSummaryUseCase({
-    required this.remoteDataSource,
-    required this.localDataSource,
-  });
+  GetUserGeneralSummaryUseCase({required this.homeRepo});
 
-  Future<ApiResult<GeneralSummaryResult>> call({bool forceRefresh = false}) async {
-    try {
-      if (!forceRefresh) {
-        final cached = await localDataSource.getCachedGeneralSummary();
-        if (cached != null && cached.isNotEmpty) {
-          return ApiResult.success(
-            GeneralSummaryResult(summary: cached, isFromCache: true),
-          );
-        }
-      }
-
-      final summary = await remoteDataSource.getGeneralSummary();
-      await localDataSource.saveGeneralSummary(summary);
-
-      return ApiResult.success(
-        GeneralSummaryResult(summary: summary, isFromCache: false),
-      );
-    } catch (e) {
-      return ApiResult.error(ApiErrorHandler.handle(e));
-    }
+  Future<ApiResult<GeneralSummaryResult>> call({
+    bool forceRefresh = false,
+  }) async {
+    return await homeRepo.getGeneralSummary(forceRefresh: forceRefresh);
   }
 }

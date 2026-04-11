@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/current_user_logic/current_user_cubit.dart';
 import 'package:sehhalink/core/routing/routes.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/core/theme/font_weight_helper.dart';

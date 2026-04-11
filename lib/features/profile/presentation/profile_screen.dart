@@ -2,8 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_state.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/current_user_logic/current_user_cubit.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/current_user_logic/current_user_state.dart';
+import 'package:sehhalink/core/routing/routes.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/features/profile/presentation/widgets/profile_drawer.dart';
 import 'package:sehhalink/features/profile/presentation/widgets/profile_top_section.dart';
@@ -29,9 +30,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return BlocListener<CurrentUserCubit, CurrentUserState>(
       listener: (context, state) {
+        if (state.user == null && !state.isLoading) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.onboardingScreen,
+            (_) => false,
+          );
+          return;
+        }
         if (state.error != null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error!), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text(state.error!),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       },

@@ -60,7 +60,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           width: 50.w,
                           height: 50.h,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Image.asset(
+                          errorBuilder: (_, _, _) => Image.asset(
                             Assets.assetsImagesUser,
                             width: 50.w,
                             height: 50.h,

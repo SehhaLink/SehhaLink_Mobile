@@ -2,8 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_state.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/current_user_logic/current_user_cubit.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/current_user_logic/current_user_state.dart';
 import 'package:sehhalink/core/theme/app_colors.dart';
 import 'package:sehhalink/features/profile/presentation/widgets/image_source_bottom_sheet.dart';
 
@@ -37,7 +38,6 @@ class ProfileImageSection extends StatelessWidget {
                   ),
                   child: ClipOval(child: _buildProfileImage(profileImage)),
                 ),
-
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -66,20 +66,15 @@ class ProfileImageSection extends StatelessWidget {
               ],
             ),
 
-            /// 🔥 LOADING OVERLAY
             if (state.isUpdatingImage)
-              Container(
-                width: 96.w,
-                height: 96.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.black.withOpacity(0.4),
-                ),
-                child: Center(
-                  child: SizedBox(
-                    width: 22.w,
-                    height: 22.w,
-                    child: const CircularProgressIndicator(strokeWidth: 2),
+              ClipOval(
+                child: SizedBox(
+                  width: 96.w,
+                  height: 96.w,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey.shade400,
+                    highlightColor: Colors.grey.shade200,
+                    child: Container(color: Colors.grey.shade400),
                   ),
                 ),
               ),
@@ -100,15 +95,14 @@ class ProfileImageSection extends StatelessWidget {
         profileImage,
         key: ValueKey(profileImage),
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _defaultAvatar(),
+        errorBuilder: (_, _, _) => _defaultAvatar(),
         loadingBuilder: (_, child, progress) {
           if (progress == null) return child;
-          return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+          return _shimmerAvatar();
         },
       );
     }
 
-    /// 📁 Local Image
     final file = File(profileImage);
     return FutureBuilder<bool>(
       future: file.exists(),
@@ -118,11 +112,19 @@ class ProfileImageSection extends StatelessWidget {
             file,
             key: ValueKey(profileImage),
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => _defaultAvatar(),
+            errorBuilder: (_, _, _) => _defaultAvatar(),
           );
         }
         return _defaultAvatar();
       },
+    );
+  }
+
+  Widget _shimmerAvatar() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(color: Colors.grey.shade300),
     );
   }
 

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sehhalink/features/home/domain/entities/upload_file_item.dart';
-import 'package:sehhalink/features/home/domain/use_cases/get_saved_files_use_case.dart';
 import 'package:sehhalink/features/home/domain/use_cases/get_user_general_summary_use_case.dart';
 import 'package:sehhalink/features/home/domain/use_cases/save_file_use_case.dart';
 import 'package:sehhalink/features/home/domain/use_cases/upload_file_use_case.dart';
@@ -12,13 +11,11 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({
     required this.uploadFileUseCase,
     required this.saveFileUseCase,
-    required this.getSavedFilesUseCase,
     required this.getUserGeneralSummaryUseCase,
   }) : super(const HomeState());
 
   final UploadFileUseCase uploadFileUseCase;
   final SaveFileUseCase saveFileUseCase;
-  final GetSavedFilesUseCase getSavedFilesUseCase;
   final GetUserGeneralSummaryUseCase getUserGeneralSummaryUseCase;
 
   Future<void> loadGeneralSummary({bool forceRefresh = false}) async {
@@ -45,21 +42,11 @@ class HomeCubit extends Cubit<HomeState> {
             isGeneralSummaryLoading: false,
           ),
         );
-
         Future.delayed(const Duration(seconds: 3), () {
           if (!isClosed) emit(state.copyWith(clearError: true));
         });
       },
     );
-  }
-
-  Future<void> loadSavedFiles() async {
-    try {
-      final savedFiles = await getSavedFilesUseCase();
-      emit(state.copyWith(isLoading: false));
-    } catch (_) {
-      emit(state.copyWith(isLoading: false));
-    }
   }
 
   Future<void> pickAndUpload() async {
@@ -128,34 +115,27 @@ class HomeCubit extends Cubit<HomeState> {
 
         if (isClosed) return;
         final updated = state.files
-            .map((f) {
-              if (f.fileId == fileModel.fileId) {
-                return f.copyWith(isStored: true);
-              }
-              return f;
-            })
+            .map(
+              (f) =>
+                  f.fileId == fileModel.fileId ? f.copyWith(isStored: true) : f,
+            )
             .where((f) => !f.isStored)
             .toList();
 
-        emit(state.copyWith(files: updated, clearGeneralSummary: true));
+        emit(state.copyWith(files: updated));
       },
-      onError: (error) {
-        _markFailed(index, error.message);
-      },
+      onError: (error) => _markFailed(index, error.message),
     );
   }
 
   Future<void> retryUpload(int index) async {
     final file = state.files[index];
-
     if (file.filePath == null) {
       cancelUpload(index);
       return;
     }
-
     _updateFile(index, progress: 0.0, status: UploadStatus.uploading);
     emit(state.copyWith(clearError: true));
-
     await _uploadSingle(File(file.filePath!), index);
   }
 
@@ -181,7 +161,6 @@ class HomeCubit extends Cubit<HomeState> {
   }) {
     if (isClosed) return;
     if (index < 0 || index >= state.files.length) return;
-
     final updated = List<UploadedFileItem>.from(state.files);
     updated[index] = updated[index].copyWith(
       progress: progress,
