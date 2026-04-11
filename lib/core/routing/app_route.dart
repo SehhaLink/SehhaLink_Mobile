@@ -1,20 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sehhalink/core/current_user/presentation/logic/current_user_cubit.dart';
-import 'package:sehhalink/core/dependency_Injection/forget_password_screen_di.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/current_user_logic/current_user_cubit.dart';
+import 'package:sehhalink/core/current_user/presentation/logic/file_logic/files_cubit.dart';
+import 'package:sehhalink/core/dependency_Injection/auth_di.dart';
+import 'package:sehhalink/core/dependency_Injection/current_user_di.dart';
 import 'package:sehhalink/core/dependency_Injection/get_it.dart';
 import 'package:sehhalink/core/dependency_Injection/home_screen_di.dart';
-import 'package:sehhalink/core/dependency_Injection/login_screen_di.dart';
 import 'package:sehhalink/core/dependency_Injection/privacy_security_di.dart';
-import 'package:sehhalink/core/dependency_Injection/register_screen_di.dart';
 import 'package:sehhalink/core/routing/routes.dart';
-import 'package:sehhalink/features/auth/forget_password/presentation/forget_password_screen.dart';
-import 'package:sehhalink/features/auth/forget_password/presentation/logic/forget_password_cubit.dart';
-import 'package:sehhalink/features/auth/login/presentation/logic/login_cubit.dart';
-import 'package:sehhalink/features/auth/login/presentation/login_screen.dart';
-import 'package:sehhalink/features/auth/register/presentation/logic/register_cubit.dart';
-import 'package:sehhalink/features/auth/register/presentation/register_screen.dart';
+import 'package:sehhalink/features/auth/presentation/logic/auth_cubit.dart';
+import 'package:sehhalink/features/auth/presentation/views/forget_password_screen.dart';
+import 'package:sehhalink/features/auth/presentation/views/login_screen.dart';
+import 'package:sehhalink/features/auth/presentation/views/register_screen.dart';
 import 'package:sehhalink/features/home/presentation/home_screen.dart';
 import 'package:sehhalink/features/navigation_screen/presentation/main_navigation_screen.dart';
 import 'package:sehhalink/features/onboarding/onboarding_screen.dart';
@@ -31,41 +29,48 @@ class AppRoute {
         break;
 
       case Routes.registerScreen:
-        registerScreenDi();
+        authDi();
         page = BlocProvider(
-          create: (_) => getIt<RegisterCubit>(),
+          create: (_) => getIt<AuthCubit>(),
           child: const RegisterScreen(),
         );
         break;
-      case Routes.homeScreen:
-        homeScreenDi();
-        page = const HomeScreen();
-        break;
+
       case Routes.loginScreen:
-        loginScreenDi();
+        authDi();
         page = BlocProvider(
-          create: (_) => getIt<LoginCubit>(),
+          create: (_) => getIt<AuthCubit>(),
           child: const LoginScreen(),
         );
         break;
+
       case Routes.forgetPasswordScreen:
-        forgetPasswordScreenDi();
+        authDi();
         page = BlocProvider(
-          create: (_) => getIt<ForgetPasswordCubit>(),
+          create: (_) => getIt<AuthCubit>(),
           child: const ForgetPasswordScreen(),
         );
         break;
 
+      case Routes.homeScreen:
+        homeScreenDi();
+        page = const HomeScreen();
+        break;
+
       case Routes.navigationScreen:
+        currentUserDi();
         page = BlocProvider(
           create: (_) => getIt<CurrentUserCubit>()..loadUser(),
-          child: const MainNavigationScreen(),
+          child: BlocProvider.value(
+            value: getIt<FilesCubit>(),
+            child: const MainNavigationScreen(),
+          ),
         );
-        break;
 
       case Routes.viewDetailsScreen:
         page = const ViewDetailsScreen();
         break;
+
       case Routes.privacySecurity:
         privacySecurityDi();
         page = BlocProvider(
@@ -73,6 +78,7 @@ class AppRoute {
           child: PrivacySecurityScreen(),
         );
         break;
+
       default:
         page = Scaffold(
           body: Center(child: Text('navigation.route_not_found'.tr())),
